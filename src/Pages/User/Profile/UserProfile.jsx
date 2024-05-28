@@ -1,16 +1,16 @@
 import React from 'react'
 import Navbar from '../../../Components/Navbar/Navbar'
 import Footer from '../../../Components/Footer/Footer'
-import Login from '../../../Components/User/Login/Login'
+import Profile from '../../../Components/User/Profile/Profile'
 
-function UserLogin() {
+function UserProfile() {
   return (
     <>
-      <Navbar/>
-        <Login/>
-      <Footer/>
+    <Navbar/>
+    <Profile/>
+    <Footer/>
     </>
   )
 }
 
-export default UserLogin
+export default UserProfile

@@ -1,14 +1,18 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UserLogin from "./Pages/User/Login/UserLogin";
+import UserRoutes from './Routes/UserRoutes';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_CLIENT_ID
   return (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>            
     <BrowserRouter>
       <Routes>
-        <Route path={'/login'} element={<UserLogin/>} />
+        <Route path={'/*'} element={<UserRoutes/>} />
       </Routes>
     </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }
 

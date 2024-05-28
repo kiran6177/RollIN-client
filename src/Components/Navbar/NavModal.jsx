@@ -8,7 +8,7 @@ import {  FaUserCircle } from "react-icons/fa";
 function NavModal({isOpen,set}) {
     if(isOpen){
         return createPortal(
-            <div className=" w-[100%] flex flex-col items-end bg-[rgba(0,0,0,0.6)] fixed top-0 right-0 h-[100%] max-h-full">
+            <div className=" w-[100%] flex flex-col items-end bg-[rgba(0,0,0,0.6)] fixed top-0 right-0 h-[100%] z-30 max-h-full">
               <div className="bg-[#F6AE2D] w-[65%] sm:w-[45%] md:w-[35%]  min-h-[150px] h-[20%]">
                   <IoIosClose onClick={()=>set(false)} className="absolute right-3 top-3 w-[2rem] h-[2rem]"/>
                   <h3 className="font-semibold text-2xl p-5 tracking-widest">Menu</h3>

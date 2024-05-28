@@ -1,22 +1,28 @@
 import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { FaSearch , FaUserCircle, FaChevronRight  } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import NavModal from './NavModal';
 
 function Navbar() {
   const [isOpen,setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleProfile = ()=>{
+    navigate('/profile')
+  }
+
   return (
     <>
-    <div className='flex justify-between h-[6rem] items-center bg-gradient-to-b from-black'>
+    <div className='flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw]'>
 
-      <div className='w-[50%] min-[480]:w-[45%] h-[100%] sm:w-[50%] flex items-center gap-14 pl-5'>
+      <div className='w-[50%] min-[480]:w-[45%] h-[100%] sm:w-[50%] flex items-center gap-14 pl-5 text-white'>
         <div className='h-[100%] w-[100%] sm:w-[40%] md:w-[35%] flex items-center'>
           <img src={logo} alt="" />
         </div>
-        <NavLink className={'font-medium  hidden lg:block'}>Movies</NavLink>
-        <NavLink className={'font-medium  hidden lg:block'}>Screens</NavLink>
+        <NavLink className={'font-normal tracking-widest hidden lg:block'}>Movies</NavLink>
+        <NavLink className={'font-normal tracking-widest hidden lg:block'}>Screens</NavLink>
       </div>
       
       <div className='w-[45%] sm:w-[50%] flex justify-end items-center gap-6 md:gap-14 pr-12'>
@@ -25,12 +31,12 @@ function Navbar() {
             <option value="">Kochi</option>
           </select>
           <FaSearch className='text-white w-[1.5rem] h-[1.5rem]'  />
-          <FaUserCircle className='text-white w-[1.7rem] h-[1.7rem] hidden lg:block ' />
+          <FaUserCircle onClick={handleProfile} className='text-white w-[1.7rem] h-[1.7rem] hidden lg:block ' />
           <RxHamburgerMenu onClick={()=>setIsOpen(true)} className='text-white w-[1.7rem] h-[1.7rem] block opacity-100 lg:hidden lg:opacity-0 transition-all duration-500 ease-in-out' />
       </div>
       
     </div>  
-    <div className='bg-[#15121B] text-[#F6AE2D] px-5 py-2 block sm:hidden'>
+    <div className='fixed z-10 mt-20 bg-black w-[100%]  text-[#F6AE2D] px-5 py-2 block sm:hidden'>
         <button className='flex items-center'>
           Choose City <FaChevronRight/>
         </button>
