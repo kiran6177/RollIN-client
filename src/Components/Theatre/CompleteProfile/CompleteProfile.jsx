@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { Toaster, toast } from 'sonner';
 import { completeTheatre, resetTheatreActions } from '../../../features/theatre/theatreSlice';
+import { ScaleLoader } from 'react-spinners';
 // import MapModal from './MapModal';
 const MapModal = lazy(()=>import('./MapModal'))
 
@@ -19,10 +20,14 @@ function CompleteProfile() {
 
     const [isOpen,setIsOpen] = useState(false);
 
-    const {theatreData,theatreToken,success,error,message} = useSelector(state=>state.theatre);
+    const {theatreData,theatreToken,success,error,message,loading} = useSelector(state=>state.theatre);
     const navigate = useNavigate();
     const navState = useLocation();
     const dispatch = useDispatch();
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const pinRegex = /^[\d]{6}$/
 
     useEffect(()=>{
         if(navState?.state?.message){
@@ -60,8 +65,34 @@ function CompleteProfile() {
 
     const handleSubmit = (e)=>{
         e.preventDefault();
+        if(name.trim() === '' && email.trim() === ''  && location.trim() === '' 
+        && street.trim() === '' && landmark.trim() === '' && city.trim() === '' 
+        && state.trim() === '' && pin.toString().trim() === '' ){
+            toast.error('Please fill the fields.');
+        }else if(name.trim() === ''){
+            toast.error('Enter a valid Name.');
+        }else if(email.trim() === '' ){
+            toast.error('Enter a valid Email.');
+        }else if(!emailRegex.test(email)){
+            toast.error('Invalid Email Format!');
+        }else if(location.trim() === ''){
+            toast.error('Enter a location.');
+        }else if(street.trim() === ''){
+            toast.error('Enter a valid street.');
+        }else if(city.trim() === ''){
+            toast.error('Enter a valid city.');
+        }else if(landmark.trim() === ''){
+            toast.error('Enter a valid landmark.');
+        }else if(state.trim() === ''){
+            toast.error('Enter a valid state.');
+        }else if(pin.toString().length !== 6){
+            toast.error('Enter a valid 6 digit Pincode.');
+        }else if(!pinRegex.test(pin)){
+            toast.error('Pincode should only have digits.');
+        }else{
         const data = {id:theatreData.id,name,email,location,street,landmark,city,state,pin,latlng}
         dispatch(completeTheatre({data,token:theatreToken}))
+        }
     }
 
     const chooseAddress = (address,latlng)=>{
@@ -126,9 +157,10 @@ function CompleteProfile() {
                 <label className='text-white text-xs tracking-widest'>Pincode</label>
                 <input type="number" value={pin} onChange={(e)=>setPin(e.target.value)} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
             </div>
-            <button type='submit' className='bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[90%] md:w-[85%] font-semibold text-lg tracking-widest'>
+            <button type='submit' disabled={loading} className={loading ? 'bg-[#d69e34] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[90%] md:w-[85%] font-semibold text-lg tracking-widest' :'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[90%] md:w-[85%] font-semibold text-lg tracking-widest'}>
                 SUBMIT 
             </button>
+            <ScaleLoader loading={loading} color='#f6ae2d' height={20} />
       </form>
     </div>
     {

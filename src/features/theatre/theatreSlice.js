@@ -71,12 +71,15 @@ const theatreSlice = createSlice({
         builder
         .addCase(theatreSignup.fulfilled,(state)=>{
             state.success = true
+            state.loading = false
+
         })
         .addCase(theatreSignup.pending,(state)=>{
             state.loading = true
         })
         .addCase(theatreSignup.rejected,(state,action)=>{
             console.log(action);
+            state.loading = false
             state.error = action.payload.reasons
         })
         .addCase(theatreLogout.fulfilled,(state,action)=>{
@@ -85,6 +88,7 @@ const theatreSlice = createSlice({
             state.theatreToken = null
             state.success = true
             state.message = action.payload.message
+            state.loading = false
         })
         .addCase(theatreLogout.pending,(state)=>{
             state.loading = true
@@ -92,6 +96,7 @@ const theatreSlice = createSlice({
         .addCase(theatreLogout.rejected,(state,action)=>{
             console.log(action.payload.reasons[0]);
             state.error = action.payload.reasons
+            state.loading = false
         })
         .addCase(theatreLogin.fulfilled,(state,action)=>{
             state.loading = false
@@ -104,6 +109,7 @@ const theatreSlice = createSlice({
         })
         .addCase(theatreLogin.rejected,(state,action)=>{
             state.error = action.payload.reasons
+            state.loading = false
         })
         .addCase(completeTheatre.fulfilled,(state,action)=>{
             console.log(action);
@@ -128,6 +134,7 @@ const theatreSlice = createSlice({
                 state.theatreData = null;
             }
             state.error = action.payload.reasons
+            state.loading = false
         })
     }
 })

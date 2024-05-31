@@ -27,8 +27,8 @@ function Profile() {
     }
 
     const handleLogout = ()=>{
-        dispatch(logoutTheatre())
         dispatch(theatreLogout(theatreToken))
+        dispatch(logoutTheatre())
     }
 
   return (

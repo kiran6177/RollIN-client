@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { Toaster, toast } from 'sonner'
 import { resetTheatreActions, theatreLogin } from '../../../features/theatre/theatreSlice';
+import { ScaleLoader } from 'react-spinners';
 
 function Login() {
     const [email,setEmail] = useState('');
@@ -100,6 +101,7 @@ function Login() {
             <button type='submit' disabled={loading} className={loading?' bg-[#be903b] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'  : 'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'}>
                 LOGIN 
             </button>
+            <ScaleLoader loading={loading} height={20} color='#f6ae2d' />
       </form>
     </div>
 

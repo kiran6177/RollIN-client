@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Toaster, toast } from 'sonner';
 import { resetTheatreActions, theatreSignup } from '../../../features/theatre/theatreSlice';
 import { useNavigate } from 'react-router';
+import { ScaleLoader } from 'react-spinners';
 
 function Register() {
     const [name,setName] = useState('');
@@ -14,7 +15,7 @@ function Register() {
     const [passwordError,setPasswordError] = useState('');
 
     const dispatch = useDispatch();
-    const {success,error} = useSelector(state=>state.theatre);
+    const {success,error,loading} = useSelector(state=>state.theatre);
     const navigate = useNavigate();
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -103,9 +104,10 @@ function Register() {
                     }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
                 {passwordError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{passwordError}</p>}
             </div>
-            <button type='submit' className='bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'>
+            <button type='submit' disabled={loading} className={loading? 'bg-[#cd952e] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest' :'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'}>
                 REGISTER 
             </button>
+            <ScaleLoader loading={loading} color='#f6ae2d' height={20} />
       </form>
     </div>
 

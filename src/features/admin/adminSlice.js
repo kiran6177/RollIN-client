@@ -53,30 +53,35 @@ const adminSlice = createSlice({
     extraReducers:(builder)=>{
         builder
         .addCase(adminLogin.fulfilled,(state,action)=>{
+            state.loading = false
             state.adminData = action.payload.data
             state.adminToken = action.payload.accessToken
             state.success = true
+            state.message = 'Login Successfully.'
         })
         .addCase(adminLogin.pending,(state)=>{
             state.loading = true
         })
         .addCase(adminLogin.rejected,(state,action)=>{
+            state.loading = false
             state.error = action.payload.reasons
         })
         .addCase(adminLogout.fulfilled,(state,action)=>{
             console.log(action);
             state.message = action.payload.message
+            state.loading = false
         })
         .addCase(adminLogout.pending,(state)=>{
             state.loading = true
         })
         .addCase(adminLogout.rejected,(state,action)=>{
             state.error = action.payload.reasons
+            state.loading = false
         })
     }
 
 })
 
-export const { logoutAdmin } = adminSlice.actions
+export const { resetAdminActions , logoutAdmin } = adminSlice.actions
 
 export default adminSlice.reducer
