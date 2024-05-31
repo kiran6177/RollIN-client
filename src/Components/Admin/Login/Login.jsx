@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Toaster } from 'sonner'
+import { Toaster, toast } from 'sonner'
 import { adminLogin } from '../../../features/admin/adminSlice';
 import { useNavigate } from 'react-router';
 
@@ -28,10 +28,12 @@ function Login() {
     const handleAdminLogin = (e)=>{
 
         e.preventDefault()
-        if(!emailRegex.test(email)){
-            setValidateError('Email is Invalid!!')
+        if(email.trim() == '' || password.trim() == ''){
+            toast.error('Please fill all the fields.')
+        }else if(!emailRegex.test(email)){
+            toast.error('Email is Invalid!!')
         }else if(!passwordRegex.test(password)){
-            setValidateError('Password is Invalid!!')
+            toast.error('Password is Invalid!!')
         }else{
             dispatch(adminLogin({email,password}))
         }
@@ -48,13 +50,18 @@ function Login() {
                 <input type="text" value={email} onChange={(e)=>{
                         setEmail(e.target.value); 
                         if(!emailRegex.test(email)){
-                           setValidateError('Email is Invalid!!')
+                            toast.error('Email is Invalid!!')
                         }}}
                 className='w-[100%] p-3 border-2 text-sm rounded-md  border-[#f6ae2d] bg-black text-white'/>
             </div>
             <div className="w-[80%] md:w-[70%]">
                 <label className='text-white text-xs '>Password</label>
-                <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} className='w-[100%] p-3 border-2 text-sm rounded-md border-[#f6ae2d] bg-black text-white'/>
+                <input type="password" value={password} onChange={(e)=>{
+                    setPassword(e.target.value);
+                    if(!passwordRegex.test(password)){
+                        toast.error('Password is Invalid!!')
+                    }
+                    }} className='w-[100%] p-3 border-2 text-sm rounded-md border-[#f6ae2d] bg-black text-white'/>
             </div>
             {validateError && <p></p>}
             <button type='submit' className='bg-[#F6AE2D] text-black border-2 tracking-widest border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-medium text-lg'>
