@@ -84,7 +84,8 @@ const userSlice = createSlice({
             state.loading = true;
         })
         .addCase(googleAuth.rejected,(state,action)=>{
-            state.error = action.payload
+            console.log(action);
+            state.error = action.payload.reasons
         })
         .addCase(userLogout.fulfilled,(state,action)=>{
             state.message = action.payload.message;
@@ -94,7 +95,7 @@ const userSlice = createSlice({
         })
         .addCase(userLogout.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload
+            state.error = action.payload.reasons
         })
         .addCase(userEmailLogin.fulfilled,(state,action)=>{
             console.log(action);

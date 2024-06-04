@@ -43,7 +43,7 @@ function AdminNavModal({isOpen,set}) {
                 </div>
                 <div className="text-white flex items-center py-5">
                     <img src={PinLogo} alt="" className="w-8" />
-                    <NavLink to={'/admin/login'} className={'font-medium tracking-widest text-sm '}>Users</NavLink>
+                    <NavLink to={'/admin/users'} className={'font-medium tracking-widest text-sm '}>Users</NavLink>
                 </div>
                 <div className="text-white flex items-center py-5">
                     <img src={PinLogo} alt="" className="w-8" />
@@ -51,7 +51,7 @@ function AdminNavModal({isOpen,set}) {
                 </div>
                 <div className="text-white flex items-center py-5">
                     <img src={PinLogo} alt="" className="w-8" />
-                    <NavLink to={'/admin/login'} className={'font-medium tracking-widest text-sm '}>Theatres</NavLink>
+                    <NavLink to={'/admin/theatres'} className={'font-medium tracking-widest text-sm '}>Theatres</NavLink>
                 </div>
                 <div className="text-white flex items-center py-5">
                     <img src={PinLogo} alt="" className="w-8" />

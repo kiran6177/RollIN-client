@@ -6,7 +6,7 @@ import { resetTheatreActions  } from '../../../features/theatre/theatreSlice'
 
 function Home() {
 
-    const  { theatreToken , success , message } = useSelector(state=>state.theatre);
+    const  { theatreData,theatreToken , success , message } = useSelector(state=>state.theatre);
     const dispatch = useDispatch();
     useEffect(()=>{
       if(success){
@@ -17,8 +17,11 @@ function Home() {
     },[success])
 
   return (
-    <div>
+    <div className='pt-32 min-h-[80vh] bg-[#15121B]'>
       <Toaster richColors />
+      <div className='p-12'>
+      <h2 className='text-white font-semibold text-4xl'>Welcome {theatreData && theatreData.name}</h2>
+      </div>
     </div>
   )
 }

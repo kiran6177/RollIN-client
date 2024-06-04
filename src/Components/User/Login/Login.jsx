@@ -12,10 +12,19 @@ import EmailModal from './EmailModal';
 function Login() {
   const [showMail,setShowMail] = useState(false);
   const dispatch = useDispatch();
-  const {userData,userToken,message} = useSelector(state=>state.user);
+  const {userData,userToken,message,error} = useSelector(state=>state.user);
     const navigate = useNavigate()
 
     useEffect(()=>{
+      if(error){
+        if(error.length > 0){
+          error.map(err=>{
+            toast.error(err)
+          })
+        }
+        dispatch(resetActions())
+        return
+      }
       if(userToken){
         navigate('/')
         return
@@ -25,7 +34,7 @@ function Login() {
         dispatch(resetActions())
         return
       }
-    },[userToken,message])
+    },[userToken,message,error])
 
   const handleGoogleAuth = useGoogleLogin({
         onSuccess: (tokenResponse) => {
@@ -55,7 +64,7 @@ function Login() {
             <p className='text-white'>OR</p>
             <div className="w-[80%] md:w-[70%]">
                 <label className='text-white text-xs'>Enter Mobile Number</label>
-                <input type="text" className='w-[100%] py-2 border-2 rounded-md'/>
+                <input type="text" className='w-[100%] py-2 px-2 border-2 rounded-md'/>
             </div>
             <button className='bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-medium text-lg'>
                 Continue 
