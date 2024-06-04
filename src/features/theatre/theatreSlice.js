@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { completeTheatreService, loginTheatreService, logoutTheatreService, signupTheatreService } from "./theatreService";
+import { completeTheatreService, loginTheatreService, logoutTheatreService, signupTheatreService, theatreGoogleAuthService, theatreLoginOtpVerifyService, theatreRegisterOtpVerifyService, theatreResendOtpService } from "./theatreService";
 
 export const theatreSignup = createAsyncThunk('theatreSignup',async (data,thunkAPI)=>{
     try {
@@ -39,6 +39,46 @@ export const completeTheatre = createAsyncThunk('completeTheatre' , async ({data
     }
 })
 
+export const theatreGoogleAuth = createAsyncThunk('theatreGoogleAuth', async (accessToken,thunkAPI) =>{
+    try {
+        const response = await theatreGoogleAuthService(accessToken)
+        console.log(response.data);
+        return response.data
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const theatreLoginOtpVerify = createAsyncThunk('theatreLoginOtpVerify', async ({id,otp},thunkAPI)=>{
+    try {
+        const response = await theatreLoginOtpVerifyService(id,otp);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const theatreRegisterOtpVerify = createAsyncThunk('theatreRegisterOtpVerify', async ({id,otp},thunkAPI)=>{
+    try {
+        const response = await theatreRegisterOtpVerifyService(id,otp);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const theatreResendOtp = createAsyncThunk('theatreResendOtp', async (id,thunkAPI)=>{
+    try {
+        const response =  await theatreResendOtpService(id)
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
 const initialState = {
     theatreData:null,
     theatreToken:null,
@@ -69,8 +109,9 @@ const theatreSlice = createSlice({
     },
     extraReducers:(builder)=>{
         builder
-        .addCase(theatreSignup.fulfilled,(state)=>{
+        .addCase(theatreSignup.fulfilled,(state,action)=>{
             state.success = true
+            state.theatreData = action.payload.theatreData
             state.loading = false
 
         })
@@ -102,12 +143,15 @@ const theatreSlice = createSlice({
             state.loading = false
             state.theatreData = action.payload.theatreData
             state.theatreToken = action.payload.accessToken
-            state.success = true
+            if(action.payload.theatreData.isAccepted){
+                state.success = true
+            }
         })
         .addCase(theatreLogin.pending,(state)=>{
             state.loading = true
         })
         .addCase(theatreLogin.rejected,(state,action)=>{
+            console.log(action);
             state.error = action.payload.reasons
             state.loading = false
         })
@@ -133,6 +177,66 @@ const theatreSlice = createSlice({
                 state.theatreToken = null;
                 state.theatreData = null;
             }
+            state.error = action.payload.reasons
+            state.loading = false
+        })
+        .addCase(theatreGoogleAuth.fulfilled,(state,action)=>{
+            state.loading = false
+            state.theatreData = action.payload.theatreData
+            state.theatreToken = action.payload.accessToken
+            state.success = true
+        })
+        .addCase(theatreGoogleAuth.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreGoogleAuth.rejected,(state,action)=>{
+            state.error = action.payload.reasons
+            state.loading = false
+        })
+        .addCase(theatreLoginOtpVerify.fulfilled,(state,action)=>{
+            console.log(action);
+            state.loading = false
+        })
+        .addCase(theatreLoginOtpVerify.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreLoginOtpVerify.rejected,(state,action)=>{
+            console.log(action);
+            if(action?.payload?.reasons?.length > 0 && action?.payload?.reasons[0] === 'Registration completed. You are under verfication.'){
+                state.theatreData = null
+            }
+            state.error = action.payload.reasons
+            state.loading = false
+        })
+        .addCase(theatreRegisterOtpVerify.fulfilled,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.success = true
+            state.theatreData = null
+        })
+        .addCase(theatreRegisterOtpVerify.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreRegisterOtpVerify.rejected,(state,action)=>{
+            console.log(action);
+            if(action?.payload?.reasons?.length > 0 && action?.payload?.reasons[0] === 'Registration completed. You are under verfication.'){
+                state.theatreData = null
+            }
+            state.error = action.payload.reasons
+            state.loading = false
+        })
+        .addCase(theatreResendOtp.fulfilled,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            if(action.payload.success){
+                state.message = 'OTP Resend Successfully.'
+            }
+        })
+        .addCase(theatreResendOtp.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreResendOtp.rejected,(state,action)=>{
+            console.log(action);
             state.error = action.payload.reasons
             state.loading = false
         })

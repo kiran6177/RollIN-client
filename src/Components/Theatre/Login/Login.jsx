@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router';
+import {  useNavigate } from 'react-router';
 import { Toaster, toast } from 'sonner'
-import { resetTheatreActions, theatreLogin } from '../../../features/theatre/theatreSlice';
+import { resetTheatreActions, theatreGoogleAuth, theatreLogin } from '../../../features/theatre/theatreSlice';
 import { ScaleLoader } from 'react-spinners';
+import { FcGoogle } from 'react-icons/fc';
+import { useGoogleLogin } from '@react-oauth/google';
 
 function Login() {
     const [email,setEmail] = useState('');
@@ -20,7 +22,13 @@ function Login() {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
     useEffect(()=>{
-        
+        if(theatreData?.isAccepted === false){
+            toast.info('Complete your registration.')
+            setTimeout(()=>{
+                navigate('/theatre/otpverification');
+            },1200)
+            return
+        }
         if(theatreToken && theatreData.isVerified && theatreData.isCompleted){
             navigate('/theatre')
             return
@@ -62,7 +70,11 @@ function Login() {
         }
 
     }
-
+    const handleGoogleAuth = useGoogleLogin({
+        onSuccess: (tokenResponse) =>{
+          dispatch(theatreGoogleAuth(tokenResponse))
+        }
+    })
   return (
     <div className='min-h-[100vh] relative flex justify-center items-center pt-32 pb-12 h-auto login-bg'>
         <div className='bg-[#15121B] top-0 absolute h-[100%] w-[100%]'></div>
@@ -70,6 +82,11 @@ function Login() {
       <form onSubmit={handleLogin} className='flex flex-col items-center  gap-6 border-2 border-[#F6AE2D] rounded-md bg-black backdrop-blur-sm w-[80%] md:w-[69%] lg:w-[55%] xl:w-[45%] 2xl:w-[35%] py-12'>
             <h3 className='font-semibold text-white tracking-widest'>THEATRE LOGIN</h3>
             
+            <button type='button' onClick={handleGoogleAuth} className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
+                <FcGoogle className='w-[1.5rem] h-[1.5rem]'/>
+                Continue With Google
+            </button>
+
             <div className="w-[80%] md:w-[70%]">
                 <label className='text-white text-xs tracking-widest'>Email</label>
                 <input type="text" value={email} onChange={(e)=>{

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { googleUserAuthService , userLogoutService} from './userService';
+import { googleUserAuthService , userEmailLoginService, userLogoutService, userVerifyOtpService} from './userService';
 
 export const googleAuth = createAsyncThunk('userGoogleAuth',async (tokenResponse,thunkAPI)=>{
     try {
@@ -20,6 +20,26 @@ export const userLogout = createAsyncThunk('userLogout', async(token,thunkAPI)=>
         return response.data
     } catch (error) {
         console.log(error);
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const userEmailLogin = createAsyncThunk('userEmailLogin', async (email,thunkAPI) =>{
+    try {
+        const response = await userEmailLoginService(email);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const userVerifyOtp = createAsyncThunk('userVerifyOtp', async ({id,otp},thunkAPI)=>{
+    try {
+        const response = await userVerifyOtpService(id,otp)
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.error)
     }
 })
@@ -61,7 +81,7 @@ const userSlice = createSlice({
             state.success = true;
         })
         .addCase(googleAuth.pending,(state)=>{
-            state.pending = true;
+            state.loading = true;
         })
         .addCase(googleAuth.rejected,(state,action)=>{
             state.error = action.payload
@@ -70,11 +90,42 @@ const userSlice = createSlice({
             state.message = action.payload.message;
         })
         .addCase(userLogout.pending,(state)=>{
-            state.pending = true;
+            state.loading = true;
         })
         .addCase(userLogout.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload
+        })
+        .addCase(userEmailLogin.fulfilled,(state,action)=>{
+            console.log(action);
+            state.userData = action.payload.userData
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userEmailLogin.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userEmailLogin.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload.reasons
+            state.loading = false;
+        })
+        .addCase(userVerifyOtp.fulfilled,(state,action)=>{
+            console.log(action);
+            state.userData = action.payload.data
+            state.userToken = action.payload.accessToken
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userVerifyOtp.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userVerifyOtp.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload.reasons
+            if(action?.payload?.reasons.length > 0 && action.payload.reasons[0] === 'Ooops. OTP timed out!!'){
+                state.userData = null
+            }
         })
     }
 })

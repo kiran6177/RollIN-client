@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Toaster, toast } from 'sonner';
-import { resetTheatreActions, theatreSignup } from '../../../features/theatre/theatreSlice';
+import { resetTheatreActions, theatreGoogleAuth, theatreSignup } from '../../../features/theatre/theatreSlice';
 import { useNavigate } from 'react-router';
 import { ScaleLoader } from 'react-spinners';
+import { FcGoogle } from 'react-icons/fc';
+import { useGoogleLogin } from '@react-oauth/google';
 
 function Register() {
     const [name,setName] = useState('');
@@ -23,10 +25,7 @@ function Register() {
 
     useEffect(()=>{
         if(success){
-            toast.success('Registration Successful.')
-            setTimeout(()=>{
-                navigate('/theatre/login',{replace:true});
-            },2000)
+            navigate('/theatre/otpverification',{replace:true});
             dispatch(resetTheatreActions())
             return
         }
@@ -57,6 +56,11 @@ function Register() {
             dispatch(theatreSignup({name,email,password}))
         }
     }
+    const handleGoogleAuth = useGoogleLogin({
+        onSuccess: (tokenResponse) =>{
+          dispatch(theatreGoogleAuth(tokenResponse))
+        }
+    })
 
   return (
     <div className='min-h-[100vh] relative flex justify-center items-center pt-32 pb-12 h-auto login-bg'>
@@ -106,6 +110,10 @@ function Register() {
             </div>
             <button type='submit' disabled={loading} className={loading? 'bg-[#cd952e] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest' :'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'}>
                 REGISTER 
+            </button>
+            <button type='button' onClick={handleGoogleAuth} className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
+                <FcGoogle className='w-[1.5rem] h-[1.5rem]'/>
+                Continue With Google
             </button>
             <ScaleLoader loading={loading} color='#f6ae2d' height={20} />
       </form>

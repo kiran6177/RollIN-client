@@ -10,16 +10,20 @@ function Profile() {
     const [password,setPassword] = useState('');
     const [hide,setHide] = useState(true);
 
-    const {theatreToken} = useSelector(state=>state.theatre);
-    const dispatch = useDispatch();
+    const {theatreToken,theatreData} = useSelector(state=>state.theatre);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(()=>{
         if(!theatreToken){
-            navigate('/theatre/login')
+            navigate('/theatre/login',{replace:true})
             return
         }
-    },[theatreToken])
+        if(!theatreData?.isVerified || theatreData?.isBlocked){
+            navigate('/theatre/login',{replace:true})
+            return
+        } 
+    },[theatreToken,theatreData])
 
     const handleProfile = (e)=>{
         e.preventDefault();

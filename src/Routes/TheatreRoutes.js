@@ -6,21 +6,21 @@ import TheatreCompletePro from '../Pages/Theatre/CompleteProfile/TheatreComplete
 import TheatreProfile from '../Pages/Theatre/Profile/TheatreProfile'
 import TheatreHome from '../Pages/Theatre/Home/TheatreHome'
 import TheatreProtected from './TheatreProtected'
+import TheatreOtp from '../Pages/Theatre/Otp/TheatreOtp'
 
 function TheatreRoutes() {
   return (
     <Routes>
-        <Route path='/' element={
-        <TheatreProtected>
-            <TheatreHome/>
-        </TheatreProtected>
-        } />
+        
         <Route path='/login' element={<TheatreLogin/>} />
         <Route path='/signup' element={<TheatreRegister/>} />
         <Route path='/completeprofile' element={<TheatreCompletePro/>} />
-        <Route path='/profile' element={
+        <Route path='/profile' element={<TheatreProfile/>} />
+        <Route path='/otpverification' element={<TheatreOtp/>} />
+
+        <Route path='/' element={
         <TheatreProtected>
-           <TheatreProfile/>
+            <TheatreHome/>
         </TheatreProtected>
         } />
     </Routes>
