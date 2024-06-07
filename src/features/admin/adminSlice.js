@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminGetTheatresService, adminGetUsersService, blockUnblockTheatresService, blockUnblockUsersService, loginAdminService, logoutAdminService } from "./adminService";
+import { adminGetTheatresService, adminGetUsersService, approveTheatreService, blockUnblockTheatresService, blockUnblockUsersService, loginAdminService, logoutAdminService } from "./adminService";
 
 export const adminLogin = createAsyncThunk('adminLogin',async({email,password},thunkAPI)=>{
     try {
@@ -28,7 +28,7 @@ export const adminGetUsers = createAsyncThunk('adminGetUsers',async (token,thunk
         console.log(response.data);
         return response.data;
     } catch (error) {
-        return error.response.data.error
+        return thunkAPI.rejectWithValue(error.response.data.error)
     }
 })
 
@@ -48,13 +48,23 @@ export const adminGetTheatres = createAsyncThunk('adminGetTheatres',async (token
         console.log(response.data);
         return response.data;
     } catch (error) {
-        return error.response.data.error
+        return thunkAPI.rejectWithValue(error.response.data.error)
     }
 })
 
 export const blockUnblockTheatres = createAsyncThunk('blockUnblockTheatres', async ({theatreid,token},thunkAPI) =>{
     try {
         const response = await blockUnblockTheatresService(theatreid,token);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const approveTheatre = createAsyncThunk('approveTheatre', async ({theatreid,token},thunkAPI) =>{
+    try {
+        const response = await approveTheatreService(theatreid,token);
         console.log(response.data);
         return response.data;
     } catch (error) {
@@ -137,6 +147,7 @@ const adminSlice = createSlice({
                 state.adminData = null
                 state.adminToken = null
                 state.usersData = null
+                state.theatresData = null
             }
             state.loading = false
         })
@@ -164,6 +175,7 @@ const adminSlice = createSlice({
                 state.adminData = null
                 state.adminToken = null
                 state.usersData = null
+                state.theatresData = null
             }
             state.loading = false
         })
@@ -182,6 +194,7 @@ const adminSlice = createSlice({
                 state.adminData = null
                 state.adminToken = null
                 state.usersData = null
+                state.theatresData = null
             }
             state.loading = false
         })
@@ -197,6 +210,11 @@ const adminSlice = createSlice({
                 }
                 return theatre
             })
+            if(theatreData.isBlocked){
+                state.message = "Theatre Blocked Successfully."
+            }else{
+                state.message = "Theatre Unblocked Successfully."
+            }
             state.loading = false
         })
         .addCase(blockUnblockTheatres.pending,(state)=>{
@@ -209,6 +227,35 @@ const adminSlice = createSlice({
                 state.adminData = null
                 state.adminToken = null
                 state.usersData = null
+                state.theatresData = null
+            }
+            state.loading = false
+        })
+        .addCase(approveTheatre.fulfilled,(state,action)=>{
+            console.log(action);
+            const theatreData = action.payload.theatreData
+            state.theatresData = state.theatresData.map(theatre=>{
+                if(theatre.id === theatreData.id){
+                    return {
+                        ...theatre,
+                        isVerified:theatreData.isVerified,
+                    }
+                }
+                return theatre
+            })
+            state.loading = false
+        })
+        .addCase(approveTheatre.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(approveTheatre.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ["Some Error Occured!!"]
+            if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
+                state.adminData = null
+                state.adminToken = null
+                state.usersData = null
+                state.theatresData = null
             }
             state.loading = false
         })

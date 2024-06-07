@@ -25,3 +25,8 @@ export const blockUnblockTheatresService = (theatreid,token) =>{
     return axios.post('/auth/admin/blockunblocktheatre',{theatreid},{headers:{Authorization:`Bearer ${token}`}})
 
 }
+
+export const approveTheatreService = (theatreid,token) =>{
+    return axios.post('/auth/admin/approvetheatre',{theatreid},{headers:{Authorization:`Bearer ${token}`}})
+
+}

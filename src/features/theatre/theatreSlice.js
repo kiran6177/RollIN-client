@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { completeTheatreService, loginTheatreService, logoutTheatreService, signupTheatreService, theatreGoogleAuthService, theatreLoginOtpVerifyService, theatreRegisterOtpVerifyService, theatreResendOtpService } from "./theatreService";
+import { completeTheatreService, loginTheatreService, logoutTheatreService, signupTheatreService, theatreGoogleAuthService, theatreLoginOtpVerifyService, theatreProfileUpdateService, theatreRegisterOtpVerifyService, theatreResendOtpService } from "./theatreService";
 
 export const theatreSignup = createAsyncThunk('theatreSignup',async (data,thunkAPI)=>{
     try {
@@ -72,6 +72,16 @@ export const theatreRegisterOtpVerify = createAsyncThunk('theatreRegisterOtpVeri
 export const theatreResendOtp = createAsyncThunk('theatreResendOtp', async (id,thunkAPI)=>{
     try {
         const response =  await theatreResendOtpService(id)
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const theatreProfileUpdate = createAsyncThunk('theatreProfileUpdate', async ({data,token},thunkAPI) =>{
+    try {
+        const response = await theatreProfileUpdateService(data,token)
         console.log(response.data);
         return response.data;
     } catch (error) {
@@ -158,14 +168,10 @@ const theatreSlice = createSlice({
         .addCase(completeTheatre.fulfilled,(state,action)=>{
             console.log(action);
             state.loading = false
-            if(!action.payload.theatreData.isVerified){
+            if(action.payload.success){
                 state.theatreData = null
                 state.theatreToken = null
                 state.message = "You are under verification for updated credentials."
-            }else{
-            state.theatreData = action.payload.theatreData
-            state.success = true;
-            state.message = "Profile Updated Successfully."
             }
         })
         .addCase(completeTheatre.pending,(state)=>{
@@ -237,6 +243,30 @@ const theatreSlice = createSlice({
         })
         .addCase(theatreResendOtp.rejected,(state,action)=>{
             console.log(action);
+            state.error = action.payload.reasons
+            state.loading = false
+        })
+        .addCase(theatreProfileUpdate.fulfilled,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            if(action.payload?.success){
+                state.theatreData = action.payload.theatreData;
+                state.message = "Updation Successfull."
+            }else{
+                state.theatreData = null;
+                state.theatreToken = null;
+                state.message = "New Credentials are under verfication."
+            }
+        })
+        .addCase(theatreProfileUpdate.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreProfileUpdate.rejected,(state,action)=>{
+            console.log(action.payload);
+            if(action.payload && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Theatre!!'){
+                state.theatreToken = null;
+                state.theatreData = null;
+            }
             state.error = action.payload.reasons
             state.loading = false
         })

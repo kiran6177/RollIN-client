@@ -29,11 +29,11 @@ function Login() {
             },1200)
             return
         }
-        if(theatreToken && theatreData.isVerified && theatreData.isCompleted){
+        if(theatreToken && theatreData.isVerified && theatreData.isCompleted && theatreData.isAccepted){
             navigate('/theatre')
             return
         }
-        if(theatreToken && !theatreData.isCompleted){
+        if(theatreData && !theatreData.isCompleted && theatreData.isAccepted){
             navigate('/theatre/completeprofile')
             return
         }

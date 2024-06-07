@@ -29,10 +29,11 @@ function TheatreView() {
       <table className='hidden lg:table border-collpase  border border-[#f6ae2d] rounded-md  w-[100%] bg-black text-white text-center my-10'>
         <thead className='border-collpase border border-[#f6ae2d] '>
           <tr key="main-head" className='h-[4rem] bg-[#f6ae2d] text-black '>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[10%]' >S. No</th>
+          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[7%]' >S. No</th>
           <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Name</th>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[25%]' >Email</th>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Location</th>
+          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[22%]' >Email</th>
+          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[22%]' >Location</th>
+          <th className='border-collpase border border-[#f6ae2d] font-semibold  ' >Status</th>
           <th className='border-collpase border border-[#f6ae2d] font-semibold  ' >Action</th>
           </tr>          
         </thead>
@@ -46,6 +47,16 @@ function TheatreView() {
                     <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{theatre.name}</td>
                     <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{theatre.email}</td>
                     <td className='border-collpase border border-[#f6ae2d] rounded-md text-xs' >{theatre.address?.completeLocation}</td>
+                    <td className='border-collpase border border-[#f6ae2d] rounded-md ' >
+                      <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly '>
+                        {
+                          theatre.isVerified ?
+                          <p className='bg-[#46ff46] text-black px-6 py-1 rounded-full font-medium'>Approved</p>
+                          :
+                          <p className='bg-[#fb5151] text-black px-6 py-1 rounded-full font-medium'>Pending</p>
+                        }
+                      </div>
+                    </td>
                     <td className='border-collpase border border-[#f6ae2d] rounded-md ' >
                       <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly '>
                         <button onClick={()=>viewTheatre(theatre.id)} className='bg-[#f6ae2d] text-black px-6 py-2 rounded-sm font-medium'>View</button>

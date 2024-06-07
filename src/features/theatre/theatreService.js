@@ -13,7 +13,7 @@ export const loginTheatreService = (data)=>{
 }
 
 export const completeTheatreService = (data,token)=>{
-    return axios.post('/auth/theatre/completeprofile',data,{headers:{Authorization:`Bearer ${token}`}})
+    return axios.post('/auth/theatre/completeprofile',data,{headers:{Authorization:`Bearer ${token}`,"Content-Type":"multipart/form-data"}})
 }
 
 export const theatreGoogleAuthService = (accessToken)=>{
@@ -30,4 +30,8 @@ export const theatreRegisterOtpVerifyService = (id,otp)=>{
 
 export const theatreResendOtpService = (id)=>{
     return axios.post('/auth/theatre/resendotp',id)
+}
+
+export const theatreProfileUpdateService = (data,token)=>{
+    return axios.put('/auth/theatre/updateprofile',data,{headers:{Authorization:`Bearer ${token}`,"Content-Type":"multipart/form-data"}})
 }

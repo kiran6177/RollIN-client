@@ -2,18 +2,24 @@ import { Loader } from '@googlemaps/js-api-loader';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router'
-import { Toaster } from 'sonner'
-import { blockUnblockTheatres } from '../../../features/admin/adminSlice';
+import { Toaster, toast } from 'sonner'
+import { approveTheatre, blockUnblockTheatres, resetAdminActions } from '../../../features/admin/adminSlice';
+import { ScaleLoader } from 'react-spinners';
+import ConfirmModal from './ConfirmModal';
 
 function TheatreSingleView() {
     const MAPS_API_KEY = process.env.REACT_APP_MAPS_API_KEY;
     const [theatre,setTheatre] = useState(null);
+
+    const [isOpen,setIsOpen] = useState(false);
+
     const searchParams = useParams()
 
-    const {theatresData,adminToken} = useSelector(state=>state.admin);
+    const {theatresData,adminToken,error,loading,message} = useSelector(state=>state.admin);
     const dispatch = useDispatch();
 
     useEffect(()=>{
+      
         const theatreID = searchParams.id
         if(theatresData){
             setTheatre(...theatresData.filter(theatre=>theatre.id === theatreID))
@@ -21,13 +27,30 @@ function TheatreSingleView() {
     },[theatresData])
 
     useEffect(()=>{
+      if(message){
+        toast.success(message);
+        dispatch(resetAdminActions())
+        return
+      }
+      if(error){
+        error.length > 0 &&
+        error.map(err=>{
+          toast.error(err)
+        })
+        dispatch(resetAdminActions())
+      return
+    }
         if(theatre){
             loads()
         }
-    },[theatre])
+    },[theatre,error,message])
 
     const handleBlockUnblock = (theatreid)=>{
         dispatch(blockUnblockTheatres({theatreid,token:adminToken}))
+    }
+
+    const handleApproval = (theatreid)=>{
+      dispatch(approveTheatre({theatreid,token:adminToken}))
     }
 
     const loads = async ()=>{
@@ -65,25 +88,49 @@ function TheatreSingleView() {
             <div className='flex flex-col gap-10 '>
             <h2 className='text-[#f6ae2d] font-semibold text-4xl'>{theatre.name}</h2>
             <h4 className='text-white font-medium text-xl'>Email : &nbsp;  {theatre.email}</h4>
+            
+            <div className='w-[90%] h-[20rem] mx-auto flex flex-wrap gap-12 '>
+            {
+              theatre.images && theatre.images.length > 0 &&
+              theatre.images.map((image,i)=>{
+                return (
+                    <img key={i} src={image} alt="" className='max-w-[30%] object-contain bg-black border-black' /> 
+                )
+              })
+            }
+            </div>
+
             <h4 className='text-white font-medium text-xl'>Location :  &nbsp; {theatre.address?.completeLocation}</h4>
             {
                 theatre.location ?
                 <div className='w-[90%] h-[20rem] mx-auto' id='mapShow'>
-
-            </div>
+                </div>
             : <div className='w-[90%] h-[20rem] flex justify-center items-center text-white mx-auto'>
                 <h6>NO LOCATION UPDATED.</h6>
-            </div>
+              </div>
             }
             <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly w-[70%] mx-auto'>
                         {
                           theatre.isBlocked ?
-                        <button onClick={()=>handleBlockUnblock(theatre.id)} className='bg-[#f6ae2d] w-[100%] tracking-widest  text-black px-6 py-2 rounded-sm font-semibold'>UnBlock</button>
+                        <button onClick={()=>setIsOpen("UNBLOCK")} className='bg-[#f6ae2d] w-[100%] tracking-widest  text-black px-6 py-2 rounded-sm font-semibold'>UnBlock</button>
                           :
-                        <button onClick={()=>handleBlockUnblock(theatre.id)} className='bg-[#f6ae2d] w-[100%] tracking-widest  text-black px-6 py-2 rounded-sm font-semibold'>Block</button>
+                        <button onClick={()=>setIsOpen("BLOCK")} className='bg-[#f6ae2d] w-[100%] tracking-widest  text-black px-6 py-2 rounded-sm font-semibold'>Block</button>
                         }
-                      </div>
             </div>
+            <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly w-[70%] mx-auto'>
+                        {
+                          !theatre.isVerified &&
+                        <button onClick={()=>handleApproval(theatre.id)} disabled={loading} className='bg-[#f6ae2d] w-[100%] tracking-widest  text-black px-6 py-2 rounded-sm font-semibold'>Approve</button>
+                        }
+            </div>
+            <ScaleLoader loading={loading}  color='#f6ae2d' height={20} />
+            
+            {
+              isOpen &&
+              <ConfirmModal isOpen={isOpen} set={setIsOpen} theatre={theatre} handleAction={handleBlockUnblock} />
+            }
+            </div>
+            
         }
       </div>
     </div>

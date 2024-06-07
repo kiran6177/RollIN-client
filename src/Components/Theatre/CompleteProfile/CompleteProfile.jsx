@@ -1,9 +1,11 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react'
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { Toaster, toast } from 'sonner';
 import { completeTheatre, resetTheatreActions } from '../../../features/theatre/theatreSlice';
 import { ScaleLoader } from 'react-spinners';
+import { IoClose } from 'react-icons/io5';
+import imageValidator from '../../../utils/imageValidator';
 // import MapModal from './MapModal';
 const MapModal = lazy(()=>import('./MapModal'))
 
@@ -20,21 +22,39 @@ function CompleteProfile() {
 
     const [isOpen,setIsOpen] = useState(false);
 
+    const imageRef = useRef();
+    const imageAddRef = useRef();
+
+    const [images,setImages] = useState([]);
+    const [imageData,setImageData] = useState([]);
+    const [hideBtn,setHideBtn] = useState(false)
+
     const {theatreData,theatreToken,success,error,message,loading} = useSelector(state=>state.theatre);
     const navigate = useNavigate();
     const navState = useLocation();
     const dispatch = useDispatch();
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    const pinRegex = /^[\d]{6}$/
+    const pinRegex = /^[\d]{6}$/;
+
+    useEffect(()=>{
+        if(images.length !== 0){
+            setHideBtn(true)
+        }else{
+            setHideBtn(false)
+        }
+        if(!imageValidator(imageData)){
+            toast.error("Invalid File Type.")
+            setHideBtn(false)
+        }
+    },[images,imageData])
 
     useEffect(()=>{
         if(navState?.state?.message){
             toast.error(navState.state.message)
             navState.state = null
         }
-        if(!theatreToken){
+        if(!theatreData || !theatreData?.isAccepted){
             navigate('/theatre/login')
             return
         }
@@ -54,7 +74,7 @@ function CompleteProfile() {
             return
         }
         if(success){
-            toast.success('Login Successful.');
+            toast.success('Complete Your Profile.');
             setName(theatreData.name);
             setEmail(theatreData.email);
             dispatch(resetTheatreActions())
@@ -63,11 +83,33 @@ function CompleteProfile() {
         
     },[theatreToken,success,error,message])
 
+    const handleImage = ()=>{
+        if(imageRef.current.files && imageRef.current.files.length > 0){
+            const imageFile = imageRef.current.files;
+            setImageData(Array.from(imageFile));
+            setImages(Array.from(imageFile).map(image=>URL.createObjectURL(image)))
+        }
+    }
+
+    const handleAddImage = ()=>{
+        if(imageAddRef.current.files && imageAddRef.current.files.length > 0){
+            const imageFile = imageAddRef.current.files;
+            setImageData([...imageData ,... Array.from(imageFile)]);
+            setImages([...images,...Array.from(imageFile).map(image=>URL.createObjectURL(image))])
+        }
+        console.log(imageAddRef.current.files);
+    }
+
+    const removeImage = (index)=>{
+        setImageData(imageData.filter((img,i)=>i !== index))
+        setImages(images.filter((img,i)=>i !== index))
+    }
+
     const handleSubmit = (e)=>{
         e.preventDefault();
         if(name.trim() === '' && email.trim() === ''  && location.trim() === '' 
         && street.trim() === '' && landmark.trim() === '' && city.trim() === '' 
-        && state.trim() === '' && pin.toString().trim() === '' ){
+        && state.trim() === '' && pin.toString().trim() === '' && imageData.length === 0){
             toast.error('Please fill the fields.');
         }else if(name.trim() === ''){
             toast.error('Enter a valid Name.');
@@ -89,8 +131,25 @@ function CompleteProfile() {
             toast.error('Enter a valid 6 digit Pincode.');
         }else if(!pinRegex.test(pin)){
             toast.error('Pincode should only have digits.');
-        }else{
-        const data = {id:theatreData.id,name,email,location,street,landmark,city,state,pin,latlng}
+        }else if(!imageValidator(imageData)){
+            toast.error('Invalid File type.');
+        }
+        else{
+        const dataa = {id:theatreData.id,name,email,location,street,landmark,city,state,pin,latlng};
+            function convertToFile(filesData){
+                const dataTransfer = new DataTransfer();
+                filesData.forEach(file=>dataTransfer.items.add(file));
+                return dataTransfer.files;
+            }
+            console.log(convertToFile(imageData));
+            const filesList = convertToFile(imageData)
+            const data = new FormData()
+            data.append("formdata",JSON.stringify(dataa));
+            
+            imageData.forEach(file=>{
+                data.append("images",file);
+            })
+
         dispatch(completeTheatre({data,token:theatreToken}))
         }
     }
@@ -128,6 +187,24 @@ function CompleteProfile() {
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>Email</label>
                 <input type="text" value={email} onChange={(e)=>setEmail(e.target.value)} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+            </div>
+            <div className="w-[90%] md:w-[85%] flex flex-col gap-4">
+                <label className='text-white text-xs tracking-widest'>Images</label>
+                   <div className='flex flex-wrap gap-10'>
+                        {images && images.length > 0 && images.map((img,i)=>{
+                            return (
+                                <div key={img+i} className=' relative w-[10rem] h-[10rem] overflow-hidden'>
+                                    <IoClose onClick={()=>removeImage(i)} className='absolute right-0 cursor-pointer'/>
+                                    <img src={img} alt="Theatre Image" className='w-[100%]  object-cover' />
+                                </div>
+                            )
+                        })  }
+                    </div>  
+                <input type="file" ref={imageRef}  className='hidden' onChange={handleImage} multiple />
+                <input type="file" ref={imageAddRef}  className='hidden' onChange={handleAddImage} multiple />
+
+                <button type='button' onClick={()=>imageAddRef.current.click()} className={!hideBtn ? 'hidden' :'bg-[#f6ae2d] px-4 py-1 w-[70%] mx-auto rounded-sm tracking-wider'}>Add More</button>
+                <button type='button' onClick={()=>imageRef.current.click()} className={hideBtn ? 'hidden' :'bg-[#f6ae2d] px-4 py-1 w-[70%] mx-auto rounded-sm tracking-wider'}>Add images</button>
             </div>
             <div className="w-[90%] flex flex-col sm:flex-row items-center justify-between md:w-[85%]">
                 <div className='w-[100%] sm:w-[70%]'>
