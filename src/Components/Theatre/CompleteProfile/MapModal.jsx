@@ -88,10 +88,10 @@ function MapModal({isOpen,set,chooseAddress}) {
         
             return createPortal(
                 <div className='w-[100%] h-[100vh] fixed top-0 pt-26 flex items-center justify-center bg-[#00000091]'>
-                  <div className='bg-black text-white w-[50%] border-2 border-[#f6ae2d] rounded-md p-8 flex flex-col gap-5 fixed min-h-[60vh] '>
+                  <div className='bg-black text-white w-[90%] sm:w-[75%] lg:w-[65%] xl:w-[50%]  border-2 border-[#f6ae2d] rounded-md p-8 flex flex-col gap-5 fixed min-h-[60vh] '>
                   <IoIosClose onClick={()=>set(false)} className="absolute cursor-pointer right-3 top-3 w-[2rem] h-[2rem]"/>
                     <h1 className='font-semibold'>Drop a pin</h1>
-                    <div className='w-[90%] h-[20rem] mx-auto' id='map'>
+                    <div className='w-[90%] h-[15rem] sm:h-[20rem] mx-auto' id='map'>
 
                     </div>
                     <div className='w-[100%] flex flex-col items-center justify-center'>

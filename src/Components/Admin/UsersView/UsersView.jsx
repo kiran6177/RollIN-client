@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Toaster } from 'sonner'
 import { adminGetUsers, blockUnblockUsers, resetAdminActions } from '../../../features/admin/adminSlice';
+import ConfirmModal from './ConfirmModal';
 
 function UsersView() {
 
   const {adminToken,usersData} = useSelector(state=>state.admin);
   const dispatch = useDispatch();
-
+  const [isOpen,setIsOpen] = useState(false)
 
   useEffect(()=>{
     dispatch(adminGetUsers(adminToken))
@@ -48,9 +49,9 @@ function UsersView() {
                       <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly '>
                         {
                           user.isVerified ?
-                        <button onClick={()=>handleBlockUnblock(user.id)} className='bg-[#f6ae2d] text-black px-6 py-2 rounded-sm font-medium'>Block</button>
+                        <button onClick={()=>setIsOpen(`BLOCK|${user.id}`)} className='bg-[#f62d2d] text-black px-6 py-2 rounded-sm font-medium'>Block</button>
                           :
-                        <button onClick={()=>handleBlockUnblock(user.id)} className='bg-[#f6ae2d] text-black px-6 py-2 rounded-sm font-medium'>Unblock</button>
+                        <button onClick={()=>setIsOpen(`UNBLOCK|${user.id}`)} className='bg-[#3af62d] text-black px-6 py-2 rounded-sm font-medium'>Unblock</button>
                         }
                       </div>
                     </td>
@@ -78,9 +79,9 @@ function UsersView() {
                     <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly '>
                         {
                           user.isVerified ?
-                        <button onClick={()=>handleBlockUnblock(user.id)}  className='bg-[#f6ae2d] text-black px-6 py-2 rounded-sm font-medium'>Block</button>
+                        <button onClick={()=>setIsOpen(`BLOCK|${user.id}`)}  className='bg-[#f62d2d] text-black px-6 py-2 rounded-sm font-medium'>Block</button>
                           :
-                        <button onClick={()=>handleBlockUnblock(user.id)} className='bg-[#f6ae2d] text-black px-6 py-2 rounded-sm font-medium'>Unblock</button>
+                        <button onClick={()=>setIsOpen(`UNBLOCK|${user.id}`)} className='bg-[#3af62d] text-black px-6 py-2 rounded-sm font-medium'>Unblock</button>
                         }
                     </div></td></tr>
                   <tr className='h-[4rem]' key={user.id+"space"}><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md '></td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md '></td></tr>
@@ -93,6 +94,10 @@ function UsersView() {
       </table>
 
       </div>
+      {
+        isOpen &&
+        <ConfirmModal isOpen={isOpen} set={setIsOpen}  handleAction={handleBlockUnblock} />
+      }
     </div>
   )
 }

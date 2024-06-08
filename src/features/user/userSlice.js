@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { googleUserAuthService , userEmailLoginService, userLogoutService, userVerifyOtpService} from './userService';
+import { googleUserAuthService , userEmailLoginService, userLogoutService, userResendOtpService, userVerifyOtpService} from './userService';
 
 export const googleAuth = createAsyncThunk('userGoogleAuth',async (tokenResponse,thunkAPI)=>{
     try {
@@ -41,6 +41,16 @@ export const userVerifyOtp = createAsyncThunk('userVerifyOtp', async ({id,otp},t
         return response.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const userResendOtp = createAsyncThunk('userResendOtp', async (id,thunkAPI) =>{
+    try {
+        const response =  await userResendOtpService(id);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
     }
 })
 
@@ -127,6 +137,23 @@ const userSlice = createSlice({
             if(action?.payload?.reasons.length > 0 && action.payload.reasons[0] === 'Ooops. OTP timed out!!'){
                 state.userData = null
             }
+        })
+        .addCase(userResendOtp.fulfilled,(state,action)=>{
+            console.log(action);
+            if(action.payload.success){
+                state.message = 'OTP Resend Successfully.'
+            }
+            // state.userData = action.payload.userData
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userResendOtp.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userResendOtp.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload.reasons
+            state.loading = false;
         })
     }
 })

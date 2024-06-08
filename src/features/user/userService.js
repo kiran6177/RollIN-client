@@ -15,3 +15,7 @@ export const userEmailLoginService = (email)=>{
 export const userVerifyOtpService = (id,otp) =>{
     return axios.post('/auth/user/verifyotp/email',{id,otp})
 }
+
+export const userResendOtpService = (id)=>{
+    return axios.post('/auth/user/resendotp',{id})
+}

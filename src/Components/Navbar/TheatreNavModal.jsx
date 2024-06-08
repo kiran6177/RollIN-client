@@ -26,7 +26,7 @@ function TheatreNavModal({isOpen,set}) {
                     </div>  
                     <div className=" flex items-center px-6 py-2 gap-3">
                         <FaUserCircle/>
-                        <NavLink to={'/admin/profile'} className={'font-medium tracking-wider text-sm'}>Profile</NavLink>
+                        <NavLink to={'/theatre/profile'} className={'font-medium tracking-wider text-sm'}>Profile</NavLink>
                     </div>
                     </>
                   }
