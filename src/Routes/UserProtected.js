@@ -8,7 +8,7 @@ function UserProtected({children}) {
 
     useEffect(()=>{
         if(!userToken){
-            navigate('/login');
+            navigate('/login',{replace:true});
             return
         }
     },[userToken])

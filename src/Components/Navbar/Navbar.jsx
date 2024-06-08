@@ -8,14 +8,23 @@ import NavModal from './NavModal';
 function Navbar() {
   const [isOpen,setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const [bgChange,setBgChange] = useState(false)
 
   const handleProfile = ()=>{
     navigate('/profile')
   }
+  const handleScroll = ()=>{
+    if(window.scrollY > 10){
+      setBgChange(true)
+    }else{
+      setBgChange(false)
+    }
+  }
+  window.addEventListener('scroll',handleScroll)
 
   return (
     <>
-    <div className='flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw]'>
+    <div className={bgChange ? 'flex justify-between h-[6rem] items-center bg-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out' :'flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out'}>
 
       <div className='w-[50%] min-[480]:w-[45%] h-[100%] sm:w-[50%] flex items-center gap-14 pl-5 text-white'>
         <div className='h-[100%] w-[100%] sm:w-[40%] md:w-[35%] flex items-center'>
