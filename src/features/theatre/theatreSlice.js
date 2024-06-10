@@ -250,6 +250,18 @@ const theatreSlice = createSlice({
             console.log(action);
             state.loading = false
             if(action.payload?.success){
+                if(action.payload?.theatreData.isBlocked){
+                    state.theatreData = null
+                    state.theatreToken = null
+                }
+                if(action.payload?.newTheatreData?.isBlocked){
+                    state.theatreData = null
+                    state.theatreToken = null
+                }
+                if(action.payload?.newTheatreToken){
+                    state.theatreToken = action.payload?.newTheatreToken;
+                    // state.theatreData = action.payload?.newTheatreData 
+                }
                 state.theatreData = action.payload.theatreData;
                 state.message = "Updation Successfull."
             }else{
@@ -263,7 +275,7 @@ const theatreSlice = createSlice({
         })
         .addCase(theatreProfileUpdate.rejected,(state,action)=>{
             console.log(action.payload);
-            if(action.payload && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Theatre!!'){
+            if(action.payload && action.payload.reasons.length > 0 && (action.payload.reasons[0] === 'UnAuthorized Theatre!!' || action.payload.reasons[0] === 'You are temporarily blocked by admin!!') ){
                 state.theatreToken = null;
                 state.theatreData = null;
             }

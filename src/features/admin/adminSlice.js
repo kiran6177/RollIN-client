@@ -134,7 +134,11 @@ const adminSlice = createSlice({
         })
         .addCase(adminGetUsers.fulfilled,(state,action)=>{
             console.log(action);
-            state.usersData = action.payload
+            state.usersData = action.payload.usersData
+            if(action.payload?.newAdminToken){
+                state.adminToken = action.payload?.newAdminToken;
+                state.adminData = action.payload?.newAdminData 
+            }
             state.loading = false
         })
         .addCase(adminGetUsers.pending,(state)=>{
@@ -154,6 +158,10 @@ const adminSlice = createSlice({
         .addCase(blockUnblockUsers.fulfilled,(state,action)=>{
             console.log(action);
             const userData = action.payload.userData
+            if(action.payload?.newAdminToken){
+                state.adminToken = action.payload?.newAdminToken;
+                state.adminData = action.payload?.newAdminData 
+            }
             state.usersData = state.usersData.map(user=>{
                 if(user.id === userData.id){
                     return {
@@ -181,7 +189,11 @@ const adminSlice = createSlice({
         })
         .addCase(adminGetTheatres.fulfilled,(state,action)=>{
             console.log(action);
-            state.theatresData = action.payload
+            state.theatresData = action.payload.TheatresData
+            if(action.payload?.newAdminToken){
+                state.adminToken = action.payload?.newAdminToken;
+                state.adminData = action.payload?.newAdminData 
+            }
             state.loading = false
         })
         .addCase(adminGetTheatres.pending,(state)=>{
@@ -201,6 +213,10 @@ const adminSlice = createSlice({
         .addCase(blockUnblockTheatres.fulfilled,(state,action)=>{
             console.log(action);
             const theatreData = action.payload.theatreData
+            if(action.payload?.newAdminToken){
+                state.adminToken = action.payload?.newAdminToken;
+                state.adminData = action.payload?.newAdminData 
+            }
             state.theatresData = state.theatresData.map(theatre=>{
                 if(theatre.id === theatreData.id){
                     return {
@@ -234,6 +250,10 @@ const adminSlice = createSlice({
         .addCase(approveTheatre.fulfilled,(state,action)=>{
             console.log(action);
             const theatreData = action.payload.theatreData
+            if(action.payload?.newAdminToken){
+                state.adminToken = action.payload?.newAdminToken;
+                state.adminData = action.payload?.newAdminData 
+            }
             state.theatresData = state.theatresData.map(theatre=>{
                 if(theatre.id === theatreData.id){
                     return {

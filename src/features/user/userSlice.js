@@ -99,6 +99,10 @@ const userSlice = createSlice({
         })
         .addCase(userLogout.fulfilled,(state,action)=>{
             state.message = action.payload.message;
+            // if(action.payload?.newUserToken){
+            //     state.userToken = action.payload?.newUserToken;
+            //     state.userData = action.payload?.newUserData 
+            // }
         })
         .addCase(userLogout.pending,(state)=>{
             state.loading = true;
@@ -125,6 +129,7 @@ const userSlice = createSlice({
             console.log(action);
             state.userData = action.payload.data
             state.userToken = action.payload.accessToken
+            localStorage.removeItem('otpTime')
             state.success = true;
             state.loading = false;
         })
@@ -135,6 +140,7 @@ const userSlice = createSlice({
             console.log(action);
             state.error = action.payload.reasons
             if(action?.payload?.reasons.length > 0 && action.payload.reasons[0] === 'Ooops. OTP timed out!!'){
+                localStorage.removeItem('otpTime')
                 state.userData = null
             }
         })

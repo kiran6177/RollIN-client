@@ -22,6 +22,7 @@ function Login() {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
     useEffect(()=>{
+        
         if(theatreData?.isAccepted === false){
             toast.info('Complete your registration.')
             setTimeout(()=>{
