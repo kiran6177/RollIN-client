@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Toaster } from 'sonner'
-import { adminGetUsers, blockUnblockUsers, resetAdminActions } from '../../../features/admin/adminSlice';
+import { resetAdminActions } from '../../../features/admin/adminSlice';
+import { adminGetUsers, blockUnblockUsers} from '../../../features/admin/adminActions'
 import ConfirmModal from './ConfirmModal';
 
 function UsersView() {

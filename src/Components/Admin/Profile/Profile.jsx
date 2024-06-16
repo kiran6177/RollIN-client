@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { adminLogout, logoutAdmin } from '../../../features/admin/adminSlice';
+import { logoutAdmin } from '../../../features/admin/adminSlice';
+import { adminLogout } from '../../../features/admin/adminActions';
 
 function Profile() {
     const [name,setName] = useState('');

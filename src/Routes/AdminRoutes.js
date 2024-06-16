@@ -7,6 +7,9 @@ import AdminProfile from '../Pages/Admin/Profile/AdminProfile'
 import AdminUserView from '../Pages/Admin/UsersView/AdminUserView'
 import AdminTheatreView from '../Pages/Admin/TheatreView/AdminTheatreView'
 import AdminSingleTheatre from '../Pages/Admin/TheatreView/AdminSingleTheatre'
+import AdminMovies from '../Pages/Admin/Movies/AdminMovies'
+import AdminAddMovie from '../Pages/Admin/Movies/AdminAddMovie'
+import AdminMovieDetail from '../Pages/Admin/Movies/AdminMovieDetail'
 
 function AdminRoutes() {
   return (
@@ -36,6 +39,22 @@ function AdminRoutes() {
                 <AdminSingleTheatre/>
             </AdminProtected>
         } />
+        <Route path={'/movies'} element={
+            <AdminProtected>
+                <AdminMovies/>
+            </AdminProtected>
+        } />
+        <Route path={'/addmovie'} element={
+            <AdminProtected>
+                <AdminAddMovie/>
+            </AdminProtected>
+        } />
+        <Route path={'/moviedetail'} element={
+            <AdminProtected>
+                <AdminMovieDetail/>
+            </AdminProtected>
+        } />
+
     </Routes>
   )
 }

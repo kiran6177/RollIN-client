@@ -4,12 +4,14 @@ import UserRoutes from './Routes/UserRoutes';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AdminRoutes from './Routes/AdminRoutes';
 import TheatreRoutes from './Routes/TheatreRoutes';
+import { AnimatePresence } from 'framer-motion';
 
 function App() {
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>       
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>  
+      <AnimatePresence>     
         <BrowserRouter>
           <Routes>
             <Route path={'/*'} element={<UserRoutes/>} />
@@ -17,6 +19,7 @@ function App() {
             <Route path={'/theatre/*'} element={<TheatreRoutes/>} />
           </Routes>
         </BrowserRouter>
+      </AnimatePresence>
     </GoogleOAuthProvider>
   );
 }
