@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Toaster, toast } from 'sonner'
-import oppenbanner from '../../../assets/MM-1207 Oppenheimer.jpg'
 import pinlogo from '../../../assets/pin-logo.png'
 import { FaRegCalendar } from 'react-icons/fa'
 import { MdOutlineTimer } from "react-icons/md";
@@ -14,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { adminAddMovieToDB, adminGetTMDBMovieDetail } from '../../../features/movie/movieActions'
 import TrailerModal from './TrailerModal'
 import ReleaseModal from './ReleaseModal'
-import { resetMovieActions } from '../../../features/movie/movieSlice'
+import { resetDBMovies, resetMovieActions, setSingleMovie } from '../../../features/movie/movieSlice'
 
 function MovieDetail() {
   const [scope,animate] = useAnimate();
@@ -35,7 +34,17 @@ function MovieDetail() {
 
   useEffect(()=>{
     console.log(movieid);
-    dispatch(adminGetTMDBMovieDetail({movieid,token:adminToken}))
+    if(moviesData && moviesData.length > 0){
+      for(let movie of moviesData){
+        if(movie.movie_id == parseInt(movieid)){
+          dispatch(setSingleMovie(movie))
+          return
+        }
+      }
+      dispatch(adminGetTMDBMovieDetail({movieid,token:adminToken}))
+    }else{
+      dispatch(adminGetTMDBMovieDetail({movieid,token:adminToken}))
+    }
   },[movieid])
 
   useEffect(()=>{
@@ -53,8 +62,13 @@ function MovieDetail() {
     setTimeout(()=>{setShowConfirm(true)},250)
   }
 
+  const handleEditMovie = ()=>{
+    
+  }
+
   const dispactchAddMovie = (release_date)=>{
     console.log(release_date);
+    dispatch(resetDBMovies())
     dispatch(adminAddMovieToDB({movieid,release_date,token:adminToken})) 
   }
 
@@ -69,7 +83,7 @@ function MovieDetail() {
           <div className='text-white  pl-10 flex flex-col gap-1 md:gap-4 drop-shadow-[2px_2px_10px_rgba(0,0,0,1)]'>
               <h2 className='text-xl lg:text-4xl font-semibold'>{singleMovieDetail?.title}</h2>
               <div className=' flex gap-1 flex-wrap md:gap-8'>
-              <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{singleMovieDetail?.genres[0] ? singleMovieDetail.genres[0].name:""}{singleMovieDetail?.genres[1] ?" / "+singleMovieDetail.genres[1].name:""}{singleMovieDetail?.genres[2] ? " / "+singleMovieDetail.genres[2].name:""}</h5>
+              <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{singleMovieDetail?.genres[0] ? singleMovieDetail.genres[0].name  ? singleMovieDetail.genres[0].name: singleMovieDetail.genres[0] :""}{singleMovieDetail?.genres[1] ? singleMovieDetail.genres[1].name ?" / "+singleMovieDetail.genres[1].name: " / "+singleMovieDetail.genres[1] :""}{singleMovieDetail?.genres[2] ? singleMovieDetail.genres[2].name ?" / "+singleMovieDetail.genres[2].name: " / "+singleMovieDetail.genres[2] :""}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{singleMovieDetail?.release_date?.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{singleMovieDetail?.runtime+" min"}</h5>
               </div>
@@ -82,9 +96,17 @@ function MovieDetail() {
               <h3>{parseInt(singleMovieDetail?.rating)} / 10</h3>
           </div>
         </div>
-        <div ref={scope} className='hidden sm:block absolute -bottom-8 lg:bottom-[2rem] xl:bottom-[8rem]  mx-8 md:mx-12 border-2 border-[#f6ae2d] bg-black w-[15rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
-        <button onClick={handleAddMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>ADD MOVIE</button>
-        </div>
+        {
+          singleMovieDetail && singleMovieDetail?._id ?
+          <div ref={scope} className='hidden sm:block absolute -bottom-8 lg:bottom-[2rem] xl:bottom-[8rem]  mx-8 md:mx-12 border-2 border-[#f6ae2d] bg-black w-[15rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
+          <button onClick={handleAddMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>EDIT MOVIE</button>
+          </div>
+          :
+          <div ref={scope} className='hidden sm:block absolute -bottom-8 lg:bottom-[2rem] xl:bottom-[8rem]  mx-8 md:mx-12 border-2 border-[#f6ae2d] bg-black w-[15rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
+          <button onClick={handleAddMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>ADD MOVIE</button>
+          </div>
+        }
+
         <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[47%] top-[32%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
         <img src={singleMovieDetail?.backdrop_path} width={"100%"} alt="" />
       </div>
@@ -94,7 +116,7 @@ function MovieDetail() {
           <div className='text-white  px-8 flex flex-col gap-1 md:gap-4 drop-shadow-[2px_2px_10px_rgba(0,0,0,1)]'>
               <h2 className='text-xl lg:text-4xl font-semibold'>{singleMovieDetail?.title}</h2>
               <div className=' flex gap-1 flex-wrap md:gap-8'>
-              <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{singleMovieDetail?.genres[0] ? singleMovieDetail.genres[0].name:""}{singleMovieDetail?.genres[1] ?" / "+singleMovieDetail.genres[1].name:""}{singleMovieDetail?.genres[2] ? " / "+singleMovieDetail.genres[2].name:""}</h5>
+              <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{singleMovieDetail?.genres[0] ? singleMovieDetail.genres[0].name  ? singleMovieDetail.genres[0].name: singleMovieDetail.genres[0] :""}{singleMovieDetail?.genres[1] ? singleMovieDetail.genres[1].name ?" / "+singleMovieDetail.genres[1].name: " / "+singleMovieDetail.genres[1] :""}{singleMovieDetail?.genres[2] ? singleMovieDetail.genres[2].name ?" / "+singleMovieDetail.genres[2].name: " / "+singleMovieDetail.genres[2] :""}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{singleMovieDetail?.release_date?.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{singleMovieDetail?.runtime+" min"}</h5>
               </div>

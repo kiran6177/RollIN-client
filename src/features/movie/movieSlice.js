@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { adminAddMovieToDB, adminGetAllTMDBMovies, adminGetMoviesFromDB, adminGetTMDBMovieDetail } from "./movieActions";
+import { adminAddMovieToDB, adminGetAllTMDBMovies, adminGetMoviesFromDB, adminGetPersonsFromDB, adminGetTMDBMovieDetail } from "./movieActions";
 
 const initialState = {
     moviesData:null,
+    personData:null,
     addMoviesData:null,
     singleMovieDetail:null,
+    singlePersonDetail:null,
     success:'',
     error:'',
     loading:false,
@@ -28,6 +30,17 @@ const movieSlice = createSlice({
         },
         resetDBMovies:(state)=>{
             state.moviesData = null
+        },
+        setSingleMovie:(state,action)=>{
+            console.log(action);
+            state.singleMovieDetail = action.payload
+        },
+        setSinglePerson:(state,action)=>{
+            console.log(action);
+            state.singlePersonDetail = action.payload
+        },
+        resetPersons:(state)=>{
+            state.personData = null
         }
     },
     extraReducers:(builder)=>{
@@ -111,8 +124,27 @@ const movieSlice = createSlice({
             }
             state.loading = false
         })
+        .addCase(adminGetPersonsFromDB.fulfilled,(state,action)=>{
+            console.log(action);
+            state.personData = state.personData ? [...state.personData,...action.payload?.resultData] : action.payload?.resultData
+            state.loading = false
+        })
+        .addCase(adminGetPersonsFromDB.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(adminGetPersonsFromDB.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ["Some Error Occured!!"]
+            if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
+                state.adminData = null
+                state.adminToken = null
+                state.usersData = null
+                state.theatresData = null
+            }
+            state.loading = false
+        })
     }
 })
-export const { resetMovieActions ,resetAddMovies ,resetDBMovies } = movieSlice.actions;
+export const { resetMovieActions ,resetAddMovies ,resetDBMovies ,setSingleMovie ,resetPersons , setSinglePerson} = movieSlice.actions;
 
 export default movieSlice.reducer

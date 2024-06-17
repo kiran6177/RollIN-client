@@ -107,7 +107,7 @@ function AdminNavModal({isOpen,set}) {
                         </div>
                         <div className="text-white flex items-center py-5">
                             <img src={PinLogo} alt="" className="w-8" />
-                            <NavLink to={'/admin/login'} className={'font-medium tracking-widest text-sm '}>Persons</NavLink>
+                            <NavLink to={'/admin/persons'} className={'font-medium tracking-widest text-sm '}>Persons</NavLink>
                         </div>
                         </>
                         }

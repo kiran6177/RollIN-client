@@ -15,3 +15,7 @@ export const adminAddMovieToDBService = (movieid,release_date,token)=>{
 export const adminGetMoviesFromDBService = (page,token)=>{
     return axios.post('/movie/getallmovies',{page},{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const adminGetPersonsFromDBService = (page,token)=>{
+    return axios.post('/movie/getallpersons',{page},{headers:{Authorization:`Bearer ${token}`}})
+}

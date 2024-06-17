@@ -9,7 +9,7 @@ function Sidebar() {
       <NavLink to={'/admin/users'}>Users</NavLink>
       <NavLink to={'/admin/movies'}>Movies</NavLink>
       <NavLink to={'/admin/theatres'}>Theatres</NavLink>
-      <NavLink>Persons</NavLink>
+      <NavLink to={'/admin/persons'}>Persons</NavLink>
       </div>
     </div>
   )

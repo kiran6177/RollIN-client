@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { adminAddMovieToDBService, adminGetAllTMDBMoviesService, adminGetMoviesFromDBService, adminGetTMDBMovieDetailService } from "./movieService";
+import { adminAddMovieToDBService, adminGetAllTMDBMoviesService, adminGetMoviesFromDBService, adminGetPersonsFromDBService, adminGetTMDBMovieDetailService } from "./movieService";
 import { setAdminsData } from "../admin/adminSlice";
 
 
@@ -45,6 +45,19 @@ export const adminAddMovieToDB = createAsyncThunk('adminAddMovieToDB', async ({m
 export const adminGetMoviesFromDB = createAsyncThunk('adminGetMoviesFromDB', async ({page,token},thunkAPI) =>{
     try {
         const response = await adminGetMoviesFromDBService(page,token);
+        console.log(response.data);
+        if(response.data?.newAdminToken){
+            thunkAPI.dispatch(setAdminsData({data:response.data.newAdminData,token:response.data.newAdminToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const adminGetPersonsFromDB = createAsyncThunk('adminGetPersonsFromDB', async ({page,token},thunkAPI) =>{
+    try {
+        const response = await adminGetPersonsFromDBService(page,token);
         console.log(response.data);
         if(response.data?.newAdminToken){
             thunkAPI.dispatch(setAdminsData({data:response.data.newAdminData,token:response.data.newAdminToken}))

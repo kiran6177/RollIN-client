@@ -68,7 +68,7 @@ function Movies() {
       <div ref={scrollRef} className='my-6 mx-auto flex flex-wrap gap-6 justify-evenly '>
       {
         moviesData &&  moviesData.length > 0 ?
-        <InfiniteScroll dataLength={moviesData?.length} scrollThreshold={'10px'} scrollableTarget={scrollRef} next={nextPage} loader={<ScaleLoader className='absolute -bottom-[6rem] ' color='#f6ae2d'/>} hasMore={true} className='my-6 mx-auto flex flex-wrap gap-7 relative  justify-evenly scrollbar-none'>
+        <InfiniteScroll dataLength={moviesData?.length} scrollThreshold={'10px'} scrollableTarget={scrollRef} next={nextPage} loader={<ScaleLoader className='absolute -bottom-[6rem] ' color='#f6ae2d'/>} hasMore={true} className='my-6 py-4 px-2 mx-auto flex flex-wrap gap-7 relative  justify-evenly scrollbar-none'>
         {
           moviesData.map((movie,i)=>{
            return (
