@@ -11,6 +11,8 @@ import img3 from '../../../assets/aavesham.jpg'
 import img4 from '../../../assets/et00396952-tfvujhhwtn-landscape.avif'
 import MovieCard2 from '../../User/Movies/MovieCard2'
 import { userGetBannerMovies, userGetMoviesByGenre } from '../../../features/userMovies/userMovieActions';
+import { IoMdPlayCircle } from 'react-icons/io';
+import TrailerModal from '../Movies/TrailerModal';
 
 const bannerImgs = [oppen,img2,img3,img4]
 
@@ -19,6 +21,7 @@ function Home() {
     const {bannerMovies,moviesByGenre} = useSelector(state=>state.userMovie)
     const navigate = useNavigate()
     const [index,setIndex] = useState(0)
+    const [showTrailer,setShowTrailer] = useState(false);
     const dispatch = useDispatch()
 
 
@@ -38,14 +41,19 @@ function Home() {
     },[bannerMovies,moviesByGenre])
 
     useEffect(()=>{
-        const timer = setInterval(()=>{
+        let timer;
+        if(showTrailer){
+          clearInterval(timer)
+          return
+        }
+         timer = setInterval(()=>{
           setIndex(prev => (prev < bannerImgs.length - 1 ? prev + 1 : 0));
         },6000)
 
         return ()=>{
           clearInterval(timer)
         }
-    },[])
+    },[showTrailer])
 
     const handleBookTicket = ()=>{
       console.log("hvjvj");
@@ -80,7 +88,9 @@ function Home() {
               </div> 
                 <button  className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
             </motion.div>
+            <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={bannerMovies[index]?.backdrop_path} alt="" className='mt-28 md:mt-0  mx-auto object-fill w-[100%]' />
+          <TrailerModal isOpen={showTrailer} set={setShowTrailer} videoKey={bannerMovies[index]?.video_link} />
           </motion.div>
           </AnimatePresence>
           }

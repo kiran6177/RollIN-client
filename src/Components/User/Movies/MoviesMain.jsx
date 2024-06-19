@@ -147,6 +147,7 @@ function MoviesMain() {
             }
           })
         }
+        dispatch(resetAllMoviesData())
         dispatch(userGetAllMovies({page:1,languages,genres,search:debouncedValue}))
     }
   return (
