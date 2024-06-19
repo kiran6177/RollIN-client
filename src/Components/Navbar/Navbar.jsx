@@ -28,9 +28,9 @@ function Navbar() {
 
       <div className='w-[50%] min-[480]:w-[45%] h-[100%] sm:w-[50%] flex items-center gap-14 pl-5 text-white'>
         <div className='h-[100%] w-[100%] sm:w-[40%] md:w-[35%] flex items-center'>
-          <img src={logo} alt="" />
+          <img onClick={()=>navigate('/')} src={logo} alt="" className='cursor-pointer' />
         </div>
-        <NavLink className={'font-normal tracking-widest hidden lg:block'}>Movies</NavLink>
+        <NavLink to={'/movies'} className={'font-normal tracking-widest hidden lg:block'}>Movies</NavLink>
         <NavLink className={'font-normal tracking-widest hidden lg:block'}>Screens</NavLink>
       </div>
       

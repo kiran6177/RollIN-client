@@ -58,7 +58,7 @@ function NavModal({isOpen,set}) {
                   <h3 className="font-semibold text-2xl p-5 tracking-widest">Menu</h3>
                   <div className=" flex items-center p-6 gap-3">
                     <FaUserCircle/>
-                    <NavLink className={'font-medium tracking-wider text-sm'}>Profile</NavLink>
+                    <NavLink to={'/profile'} className={'font-medium tracking-wider text-sm'}>Profile</NavLink>
                 </div>
               </motion.div>
               <motion.div
@@ -66,7 +66,7 @@ function NavModal({isOpen,set}) {
               className="bg-[#15121B] w-[65%] sm:w-[45%] md:w-[35%] scrollbar h-[80%] overflow-y-scroll p-6 ">
                 <div className="text-white flex items-center py-5">
                     <img src={PinLogo} alt="" className="w-8" />
-                    <NavLink className={'font-medium tracking-wider text-sm'}>Movies</NavLink>
+                    <NavLink to={'/movies'} className={'font-medium tracking-wider text-sm'}>Movies</NavLink>
                 </div>
                 <div className="text-white flex items-center">
                     <img src={PinLogo} alt="" className="w-8" />

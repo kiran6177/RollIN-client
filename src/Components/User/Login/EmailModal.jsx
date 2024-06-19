@@ -3,10 +3,11 @@ import { createPortal } from 'react-dom'
 import { IoIosClose } from 'react-icons/io'
 import ModalSkelton from './ModalSkelton';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetActions, userEmailLogin } from '../../../features/user/userSlice';
+import { resetActions } from '../../../features/user/userSlice';
 import { Toaster, toast } from 'sonner';
 import { ScaleLoader } from 'react-spinners';
 import { useNavigate } from 'react-router';
+import { userEmailLogin } from '../../../features/user/userActions';
 const OtpModal = lazy(()=>import('./OtpModal'));
 
 function EmailModal({showMail,set}) {

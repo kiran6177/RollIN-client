@@ -1,58 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { googleUserAuthService , userEmailLoginService, userLogoutService, userResendOtpService, userVerifyOtpService} from './userService';
+import {  createSlice } from '@reduxjs/toolkit';
+import { googleAuth, userEmailLogin, userLogout, userResendOtp, userVerifyOtp } from './userActions';
 
-export const googleAuth = createAsyncThunk('userGoogleAuth',async (tokenResponse,thunkAPI)=>{
-    try {
-        console.log(tokenResponse);
-        const response = await googleUserAuthService(tokenResponse.access_token)
-        console.log(response.data);
-        return response.data
-    } catch (error) {
-        console.log(error);
-        return thunkAPI.rejectWithValue(error.response.data.error)
-    }
-})
-
-export const userLogout = createAsyncThunk('userLogout', async(token,thunkAPI)=>{
-    try {
-        const response = await userLogoutService(token)
-        console.log(response.data);
-        return response.data
-    } catch (error) {
-        console.log(error);
-        return thunkAPI.rejectWithValue(error.response.data.error)
-    }
-})
-
-export const userEmailLogin = createAsyncThunk('userEmailLogin', async (email,thunkAPI) =>{
-    try {
-        const response = await userEmailLoginService(email);
-        console.log(response.data);
-        return response.data;
-    } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.error)
-    }
-})
-
-export const userVerifyOtp = createAsyncThunk('userVerifyOtp', async ({id,otp},thunkAPI)=>{
-    try {
-        const response = await userVerifyOtpService(id,otp)
-        console.log(response.data);
-        return response.data;
-    } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.error)
-    }
-})
-
-export const userResendOtp = createAsyncThunk('userResendOtp', async (id,thunkAPI) =>{
-    try {
-        const response =  await userResendOtpService(id);
-        console.log(response.data);
-        return response.data;
-    } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.error);
-    }
-})
 
 
 const initialState = {
@@ -81,6 +29,10 @@ const userSlice = createSlice({
             state.error = ''
             state.loading = false
             state.message = ''
+        },
+        setUsersData:(state,action)=>{
+            state.userData = action.payload?.data
+            state.userToken = action.payload?.token
         }
     },
     extraReducers(builder){
@@ -164,6 +116,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { resetActions , logoutUser } =  userSlice.actions
+export const { resetActions , logoutUser , setUsersData} =  userSlice.actions
 
 export default userSlice.reducer

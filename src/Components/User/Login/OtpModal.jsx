@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { IoIosClose } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux';
-import { resetActions, userResendOtp, userVerifyOtp } from '../../../features/user/userSlice';
+import { resetActions } from '../../../features/user/userSlice';
 import { ScaleLoader } from 'react-spinners';
 import { Toaster, toast } from 'sonner';
+import { userResendOtp, userVerifyOtp } from '../../../features/user/userActions';
 
 function OtpModal({set,setShow}) {
     const [one,setOne] = useState('');

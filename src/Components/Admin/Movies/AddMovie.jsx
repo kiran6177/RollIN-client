@@ -11,7 +11,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { ScaleLoader } from 'react-spinners'
 import { motion } from 'framer-motion'
 import { resetAddMovies } from '../../../features/movie/movieSlice'
-import useDebounce from './hooks/debounce'
+import useDebounce from '../../../hooks/debounce'
 
 const cardVariants = {
   hidden:{
