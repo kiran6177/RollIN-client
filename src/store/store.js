@@ -4,6 +4,7 @@ import adminReducer from '../features/admin/adminSlice.js'
 import theatreReducer from '../features/theatre/theatreSlice.js'
 import movieReducer from '../features/movie/movieSlice.js'
 import userMovieReducer from '../features/userMovies/userMovieSlice.js'
+import userTheatreReducer from '../features/userTheatres/userTheatreSlice.js'
 
 export const store = configureStore({
     reducer:{
@@ -11,6 +12,7 @@ export const store = configureStore({
         admin:adminReducer,
         theatre:theatreReducer,
         movie:movieReducer,
-        userMovie:userMovieReducer
+        userMovie:userMovieReducer,
+        userTheatre:userTheatreReducer
     }
 })

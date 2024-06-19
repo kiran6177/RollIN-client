@@ -31,7 +31,7 @@ function Navbar() {
           <img onClick={()=>navigate('/')} src={logo} alt="" className='cursor-pointer' />
         </div>
         <NavLink to={'/movies'} className={'font-normal tracking-widest hidden lg:block'}>Movies</NavLink>
-        <NavLink className={'font-normal tracking-widest hidden lg:block'}>Screens</NavLink>
+        <NavLink to={'/screens'} className={'font-normal tracking-widest hidden lg:block'}>Screens</NavLink>
       </div>
       
       <div className='w-[45%] sm:w-[50%] flex justify-end items-center gap-6 md:gap-14 pr-12'>
