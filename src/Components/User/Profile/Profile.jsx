@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutUser, userLogout } from '../../../features/user/userSlice';
+import { logoutUser } from '../../../features/user/userSlice';
 import { useNavigate } from 'react-router';
+import { userLogout } from '../../../features/user/userActions';
 
 function Profile() {
 

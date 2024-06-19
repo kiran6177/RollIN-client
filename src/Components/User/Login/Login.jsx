@@ -4,10 +4,11 @@ import { FcGoogle } from "react-icons/fc";
 import { TfiEmail } from "react-icons/tfi";
 import { useDispatch, useSelector } from 'react-redux';
 import { useGoogleLogin } from '@react-oauth/google'
-import { googleAuth, resetActions } from '../../../features/user/userSlice';
+import {  resetActions } from '../../../features/user/userSlice';
 import { useNavigate } from 'react-router';
 import { Toaster ,toast } from 'sonner'
 import EmailModal from './EmailModal';
+import { googleAuth } from '../../../features/user/userActions';
 
 function Login() {
   const [showMail,setShowMail] = useState(false);

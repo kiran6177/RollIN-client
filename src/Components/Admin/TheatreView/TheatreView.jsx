@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Toaster } from 'sonner'
-import { adminGetTheatres, resetAdminActions } from '../../../features/admin/adminSlice';
+import {  resetAdminActions } from '../../../features/admin/adminSlice';
+import { adminGetTheatres } from '../../../features/admin/adminActions';
 import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
 
 function TheatreView() {
 

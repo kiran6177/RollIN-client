@@ -7,9 +7,9 @@ function Sidebar() {
       <div className='flex flex-col px-10 gap-8 text-md xl:text-lg'>
       <NavLink to={'/admin'}>Dashboard</NavLink>
       <NavLink to={'/admin/users'}>Users</NavLink>
-      <NavLink>Movies</NavLink>
+      <NavLink to={'/admin/movies'}>Movies</NavLink>
       <NavLink to={'/admin/theatres'}>Theatres</NavLink>
-      <NavLink>Persons</NavLink>
+      <NavLink to={'/admin/persons'}>Persons</NavLink>
       </div>
     </div>
   )

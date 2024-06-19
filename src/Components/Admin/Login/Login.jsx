@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Toaster, toast } from 'sonner'
-import { adminLogin , resetAdminActions } from '../../../features/admin/adminSlice';
+import {  resetAdminActions } from '../../../features/admin/adminSlice';
+import { adminLogin } from '../../../features/admin/adminActions';
 import { useNavigate } from 'react-router';
 import { ScaleLoader } from 'react-spinners';
 

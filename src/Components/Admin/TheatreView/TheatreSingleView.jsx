@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router'
 import { Toaster, toast } from 'sonner'
-import { approveTheatre, blockUnblockTheatres, resetAdminActions } from '../../../features/admin/adminSlice';
+import {  resetAdminActions } from '../../../features/admin/adminSlice';
+import {approveTheatre, blockUnblockTheatres} from '../../../features/admin/adminActions'
 import { ScaleLoader } from 'react-spinners';
 import ConfirmModal from './ConfirmModal';
 
