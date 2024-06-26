@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import AdminRoutes from './Routes/AdminRoutes';
 import TheatreRoutes from './Routes/TheatreRoutes';
 import { AnimatePresence } from 'framer-motion';
+import ScrollToTop from './Components/Navbar/ScrollToTop';
 
 function App() {
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
@@ -13,6 +14,7 @@ function App() {
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>  
       <AnimatePresence>     
         <BrowserRouter>
+        <ScrollToTop/>
           <Routes>
             <Route path={'/*'} element={<UserRoutes/>} />
             <Route path={'/admin/*'}  element={<AdminRoutes/>} />

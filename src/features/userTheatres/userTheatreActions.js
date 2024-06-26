@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userGetTheatresService } from "./userTheatresService";
+import { userGetSingleTheatreService, userGetTheatresService } from "./userTheatresService";
 
 export const userGetTheatres = createAsyncThunk('userGetTheatres',async (_,thunkAPI)=>{
     try {
@@ -11,5 +11,18 @@ export const userGetTheatres = createAsyncThunk('userGetTheatres',async (_,thunk
         return response.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userGetSingleTheatre = createAsyncThunk('userGetSingleTheatre',async (id,thunkAPI)=>{
+    try {
+        const response =  await userGetSingleTheatreService(id);
+        console.log(response.data);
+        // if(response.data?.newUserToken){
+        //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        // }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response?.data?.error);
     }
 })

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userGetTheatres } from "./userTheatreActions";
+import { userGetSingleTheatre, userGetTheatres } from "./userTheatreActions";
 
 const initialState = {
     allTheatresData:null,
@@ -27,6 +27,19 @@ const userTheatreSlice = createSlice({
             state.loading = true;
         })
         .addCase(userGetTheatres.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload.reasons
+            state.loading = false;
+        })
+        .addCase(userGetSingleTheatre.fulfilled,(state,action)=>{
+            console.log(action);
+            // state.allTheatresData = action.payload?.resultData
+            state.loading = false;
+        })
+        .addCase(userGetSingleTheatre.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetSingleTheatre.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload.reasons
             state.loading = false;

@@ -33,7 +33,7 @@ const userMovieSlice = createSlice({
         })
         .addCase(userGetBannerMovies.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             state.loading = false;
         })
         .addCase(userGetMoviesByGenre.fulfilled,(state,action)=>{
@@ -46,7 +46,7 @@ const userMovieSlice = createSlice({
         })
         .addCase(userGetMoviesByGenre.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             state.loading = false;
         })
         .addCase(userGetAllMovies.fulfilled,(state,action)=>{
@@ -59,7 +59,7 @@ const userMovieSlice = createSlice({
         })
         .addCase(userGetAllMovies.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             state.loading = false;
         })
     }

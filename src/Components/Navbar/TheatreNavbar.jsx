@@ -8,25 +8,37 @@ import TheatreNavModal from './TheatreNavModal';
 import logo from '../../assets/logo.png'
 
 
-function TheatreNavbar() {
+function TheatreNavbar({hide}) {
     const [isOpen,setIsOpen] = useState(false);
     const {theatreToken} = useSelector(state=>state.theatre);
     const navigate = useNavigate();
+    const [bgChange,setBgChange] = useState(false)
   
     const handleProfile = ()=>{
       navigate('/theatre/profile')
     }
+
+    const handleScroll = ()=>{
+      if(window.scrollY > 100){
+        setBgChange(false)
+      }else{
+        setBgChange(true)
+      }
+    }
+    if(hide){
+      window.addEventListener('scroll',handleScroll)
+    }
   
     return (
       <>
-      <div className='flex justify-between h-[6rem] items-center bg-black fixed z-20 w-[100vw]'>
+      <div className={bgChange?'flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out' :'flex justify-between h-[6rem] items-center bg-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out'}>
   
         <div className='w-[50%] min-[480]:w-[45%] h-[100%] sm:w-[50%] flex items-center gap-14 pl-5 text-white'>
           <div className='h-[100%] w-[100%] sm:w-[40%] md:w-[35%] flex items-center'>
             <NavLink to={'/theatre'}><img src={logo} alt="" /></NavLink>
           </div>
-          {theatreToken && <><NavLink className={'font-normal tracking-widest hidden lg:block'}>Movies</NavLink>
-          <NavLink className={'font-normal tracking-widest hidden lg:block'}>Screens</NavLink></>}
+          {theatreToken && <><NavLink to={'/theatre/movies'} className={'font-normal tracking-widest hidden lg:block'}>Movies</NavLink>
+          </>}
         </div>
         
         <div className='w-[45%] sm:w-[50%] flex justify-end items-center gap-6 md:gap-14 pr-12 lg:pr-20 xl:pr-26 2xl:pr-30'>

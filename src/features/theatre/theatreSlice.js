@@ -115,7 +115,12 @@ const theatreSlice = createSlice({
             state.error = ''
             state.loading = false
             state.message = ''
+        },
+        setTheatreData:(state,action)=>{
+            state.theatreData = action.payload?.data
+            state.theatreToken = action.payload?.token
         }
+        
     },
     extraReducers:(builder)=>{
         builder
@@ -285,6 +290,6 @@ const theatreSlice = createSlice({
     }
 })
 
-export const  { resetTheatreActions,logoutTheatre } = theatreSlice.actions
+export const  { resetTheatreActions,logoutTheatre ,setTheatreData} = theatreSlice.actions
 
 export default theatreSlice.reducer
