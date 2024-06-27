@@ -11,6 +11,7 @@ import TheatreAddScreen from '../Pages/Theatre/AddScreen/TheatreAddScreen'
 import TheatreEditScreen from '../Pages/Theatre/EditScreen/TheatreEditScreen'
 import TheatreMovieEnroll from '../Pages/Theatre/MovieEnroll/TheatreMovieEnroll'
 import TheatreMovieDetail from '../Pages/Theatre/MovieEnroll/TheatreMovieDetail'
+import TheatreSeatLayout from '../Pages/Theatre/SeatLayout/TheatreSeatLayout'
 
 function TheatreRoutes() {
   return (
@@ -40,6 +41,11 @@ function TheatreRoutes() {
         <Route path='/editscreen/enrollmovie' element={
         <TheatreProtected>
             <TheatreMovieEnroll/>  
+        </TheatreProtected>
+        } />
+        <Route path='/editscreen/config' element={
+        <TheatreProtected>
+            <TheatreSeatLayout/>  
         </TheatreProtected>
         } />
         <Route path='/editscreen/enrollmovie/detail' element={

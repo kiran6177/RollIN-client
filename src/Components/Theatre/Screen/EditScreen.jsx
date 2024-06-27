@@ -594,7 +594,7 @@ function EditScreen() {
                                             }))}}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
                                             </div>
                                             <div className="w-[100%] md:w-[45%] flex items-end py-2">
-                                                <button className='bg-[#f6ae2d] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base'>CONFIG SEAT</button> 
+                                                <button onClick={()=>navigate(`/theatre/editscreen/config?tier_id=${tier._id}&screen_id=${screen_id}`)} className='bg-[#f6ae2d] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base'>CONFIG SEAT</button> 
                                             </div>
                                         </div>
                                     </div>
@@ -630,9 +630,9 @@ function EditScreen() {
                                     <label className='text-white text-xs tracking-widest'>Rate</label>
                                     <input type="number" value={tierRate['rate'+(index+1)] ? tierRate['rate'+(index+1)] : ''} onChange={(e)=>handleTierRate(e,index+1)}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
                                     </div>
-                                    <div className="w-[100%] md:w-[45%] flex items-end py-2">
+                                    {/* <div className="w-[100%] md:w-[45%] flex items-end py-2">
                                         <button className='bg-[#f6ae2d] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base'>CONFIG SEAT</button> 
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                     )
