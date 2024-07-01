@@ -82,7 +82,12 @@ function EditScreen() {
                         subwoofers:screen.sound_setup.subwoofers,
                     })
  
-                    setExistingTiers(screen.tiers)
+                    setExistingTiers(screen.tiers.map(tier=>{
+                        return {
+                            ...tier,
+                            seatsChanged:false
+                        }
+                    }))
                     setEnrolledMovies(screen.running_movies.map((movie)=>{
                         return {
                             ...movie,
@@ -136,7 +141,6 @@ function EditScreen() {
             }
             return obj
         })
-        console.log("TIERC",tierCount);
     },[tierCount]) 
 
 
@@ -152,7 +156,6 @@ function EditScreen() {
                 toast.error('Enter valid number.')
             }
         }else{
-            console.log("setted");
             setTierCount(0)
         }
          
@@ -162,7 +165,6 @@ function EditScreen() {
     const handleCreateShow = ()=>{
         console.log(time.format());
         let timetoSave = (time.hour()%12 !== 0 ? time.hour()%12 : 12)+':'+(time.minute() < 10 ? '0'+time.minute() : time.minute() )+(time.hour() >= 12  ? 'PM' : 'AM')
-        console.log('TIME',timetoSave);
         for(let i = 0 ; i < showData.length ; i++){
             if(showData[i].showtime === timetoSave){
                 toast.error('Show already exists.')
@@ -175,7 +177,6 @@ function EditScreen() {
     }
 
     const handleShowSelect = (movie,show)=>{
-        console.log("SHOWSELECT");
         setShowData(showData.map(sho=>{
             console.log(sho);
             if(sho.showtime === show.showtime){
@@ -202,7 +203,7 @@ function EditScreen() {
         setTierSeats((prev)=>{
             return {
                 ...prev,
-                [`seats${index}`]:parseInt(e.target.value)
+                [`seats${index}`]:e.target.value ? parseInt(e.target.value) : 0
             }
         })
     }
@@ -211,7 +212,7 @@ function EditScreen() {
         setTierRate((prev)=>{
             return {
                 ...prev,
-                [`rate${index}`]:parseInt(e.target.value)
+                [`rate${index}`]:e.target.value ? parseInt(e.target.value) : 0
             }
         })
     }
@@ -223,8 +224,7 @@ function EditScreen() {
 
     const handleSave = ()=>{
         
-        console.log("SHOWDATA",showData);
-        console.log("SPEAKERS",speakers);
+
         const tierData = []
         console.log(tierCount); 
         if(tierCount > 0){
@@ -241,7 +241,6 @@ function EditScreen() {
                     isDuplicate = true
                     }
                 }
-                console.log(isDuplicate,isExisting);
                 if(isExisting || isDuplicate){
                     toast.error('Duplicate Entries.')
                     return;
@@ -573,7 +572,8 @@ function EditScreen() {
                                                 if(i === index){
                                                     return {
                                                         ...tier,
-                                                        seats:parseInt(e.target.value) 
+                                                        seats:parseInt(e.target.value), 
+                                                        seatsChanged:true
                                                     }
                                                 }
                                                 return tier
@@ -593,8 +593,9 @@ function EditScreen() {
                                                 return tier
                                             }))}}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
                                             </div>
-                                            <div className="w-[100%] md:w-[45%] flex items-end py-2">
-                                                <button onClick={()=>navigate(`/theatre/editscreen/config?tier_id=${tier._id}&screen_id=${screen_id}`)} className='bg-[#f6ae2d] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base'>CONFIG SEAT</button> 
+                                            <div className="w-[100%] md:w-[45%] flex flex-col items-start py-2">
+                                                <button disabled={tier?.seatsChanged} onClick={()=>navigate(`/theatre/editscreen/config?tier_id=${tier._id}&screen_id=${screen_id}`)} className={tier?.seatsChanged? 'bg-[#f6b02da2] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base' :'bg-[#f6ae2d] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base'}>CONFIG SEAT</button> 
+                                                {tier?.seatsChanged && <p  className='text-white text-xs tracking-widest my-1'>Save changes for edits.</p>}
                                             </div>
                                         </div>
                                     </div>

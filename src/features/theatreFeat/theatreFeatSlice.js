@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { theatreAddScreen, theatreEditScreen, theatreEnrollMovie, theatreExtendMovieForScreen, theatreGetAllMovies, theatreGetTheatreData, theatreRemoveMovieFromScreen } from "./theatreFeatAction";
+import { theatreAddScreen, theatreChangeTierOrder, theatreEditScreen, theatreEditTier, theatreEnrollMovie, theatreExtendMovieForScreen, theatreGetAllMovies, theatreGetTheatreData, theatreRemoveMovieFromScreen } from "./theatreFeatAction";
 
 const initialState = {
     theatreScreenData:null,
@@ -26,6 +26,12 @@ const theatreFeatSlice = createSlice({
             state.editScreenData = action.payload
         },
         resetMovieList:(state)=>{
+            state.moviesList = null
+        },
+        logoutTheatreFeat:(state)=>{
+            state.theatreScreenData = null
+            state.singleScreenData = null
+            state.editScreenData = null
             state.moviesList = null
         }
     },
@@ -167,9 +173,61 @@ const theatreFeatSlice = createSlice({
             state.loading = false
             state.error = action.payload?.reasons
         })
+        .addCase(theatreEditTier.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            if(action.payload?.resultData){
+                state.message = 'Layout Configured Successfully.'
+                state.theatreScreenData = state.theatreScreenData.map(screen=>{
+                    if(screen._id === action.payload?.resultData?._id){
+                        return {
+                            ...screen,
+                            tiers:action.payload?.resultData?.tiers
+                        }
+                    }
+                    return screen
+                })
+            }
+            state.loading = false
+
+        })
+        .addCase(theatreEditTier.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreEditTier.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
+        .addCase(theatreChangeTierOrder.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            if(action.payload?.resultData){
+                state.message = 'Order Changed Successfully.'
+                state.theatreScreenData = state.theatreScreenData.map(screen=>{
+                    if(screen._id === action.payload?.resultData?._id){
+                        return {
+                            ...screen,
+                            tiers:action.payload?.resultData?.tiers
+                        }
+                    }
+                    return screen
+                })
+            }
+            state.loading = false
+
+        })
+        .addCase(theatreChangeTierOrder.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreChangeTierOrder.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
     }
 })
 
-export const { resetTheatreFeatActions , resetMovieList } = theatreFeatSlice.actions
+export const { resetTheatreFeatActions , resetMovieList ,logoutTheatreFeat } = theatreFeatSlice.actions
 
 export default theatreFeatSlice.reducer

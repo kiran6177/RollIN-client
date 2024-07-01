@@ -14,7 +14,6 @@ function GridBlock({id,layouts}) {
     };
 
     useEffect(()=>{
-        console.log("GRID",layouts);
         if(layouts?.length > 0){
             layouts.forEach(data => {
                 if(data?.id === id){

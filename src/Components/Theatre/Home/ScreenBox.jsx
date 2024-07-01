@@ -10,7 +10,7 @@ function ScreenBox({screen}) {
 
     const handleClick = ()=>{
         if(screen){
-            navigate(`/theatre/editscreen?id=${screen?._id}`)
+            navigate(`/theatre/screendetail?id=${screen?._id}`)
         }else{
             navigate(`/theatre/addscreen`)
         }

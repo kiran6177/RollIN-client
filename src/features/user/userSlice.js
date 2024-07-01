@@ -47,7 +47,7 @@ const userSlice = createSlice({
         })
         .addCase(googleAuth.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
         })
         .addCase(userLogout.fulfilled,(state,action)=>{
             state.message = action.payload.message;
@@ -61,7 +61,7 @@ const userSlice = createSlice({
         })
         .addCase(userLogout.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
         })
         .addCase(userEmailLogin.fulfilled,(state,action)=>{
             console.log(action);
@@ -74,7 +74,7 @@ const userSlice = createSlice({
         })
         .addCase(userEmailLogin.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             state.loading = false;
         })
         .addCase(userVerifyOtp.fulfilled,(state,action)=>{
@@ -110,7 +110,7 @@ const userSlice = createSlice({
         })
         .addCase(userResendOtp.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             state.loading = false;
         })
     }

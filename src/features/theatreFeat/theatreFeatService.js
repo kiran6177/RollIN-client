@@ -27,3 +27,11 @@ export const theatreRemoveMovieFromScreenService = (data,token)=>{
 export const theatreExtendMovieForScreenService = (data,token)=>{
     return axios.post('/theatre/extendmovieforscreen',data,{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const theatreEditTierService = (data,token)=>{
+    return axios.post('/theatre/edittier',data,{headers:{Authorization:`Bearer ${token}`}})
+}
+
+export const theatreChangeTierOrderService = (data,token)=>{
+    return axios.post('/theatre/changetierorder',data,{headers:{Authorization:`Bearer ${token}`}})
+}
