@@ -20,16 +20,7 @@ const confirmVarinat = {
     }
   }
 }
-const opts = {
-    width: '100%',
-    playerVars: {
-      autoplay: 1,
-      controls:0,
-      rel:1,
-      fs:0,
-      iv_load_policy:3
-    },
-  };
+
 
 function ReleaseModal({isOpen,set,handleAction}) {
     const {singleMovieDetail,message,loading} = useSelector(state=>state.movie)

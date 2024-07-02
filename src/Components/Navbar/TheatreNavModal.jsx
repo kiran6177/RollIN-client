@@ -95,7 +95,7 @@ function TheatreNavModal({isOpen,set}) {
                 </div>
                 <div className="text-white flex items-center py-5">
                     <img src={PinLogo} alt="" className="w-8" />
-                    <NavLink to={'/theatre/login'} className={'font-medium tracking-widest text-sm '}>Snacks</NavLink>
+                    <NavLink to={'/theatre/screens'} className={'font-medium tracking-widest text-sm '}>Screens</NavLink>
                 </div>
                 
                 </>

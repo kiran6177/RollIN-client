@@ -5,12 +5,16 @@ import UserLogin from '../Pages/User/Login/UserLogin'
 import UserProfile from '../Pages/User/Profile/UserProfile'
 import UserProtected from './UserProtected'
 import UserMoviesMain from '../Pages/User/MoviesMain/UserMoviesMain'
+import UserScreenList from '../Pages/User/Screens/UserScreenList'
+import UserScreenMovieSection from '../Pages/User/Screens/UserScreenMovieSection'
 
 function UserRoutes() {
   return (
     <Routes>
         <Route path={'/'} element={<UserHome/>} />
         <Route path={'/movies'} element={<UserMoviesMain/>} />
+        <Route path={'/screens'} element={<UserScreenList/>} />
+        <Route path={'/screenwithmovies'} element={<UserScreenMovieSection/>} />
         <Route path={'/login'} element={<UserLogin/>} />  
         <Route path={'/profile'} element={
         <UserProtected>

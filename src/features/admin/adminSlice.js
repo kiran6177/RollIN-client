@@ -52,7 +52,7 @@ const adminSlice = createSlice({
         })
         .addCase(adminLogin.rejected,(state,action)=>{
             state.loading = false
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
         })
         .addCase(adminLogout.fulfilled,(state,action)=>{
             console.log(action);
@@ -63,7 +63,7 @@ const adminSlice = createSlice({
             state.loading = true
         })
         .addCase(adminLogout.rejected,(state,action)=>{
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             state.loading = false
         })
         .addCase(adminGetUsers.fulfilled,(state,action)=>{
@@ -80,7 +80,7 @@ const adminSlice = createSlice({
         })
         .addCase(adminGetUsers.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
                 state.adminData = null
                 state.adminToken = null
@@ -112,7 +112,7 @@ const adminSlice = createSlice({
         })
         .addCase(blockUnblockUsers.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
                 state.adminData = null
                 state.adminToken = null
@@ -135,7 +135,7 @@ const adminSlice = createSlice({
         })
         .addCase(adminGetTheatres.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
                 state.adminData = null
                 state.adminToken = null
@@ -172,7 +172,7 @@ const adminSlice = createSlice({
         })
         .addCase(blockUnblockTheatres.rejected,(state,action)=>{
             console.log(action);
-            state.error = action.payload.reasons
+            state.error = action.payload?.reasons
             if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
                 state.adminData = null
                 state.adminToken = null

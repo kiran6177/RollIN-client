@@ -70,7 +70,7 @@ function NavModal({isOpen,set}) {
                 </div>
                 <div className="text-white flex items-center">
                     <img src={PinLogo} alt="" className="w-8" />
-                    <NavLink className={'font-medium tracking-wider text-sm'}>Screens</NavLink>
+                    <NavLink to={'/screens'} className={'font-medium tracking-wider text-sm'}>Screens</NavLink>
                 </div>
               </motion.div>
             </motion.div>,

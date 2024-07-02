@@ -7,6 +7,13 @@ import TheatreProfile from '../Pages/Theatre/Profile/TheatreProfile'
 import TheatreHome from '../Pages/Theatre/Home/TheatreHome'
 import TheatreProtected from './TheatreProtected'
 import TheatreOtp from '../Pages/Theatre/Otp/TheatreOtp'
+import TheatreAddScreen from '../Pages/Theatre/AddScreen/TheatreAddScreen'
+import TheatreEditScreen from '../Pages/Theatre/EditScreen/TheatreEditScreen'
+import TheatreMovieEnroll from '../Pages/Theatre/MovieEnroll/TheatreMovieEnroll'
+import TheatreMovieDetail from '../Pages/Theatre/MovieEnroll/TheatreMovieDetail'
+import TheatreSeatLayout from '../Pages/Theatre/SeatLayout/TheatreSeatLayout'
+import TheatreScreenDetail from '../Pages/Theatre/ScreenDetail/TheatreScreenDetail'
+import TheatreScreenHome from '../Pages/Theatre/ScreenHome/TheatreScreenHome'
 
 function TheatreRoutes() {
   return (
@@ -21,6 +28,51 @@ function TheatreRoutes() {
         <Route path='/' element={
         <TheatreProtected>
             <TheatreHome/>
+        </TheatreProtected>
+        } />
+        <Route path='/screens' element={
+        <TheatreProtected>
+            <TheatreScreenHome/>
+        </TheatreProtected>
+        } />
+        <Route path='/addscreen' element={
+        <TheatreProtected>
+            <TheatreAddScreen/>
+        </TheatreProtected>
+        } />
+        <Route path='/screendetail' element={
+        <TheatreProtected>
+            <TheatreScreenDetail/> 
+        </TheatreProtected>
+        } />
+        <Route path='/editscreen' element={
+        <TheatreProtected>
+            <TheatreEditScreen/> 
+        </TheatreProtected>
+        } />
+        <Route path='/editscreen/enrollmovie' element={
+        <TheatreProtected>
+            <TheatreMovieEnroll/>  
+        </TheatreProtected>
+        } />
+        <Route path='/editscreen/config' element={
+        <TheatreProtected>
+            <TheatreSeatLayout/>  
+        </TheatreProtected>
+        } />
+        <Route path='/editscreen/enrollmovie/detail' element={
+        <TheatreProtected>
+            <TheatreMovieDetail/>  
+        </TheatreProtected>
+        } />
+        <Route path='/movies' element={
+        <TheatreProtected>
+            <TheatreMovieEnroll/>  
+        </TheatreProtected>
+        } />
+        <Route path='/movies/moviedetail' element={
+        <TheatreProtected>
+            <TheatreMovieDetail/>  
         </TheatreProtected>
         } />
     </Routes>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { Toaster, toast } from 'sonner';
 import { logoutTheatre, resetTheatreActions, theatreLogout, theatreProfileUpdate } from '../../../features/theatre/theatreSlice';
 import { IoClose } from 'react-icons/io5';
+import { logoutTheatreFeat } from '../../../features/theatreFeat/theatreFeatSlice';
 const ProfileMap = lazy(()=>import('./ProfileMap')) ;
 
 function Profile() {
@@ -144,6 +145,7 @@ function Profile() {
     const handleLogout = ()=>{
         dispatch(theatreLogout(theatreToken))
         dispatch(logoutTheatre())
+        dispatch(logoutTheatreFeat())
     }
 
   return (

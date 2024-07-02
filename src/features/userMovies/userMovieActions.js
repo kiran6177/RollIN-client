@@ -24,7 +24,7 @@ export const userGetMoviesByGenre = createAsyncThunk('userGetMoviesByGenre', asy
         // }
         return response.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.error);
+        return thunkAPI.rejectWithValue(error.response?.data.error);
     }
 })
 
@@ -37,6 +37,6 @@ export const userGetAllMovies = createAsyncThunk('userGetAllMovies', async (filt
         // }
         return response.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.error);
+        return thunkAPI.rejectWithValue(error.response?.data.error);
     }
 })
