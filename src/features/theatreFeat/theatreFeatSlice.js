@@ -203,7 +203,11 @@ const theatreFeatSlice = createSlice({
             console.log(action);
             state.success = true
             if(action.payload?.resultData){
-                state.message = 'Order Changed Successfully.'
+                if(action.payload?.key === 'Identifier'){
+                    state.message = 'Identifier Changed Successfully.'
+                }else{
+                    state.message = 'Order Changed Successfully.'
+                }
                 state.theatreScreenData = state.theatreScreenData.map(screen=>{
                     if(screen._id === action.payload?.resultData?._id){
                         return {

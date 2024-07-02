@@ -9,6 +9,7 @@ import { BiSolidSpeaker } from "react-icons/bi";
 import { RiSpeaker3Fill } from "react-icons/ri";
 import { RiSpeaker2Fill } from "react-icons/ri";
 import ChangeOrderModal from './ChangeOrderModal';
+import ChangeIdentifierModal from './ChangeIdentifierModal';
 
 function ScreenDetail() {
     const [searchParams] = useSearchParams();
@@ -17,7 +18,8 @@ function ScreenDetail() {
 
     const {theatreScreenData,loading,message,error} = useSelector(state=>state.theatreFeat)
 
-    const [showOrder,setShowOrder] = useState(false)
+    const [showOrder,setShowOrder] = useState(false);
+    const [showIdentifier,setShowIdentifier] = useState(false);
 
     const [enrolledMovies,setEnrolledMovies] = useState([])
     const [screenName,setScreenName] = useState('');
@@ -196,8 +198,9 @@ function ScreenDetail() {
 
             <div className='border-2 border-[#f6ae2d] rounded-md bg-black px-8 py-6 my-6'>
                 <h4 className='text-[#f6ae2d] tracking-wider mb-2'>SEAT LAYOUT</h4>
-                <div className='flex justify-end'>
-                    <button onClick={()=>setShowOrder(true)} className='bg-[#f6ae2d] rounded-sm px-8 py-3 font-medium tracking-wider text-sm sm:text-base mb-20'>CHANGE ORDER</button>
+                <div className='flex flex-col sm:flex-row sm:justify-end gap-3 mb-20'>
+                    <button onClick={()=>setShowIdentifier(true)} className='bg-[#f6ae2d] rounded-sm px-8 py-3 font-medium tracking-wider text-sm sm:text-base '>CHANGE IDENTIFIERS</button>
+                    <button onClick={()=>setShowOrder(true)} className='bg-[#f6ae2d] rounded-sm px-8 py-3 font-medium tracking-wider text-sm sm:text-base '>CHANGE ORDER</button>
                 </div>
                 <div className='relative '>
                     {
@@ -315,6 +318,7 @@ function ScreenDetail() {
                 </div>
             </div>
             <ChangeOrderModal isOpen={showOrder} set={setShowOrder} />
+            <ChangeIdentifierModal isOpen={showIdentifier} set={setShowIdentifier} />
       </div>
     </div>
   )
