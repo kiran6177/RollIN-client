@@ -1,14 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../../assets/logo.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { FaSearch , FaUserCircle, FaChevronRight  } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { FiChevronDown } from "react-icons/fi";
 import NavModal from './NavModal';
+import SelectCity from './SelectCity';
+import { useDispatch } from 'react-redux';
+import { userGetBannerMovies } from '../../features/userMovies/userMovieActions';
+import SearchModal from './SearchModal';
 
 function Navbar() {
   const [isOpen,setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [bgChange,setBgChange] = useState(false)
+
+  const [showSelectCity,setShowSelectCity] = useState(false);
+  const [showSearch,setShowSearch] = useState(false);
+
+  const dispatch = useDispatch()
 
   const handleProfile = ()=>{
     navigate('/profile')
@@ -20,6 +30,13 @@ function Navbar() {
       setBgChange(false)
     }
   }
+
+  useEffect(()=>{
+    if(!localStorage.getItem("city")){
+      setShowSelectCity(true)
+    }
+  },[])
+
   window.addEventListener('scroll',handleScroll)
 
   return (
@@ -35,22 +52,23 @@ function Navbar() {
       </div>
       
       <div className='w-[45%] sm:w-[50%] flex justify-end items-center gap-6 md:gap-14 pr-12'>
-          <select className='hidden sm:block border rounded-full text-sm sm:text-md px-2 sm:px-5 py-2 font-medium  '>
-            <option value="" key="">Choose City</option>
-            <option value="">Kochi</option>
-          </select>
-          <FaSearch className='text-white w-[1.5rem] h-[1.5rem]'  />
+          <button onClick={()=>setShowSelectCity(true)} className='hidden sm:flex border items-center gap-2 rounded-full text-sm sm:text-md px-2 sm:px-5 py-2 font-medium  bg-white'>
+            {localStorage.getItem("city") ? JSON.parse(localStorage.getItem('city'))?.name?.split(',')[0] :'Choose City' }<FiChevronDown/>
+          </button>
+          <FaSearch onClick={()=>setShowSearch(true)} className='text-white w-[1.5rem] h-[1.5rem]'  />
           <FaUserCircle onClick={handleProfile} className='text-white w-[1.7rem] h-[1.7rem] hidden lg:block ' />
           <RxHamburgerMenu onClick={()=>setIsOpen(true)} className='text-white w-[1.7rem] h-[1.7rem] block opacity-100 lg:hidden lg:opacity-0 transition-all duration-500 ease-in-out' />
       </div>
       
     </div>  
     <div className='fixed z-10 mt-20 bg-black w-[100%]  text-[#F6AE2D] px-5 py-2 block sm:hidden'>
-        <button className='flex items-center'>
+        <button  className='flex items-center'>
           Choose City <FaChevronRight/>
         </button>
     </div>
+    <SearchModal isOpen={showSearch} set={setShowSearch} />
     <NavModal isOpen={isOpen} set={setIsOpen} />
+    <SelectCity isOpen={showSelectCity} set={setShowSelectCity} />
     </>
   )
 }

@@ -10,6 +10,7 @@
     "@googlemaps/js-api-loader": "^1.16.6",
     "@mui/material": "^5.15.20",
     "@mui/x-date-pickers": "^7.7.0",
+    "@react-google-maps/api": "^2.19.3",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/jest-dom": "^5.17.0",
@@ -30,6 +31,7 @@
     "react-youtube": "^10.1.0",
     "sonner": "^1.4.41",
     "tailwind-scrollbar": "^3.1.0",
+    "use-places-autocomplete": "^4.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

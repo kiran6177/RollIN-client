@@ -1,7 +1,7 @@
 import axios from '../../utils/axios'
 
-export const userGetTheatresService = ()=>{
-    return axios.get('/theatre/gettheatres')
+export const userGetTheatresService = (data)=>{
+    return axios.post('/theatre/gettheatres',data)
 }
 
 export const userGetSingleTheatreService = (id)=>{

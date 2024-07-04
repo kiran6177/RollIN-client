@@ -12,7 +12,12 @@ function ScreenList() {
     const navigate = useNavigate()
 
     useEffect(()=>{
-        dispatch(userGetTheatres())
+        if(localStorage.getItem('city')){
+            const loc = JSON.parse(localStorage.getItem('city')).loc;
+            dispatch(userGetTheatres({location:loc}))
+        }else{
+            dispatch(userGetTheatres())
+        }
     },[])
 
   return (

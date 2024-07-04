@@ -1,24 +1,19 @@
 import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router';
-import oppen from '../../../assets/MM-1207 Oppenheimer.jpg'
 import pinlogo from '../../../assets/pin-logo.png'
 import { FaRegCalendar } from 'react-icons/fa';
 import { MdOutlineTimer } from 'react-icons/md';
 import { AnimatePresence , motion } from 'framer-motion';
-import img2 from '../../../assets/Varshangalkku-Shesham-first-look-poster-1600.webp'
-import img3 from '../../../assets/aavesham.jpg'
-import img4 from '../../../assets/et00396952-tfvujhhwtn-landscape.avif'
 import MovieCard2 from '../../User/Movies/MovieCard2'
-import { userGetBannerMovies, userGetMoviesByGenre } from '../../../features/userMovies/userMovieActions';
+import { userGetBannerMovies, userGetMoviesByGenre, userGetRecommendedMoviesWithLocation } from '../../../features/userMovies/userMovieActions';
 import { IoMdPlayCircle } from 'react-icons/io';
 import TrailerModal from '../Movies/TrailerModal';
 
-const bannerImgs = [oppen,img2,img3,img4]
 
 function Home() {
     const {userData,userToken} = useSelector(state=>state.user);
-    const {bannerMovies,moviesByGenre} = useSelector(state=>state.userMovie)
+    const {bannerMovies,moviesByGenre,recommendedMovies} = useSelector(state=>state.userMovie)
     const navigate = useNavigate()
     const [index,setIndex] = useState(0)
     const [showTrailer,setShowTrailer] = useState(false);
@@ -26,12 +21,15 @@ function Home() {
 
 
     useEffect(()=>{
-      // if(!userToken){
-      //   navigate('/login')
-      //   return
-      // }
-      dispatch(userGetBannerMovies())
-      dispatch(userGetMoviesByGenre())
+      if(localStorage.getItem('city')){
+        const loc = JSON.parse(localStorage.getItem('city')).loc;
+        dispatch(userGetBannerMovies({location:loc}))
+        dispatch(userGetMoviesByGenre({location:loc}))
+        dispatch(userGetRecommendedMoviesWithLocation({location:loc}))
+      }else{
+        dispatch(userGetBannerMovies())
+        dispatch(userGetMoviesByGenre())
+      }
     },[])
 
     useEffect(()=>{
@@ -46,14 +44,16 @@ function Home() {
           clearInterval(timer)
           return
         }
-         timer = setInterval(()=>{
-          setIndex(prev => (prev < bannerImgs.length - 1 ? prev + 1 : 0));
-        },6000)
-
+        if(bannerMovies){
+          timer = setInterval(()=>{
+            setIndex(prev => (prev === (bannerMovies?.length - 1) ? 0 : prev + 1));
+          },6000)
+  
+        }
         return ()=>{
           clearInterval(timer)
         }
-    },[showTrailer])
+    },[showTrailer,bannerMovies])
 
     const handleBookTicket = ()=>{
       console.log("hvjvj");
@@ -120,6 +120,24 @@ function Home() {
 
 
       <div className='mx-16 py-12'>
+        {
+          recommendedMovies?.length > 0 &&
+          <div className='my-12'>
+              <div className='h-[2rem] flex gap-1 sm:gap-4'>
+                <img src={pinlogo} alt="" className='object-cover h-full' />
+                <h1 className='text-base sm:text-lg font-medium tracking-wide text-white'>Recommended Movies</h1>
+              </div>
+            <div className='flex gap-6 overflow-x-scroll py-6 snap-x scrollbar-none'>
+              {
+                recommendedMovies.map((movie,i)=>{
+                  return(
+                    <MovieCard2  key={movie.movie_id+i} movie={movie} />
+                  )
+                })
+                }
+            </div>
+          </div>
+        }
         {
           moviesByGenre && moviesByGenre.length > 0 && 
           moviesByGenre.map((genreObj,i)=>{
