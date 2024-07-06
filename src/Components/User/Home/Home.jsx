@@ -86,7 +86,13 @@ function Home() {
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.release_date.split('-')[0]}</h5>
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.runtime + " min"}</h5>
               </div> 
-                <button  className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
+                {
+                (!bannerMovies[index]?.isDislocated && !bannerMovies[index]?.isDisabled) && 
+                <div className='flex w-[100%]'>
+                  <button  className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
+                  <button onClick={()=>navigate(`/moviedetail?movie_id=${bannerMovies[index]?._id}`)}  className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-2 sm:px-6  md:px-8  lg:px-10 py-1 md:py-3 rounded-full'>MORE</button>
+                </div>
+                }
             </motion.div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={bannerMovies[index]?.backdrop_path} alt="" className='mt-28 md:mt-0  mx-auto object-fill w-[100%]' />
@@ -111,7 +117,13 @@ function Home() {
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.release_date.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.runtime + " min"}</h5>
           </div>
-            <button className=' w-[65%] sm:w-[40%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
+          { 
+          (!bannerMovies[index]?.isDislocated && !bannerMovies[index]?.isDisabled) && 
+          <div className='flex flex-col sm:flex-row w-[65%] sm:w-[50%]'>
+            <button className='  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button>
+            <button onClick={()=>navigate(`/moviedetail?movie_id=${bannerMovies[index]?._id}`)}  className='  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-2 sm:px-6  md:px-8  lg:px-10 py-[6px] md:py-3 rounded-full'>MORE</button>
+          </div>
+          }
         </motion.div>
         </AnimatePresence>
           }
@@ -131,6 +143,7 @@ function Home() {
               {
                 recommendedMovies.map((movie,i)=>{
                   return(
+                    movie?.isDislocated ||
                     <MovieCard2  key={movie.movie_id+i} movie={movie} />
                   )
                 })

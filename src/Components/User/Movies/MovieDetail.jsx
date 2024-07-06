@@ -1,47 +1,68 @@
 import React, { useEffect, useState } from 'react'
-import { FaRegCalendar } from 'react-icons/fa'
-import { IoMdPlayCircle } from 'react-icons/io'
-import { MdOutlineTimer } from 'react-icons/md'
-import { Toaster } from 'sonner'
-import pinlogo from '../../../assets/pin-logo.png'
-import { useSearchParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import TrailerModal from './TrailerModal'
 import MovieCard2 from './MovieCard2'
 import CastIcon from './CastIcon'
-import EnrollModal from './EnrollModal'
+import { FaRegCalendar } from 'react-icons/fa'
+import { MdOutlineTimer } from 'react-icons/md'
+import { Toaster } from 'sonner'
+import { IoMdPlayCircle } from 'react-icons/io'
+import TrailerModal from './TrailerModal'
+import pinlogo from '../../../assets/pin-logo.png'
+import { useSearchParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { userGetBannerMovies, userGetMoviesByGenre, userGetRecommendedMoviesWithLocation, userGetSingleMovie } from '../../../features/userMovies/userMovieActions'
+
 
 function MovieDetail() {
     const [movie,setMovie] = useState(null);
+    const [showTrailer,setShowTrailer] = useState(false)
     const [searchParams] = useSearchParams();
-    const screen_id = searchParams.get("screen_id")
-    const movie_id = searchParams.get("movie_id")
+    const movie_id = searchParams.get("movie_id");
 
-    const [showTrailer,setShowTrailer] = useState(false);
-    const {moviesList} = useSelector(state=>state.theatreFeat);
+    const {recommendedMovies,error,bannerMovies} = useSelector(state=>state.userMovie)
 
-    const [showModal,setShowModal] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(()=>{
-        console.log(movie);
-        window.scrollTo(0,0)  
-    },[movie])
-
-    useEffect(()=>{
-        console.log(screen_id,movie_id);
-        if(moviesList?.length > 0){
-            moviesList.map(movie=>{
-                if(movie._id === movie_id){
+        if(recommendedMovies){
+            let movieFound = false;
+            for(let movie of recommendedMovies){
+                if(movie._id == movie_id){
                     setMovie(movie)
+                    movieFound = true;
+                    return
                 }
-            })
+            }
+            if(!movieFound){
+                if(localStorage.getItem('city')){
+                    const loc = JSON.parse(localStorage.getItem('city')).loc;
+                    dispatch(userGetSingleMovie({location:loc,movie_id}))
+                }else{
+                    dispatch(userGetSingleMovie({movie_id}))
+                }
+            }
+        }else{
+            if(localStorage.getItem('city')){
+                const loc = JSON.parse(localStorage.getItem('city')).loc;
+                dispatch(userGetBannerMovies({location:loc}))
+                dispatch(userGetMoviesByGenre({location:loc}))
+                dispatch(userGetRecommendedMoviesWithLocation({location:loc}))
+            }else{ 
+                dispatch(userGetBannerMovies())
+                dispatch(userGetMoviesByGenre())
+            }
         }
-    },[movie_id])
+    },[recommendedMovies])
 
-    const handleEnroll = ()=>{
-      console.log(movie);
-      setShowModal(true)
-    }
+    useEffect(()=>{
+      if(error?.length > 0 && bannerMovies?.length > 0){
+        for(let movie of bannerMovies){
+          if(movie._id == movie_id){
+              setMovie(movie)
+              return
+          }
+        }
+      }
+    },[error,bannerMovies])
 
   return (
     <div className='pt-0 min-h-[80vh] bg-[#15121B]'>
@@ -59,6 +80,7 @@ function MovieDetail() {
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
               </div> 
+              {movie?.isDislocated || <button  className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>}
             </div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={movie?.backdrop_path} alt="" className='mt-20 md:mt-0  mx-auto object-fill w-[100%]' />
@@ -76,6 +98,7 @@ function MovieDetail() {
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
           </div>
+          {(!movie?.isDislocated && !movie?.isDisabled) && <button className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button>}
         </div>
           }
  
@@ -84,12 +107,9 @@ function MovieDetail() {
 
         <div className='px-8 sm:px-20 mt-10 lg:mt-8'>
 
-          {
-          movie?.isDisabled || 
           <div className='flex justify-center mt-20'>
-            <button onClick={handleEnroll}  className=' text-black font-bold tracking-[0.5rem] border-2 border-black m-2 bg-[#f6ae2d] text-sm md:text-md px-8 sm:px-10  md:px-12  lg:px-20 py-2 md:py-3 rounded-sm hover:scale-[1.02] transition-all duration-150 ease-in-out'>ENROLL</button>
+          {/* <button onClick={handleEnroll}  className=' text-black font-bold tracking-[0.5rem] border-2 border-black m-2 bg-[#f6ae2d] text-sm md:text-md px-8 sm:px-10  md:px-12  lg:px-20 py-2 md:py-3 rounded-sm hover:scale-[1.02] transition-all duration-150 ease-in-out'>ENROLL</button> */}
           </div>
-          }
 
           <div className='py-10 text-white flex flex-col gap-4 w-[95%] '>
             <div className='h-[2rem] flex gap-1 sm:gap-4'>
@@ -143,8 +163,8 @@ function MovieDetail() {
             </div>
               <div className='flex gap-6 overflow-x-scroll p-6 snap-x scrollbar-none'>
                 {
-                  moviesList ? moviesList.length > 0 &&
-                  moviesList.map((movieObj,i)=>{
+                  recommendedMovies ? recommendedMovies.length > 0 &&
+                  recommendedMovies.map((movieObj,i)=>{
                     if(movieObj._id != movie_id ){
                       return <MovieCard2 key={movieObj._id+i} movie={movieObj} />
                     }
@@ -156,7 +176,6 @@ function MovieDetail() {
           </div>
 
         </div>
-        <EnrollModal isOpen={showModal} set={setShowModal} movie={movie} />
     </div>
   )
 }

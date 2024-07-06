@@ -6,7 +6,7 @@ function MovieCard2({movie}) {
   const navigate = useNavigate();
   return (
     <div className='w-[16rem] hover:scale-[1.02] transition-all duration-200 ease-in-out'>
-    <div onClick={()=>navigate(`/moviedetail?id=${movie?.movie_id}`)} className='h-[20rem] cursor-pointer w-[16rem]   rounded-md overflow-hidden relative '>
+    <div onClick={()=>navigate(`/moviedetail?movie_id=${movie?._id}`)} className='h-[20rem] cursor-pointer w-[16rem]   rounded-md overflow-hidden relative '>
       <div className='absolute bottom-0 z-10 flex justify-between w-[100%] px-4 h-[1.5rem] items-center bg-[#f6ae2d]'>
       <h2 className='text-black text-xs font-semibold tracking-wider flex items-center gap-2'><FaStar className='h-[90%]'/>{parseInt(movie?.rating)}</h2>
       <h2 className='text-black text-xs font-semibold tracking-wider flex items-center gap-2'><FaCalendar/>{movie?.release_date?.split('-')[0]}</h2>

@@ -19,3 +19,11 @@ export const adminGetMoviesFromDBService = (page,token)=>{
 export const adminGetPersonsFromDBService = (page,token)=>{
     return axios.post('/movie/getallpersons',{page},{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const adminDisableMovieService = (data,token)=>{
+    return axios.post('/movie/disablemovie',data,{headers:{Authorization:`Bearer ${token}`}})
+}
+
+export const adminEnableMovieService = (data,token)=>{
+    return axios.post('/movie/enablemovie',data,{headers:{Authorization:`Bearer ${token}`}})
+}

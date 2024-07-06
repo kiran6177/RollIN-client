@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScaleLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
-import MovieCard from '../../Admin/Movies/MovieCard';
+import MovieCard from './MovieCard';
 import { userGetAllMovies } from '../../../features/userMovies/userMovieActions';
 import { resetAllMoviesData } from '../../../features/userMovies/userMovieSlice';
 import ToggleButton from './ToggleButton';

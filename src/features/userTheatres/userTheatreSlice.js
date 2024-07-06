@@ -3,7 +3,7 @@ import { userGetSingleTheatre, userGetTheatres } from "./userTheatreActions";
 
 const initialState = {
     allTheatresData:null,
-    singleScreenData:null,
+    theatresDetailData:null,
     success:false,
     error:'',
     loading:false,
@@ -33,7 +33,7 @@ const userTheatreSlice = createSlice({
         })
         .addCase(userGetSingleTheatre.fulfilled,(state,action)=>{
             console.log(action);
-            // state.allTheatresData = action.payload?.resultData
+            state.theatresDetailData = state.theatresDetailData ? [...state.theatresDetailData,action.payload?.resultData] : [action.payload?.resultData]
             state.loading = false;
         })
         .addCase(userGetSingleTheatre.pending,(state)=>{

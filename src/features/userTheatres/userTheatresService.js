@@ -4,6 +4,6 @@ export const userGetTheatresService = (data)=>{
     return axios.post('/theatre/gettheatres',data)
 }
 
-export const userGetSingleTheatreService = (id)=>{
-    return axios.post('/theatre/getsingletheatre',{id})
+export const userGetSingleTheatreService = (data)=>{
+    return axios.post('/theatre/getsingletheatre',data)
 }

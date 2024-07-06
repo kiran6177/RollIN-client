@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { adminAddMovieToDB, adminGetAllTMDBMovies, adminGetMoviesFromDB, adminGetPersonsFromDB, adminGetTMDBMovieDetail } from "./movieActions";
+import { adminAddMovieToDB, adminDisableMovie, adminEnableMovie, adminGetAllTMDBMovies, adminGetMoviesFromDB, adminGetPersonsFromDB, adminGetTMDBMovieDetail } from "./movieActions";
 
 const initialState = {
     moviesData:null,
@@ -133,6 +133,48 @@ const movieSlice = createSlice({
             state.loading = true
         })
         .addCase(adminGetPersonsFromDB.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ["Some Error Occured!!"]
+            if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
+                state.adminData = null
+                state.adminToken = null
+                state.usersData = null
+                state.theatresData = null
+            }
+            state.loading = false
+        })
+        .addCase(adminDisableMovie.fulfilled,(state,action)=>{
+            console.log(action);
+            if(action.payload?.resultData){
+                state.message = 'Movie Disabled Successfully.'
+            }
+            state.loading = false
+        })
+        .addCase(adminDisableMovie.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(adminDisableMovie.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ["Some Error Occured!!"]
+            if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
+                state.adminData = null
+                state.adminToken = null
+                state.usersData = null
+                state.theatresData = null
+            }
+            state.loading = false
+        })
+        .addCase(adminEnableMovie.fulfilled,(state,action)=>{
+            console.log(action);
+            if(action.payload?.resultData){
+                state.message = 'Movie Enabled Successfully.'
+            }
+            state.loading = false
+        })
+        .addCase(adminEnableMovie.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(adminEnableMovie.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload?.reasons || ["Some Error Occured!!"]
             if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){

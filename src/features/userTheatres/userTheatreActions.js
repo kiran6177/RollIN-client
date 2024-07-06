@@ -14,9 +14,9 @@ export const userGetTheatres = createAsyncThunk('userGetTheatres',async (data,th
     }
 })
 
-export const userGetSingleTheatre = createAsyncThunk('userGetSingleTheatre',async (id,thunkAPI)=>{
+export const userGetSingleTheatre = createAsyncThunk('userGetSingleTheatre',async (data,thunkAPI)=>{
     try {
-        const response =  await userGetSingleTheatreService(id);
+        const response =  await userGetSingleTheatreService(data);
         console.log(response.data);
         // if(response.data?.newUserToken){
         //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
