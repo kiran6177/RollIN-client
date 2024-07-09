@@ -258,7 +258,7 @@ function AddScreen() {
                                     <div className='sm:w-[40%] flex flex-col items-center justify-center'>
 
                                         {
-                                        enrolledMovies.length > 0 && movieSelect === show.showtime ?
+                                        enrolledMovies.length > 0 && 
                                         <div className=' overflow-scroll scrollbar-none flex flex-col justify-start text-black w-[90%] h-[7rem] '>
                                             {
                                             enrolledMovies.map((movie,i)=>{
@@ -271,10 +271,7 @@ function AddScreen() {
                                             }
 
                                         </div>
-                                        :
-                                        <div onClick={()=>setMovieSelect(show.showtime)} className=' flex items-center  text-black w-[90%] h-[3rem] bg-[#f6ae2d] rounded-sm border-2 border-black' >
-                                        <p className='mx-5 text-xs sm:text-base'>{show.movie ? show.movie :'Choose Movie'}</p>      
-                                        </div>
+                                        
                                         }
 
 

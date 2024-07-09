@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { theatreAddScreen, theatreChangeTierOrder, theatreEditScreen, theatreEditTier, theatreEnrollMovie, theatreExtendMovieForScreen, theatreGetAllMovies, theatreGetTheatreData, theatreRemoveMovieFromScreen } from "./theatreFeatAction";
+import { theatreAddScreen, theatreChangeShowMovie, theatreChangeTierOrder, theatreEditScreen, theatreEditTier, theatreEnrollMovie, theatreExtendMovieForScreen, theatreGetAllMovies, theatreGetShowBookingStatus, theatreGetTheatreData, theatreRemoveMovieFromScreen } from "./theatreFeatAction";
 
 const initialState = {
     theatreScreenData:null,
@@ -33,7 +33,7 @@ const theatreFeatSlice = createSlice({
             state.singleScreenData = null
             state.editScreenData = null
             state.moviesList = null
-        }
+        },
     },
     extraReducers:(builder)=>{
         builder
@@ -229,9 +229,32 @@ const theatreFeatSlice = createSlice({
             state.loading = false
             state.error = action.payload?.reasons
         })
+        .addCase(theatreChangeShowMovie.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            if(action.payload?.resultData){
+                state.message = 'Show Updated Successfully.'
+                state.theatreScreenData = state.theatreScreenData.map(screen=>{
+                    if(screen._id === action.payload?.resultData?._id){
+                        return action.payload?.resultData
+                    }
+                    return screen
+                })
+            }
+            state.loading = false
+
+        })
+        .addCase(theatreChangeShowMovie.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreChangeShowMovie.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
     }
 })
 
-export const { resetTheatreFeatActions , resetMovieList ,logoutTheatreFeat } = theatreFeatSlice.actions
+export const { resetTheatreFeatActions , resetMovieList ,logoutTheatreFeat  } = theatreFeatSlice.actions
 
 export default theatreFeatSlice.reducer

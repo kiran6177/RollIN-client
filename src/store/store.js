@@ -6,6 +6,8 @@ import movieReducer from '../features/movie/movieSlice.js'
 import userMovieReducer from '../features/userMovies/userMovieSlice.js'
 import userTheatreReducer from '../features/userTheatres/userTheatreSlice.js'
 import theatreFeatReducer from '../features/theatreFeat/theatreFeatSlice.js'
+import theatreBookingReducer from '../features/theatreBookings/theatreBookingSlice.js'
+import userBookingReducer from '../features/userBooking/userBookingSlice.js'
 
 export const store = configureStore({
     reducer:{
@@ -15,6 +17,8 @@ export const store = configureStore({
         movie:movieReducer,
         userMovie:userMovieReducer,
         userTheatre:userTheatreReducer,
-        theatreFeat:theatreFeatReducer
+        theatreFeat:theatreFeatReducer,
+        theatreBooking:theatreBookingReducer,
+        userBooking:userBookingReducer
     }
 })

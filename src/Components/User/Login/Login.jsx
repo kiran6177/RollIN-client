@@ -5,7 +5,7 @@ import { TfiEmail } from "react-icons/tfi";
 import { useDispatch, useSelector } from 'react-redux';
 import { useGoogleLogin } from '@react-oauth/google'
 import {  resetActions } from '../../../features/user/userSlice';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Toaster ,toast } from 'sonner'
 import EmailModal from './EmailModal';
 import { googleAuth } from '../../../features/user/userActions';
@@ -15,6 +15,7 @@ function Login() {
   const dispatch = useDispatch();
   const {userData,userToken,message,error} = useSelector(state=>state.user);
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(()=>{
       if(error){
@@ -27,7 +28,11 @@ function Login() {
         return
       }
       if(userToken){
-        navigate('/')
+        if(location.state?.redirectURL){
+          navigate(location.state.redirectURL)
+        }else{
+          navigate('/')
+        }
         return
       }
       if(message && message == 'Logout Successfully.'){

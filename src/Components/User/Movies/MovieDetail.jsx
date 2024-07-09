@@ -18,7 +18,7 @@ function MovieDetail() {
     const [searchParams] = useSearchParams();
     const movie_id = searchParams.get("movie_id");
 
-    const {recommendedMovies,error,bannerMovies} = useSelector(state=>state.userMovie)
+    const {recommendedMovies,error,moviesByGenre} = useSelector(state=>state.userMovie)
 
     const dispatch = useDispatch();
 
@@ -54,15 +54,17 @@ function MovieDetail() {
     },[recommendedMovies])
 
     useEffect(()=>{
-      if(error?.length > 0 && bannerMovies?.length > 0){
-        for(let movie of bannerMovies){
-          if(movie._id == movie_id){
-              setMovie(movie)
-              return
+      if(error?.length > 0 && moviesByGenre?.length > 0){
+        for(let moviesObj of moviesByGenre){
+          for(let movie of moviesObj?.movies){
+            if(movie._id == movie_id){
+                setMovie(movie)
+                return
+            }
           }
         }
       }
-    },[error,bannerMovies])
+    },[error,moviesByGenre])
 
   return (
     <div className='pt-0 min-h-[80vh] bg-[#15121B]'>
@@ -76,7 +78,7 @@ function MovieDetail() {
             <div className='hidden mx-16 md:flex flex-col gap-4 absolute md:bottom-[1rem] lg:bottom-[2rem] xl:bottom-[6rem] '>
               <h2 className='text-xl  tracking-wider drop-shadow-2xl lg:text-4xl font-semibold '>{movie?.title}</h2>
               <div className=' flex gap-1 flex-wrap md:gap-8 '>
-                  <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{movie?.genres[0] ? movie?.genres[0] : '' }{movie?.genres[1] ?" / "+ movie?.genres[1] : '' }{movie?.genres[2] ?" / "+ movie?.genres[2] : '' }</h5>
+                  <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{movie?.genres[0] ? movie?.genres[0]?.name ? movie?.genres[0]?.name : movie?.genres[0]  : '' }{movie?.genres[1] ? movie?.genres[1]?.name ? " / "+ movie?.genres[1]?.name : " / "+ movie?.genres[1] : '' }{movie?.genres[2] ? movie?.genres[2]?.name ? " / "+ movie?.genres[2]?.name :" / "+ movie?.genres[2] : '' }</h5>
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
               </div> 
@@ -94,7 +96,7 @@ function MovieDetail() {
           <div className='mx-6 flex flex-col gap-4 text-white'>
           <h2 className='text-xl  tracking-wider drop-shadow-2xl lg:text-4xl font-semibold '>{movie?.title}</h2>
           <div className=' flex gap-1 flex-wrap md:gap-8 '>
-              <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{movie?.genres[0] ? movie?.genres[0] : '' }{movie?.genres[1] ?" / "+ movie?.genres[1] : '' }{movie?.genres[2] ?" / "+ movie?.genres[2] : '' }</h5>
+              <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{movie?.genres[0] ? movie?.genres[0]?.name ? movie?.genres[0]?.name : movie?.genres[0]  : '' }{movie?.genres[1] ? movie?.genres[1]?.name ? " / "+ movie?.genres[1]?.name : " / "+ movie?.genres[1] : '' }{movie?.genres[2] ? movie?.genres[2]?.name ? " / "+ movie?.genres[2]?.name :" / "+ movie?.genres[2] : '' }</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
           </div>

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { theatreAddScreenService, theatreChangeTierOrderService, theatreEditScreenService, theatreEditTierService, theatreEnrollMovieService, theatreExtendMovieForScreenService, theatreGetAllMoviesService, theatreGetTheatreDataService, theatreRemoveMovieFromScreenService } from "./theatreFeatService";
+import { theatreAddScreenService, theatreChangeShowMovieService, theatreChangeTierOrderService, theatreEditScreenService, theatreEditTierService, theatreEnrollMovieService, theatreExtendMovieForScreenService, theatreGetAllMoviesService, theatreGetShowBookingStatusService, theatreGetTheatreDataService, theatreRemoveMovieFromScreenService } from "./theatreFeatService";
 import { setTheatreData } from "../theatre/theatreSlice";
 
 export const theatreGetTheatreData = createAsyncThunk('theatreGetTheatreData',async ({id,token},thunkAPI)=>{
@@ -118,3 +118,17 @@ export const theatreChangeTierOrder = createAsyncThunk('theatreChangeTierOrder',
         return thunkAPI.rejectWithValue(error.response.data.error);
     }
 })
+
+export const theatreChangeShowMovie = createAsyncThunk('theatreChangeShowMovie',async ({data,token},thunkAPI)=>{
+    try {
+        const response =  await theatreChangeShowMovieService(data,token);
+        console.log(response.data);
+        if(response.data?.newTheatreToken){
+            thunkAPI.dispatch(setTheatreData({data:response.data.newTheatreData,token:response.data.newTheatreToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+

@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 function UserProtected({children}) {
     const {userToken} = useSelector(state=>state.user);
     const navigate = useNavigate();
+    const location = useLocation()
 
     useEffect(()=>{
         if(!userToken){
-            navigate('/login',{replace:true});
+            navigate('/login',{replace:true,state:location.state});
             return
         }
     },[userToken])

@@ -9,6 +9,7 @@ import UserScreenList from '../Pages/User/Screens/UserScreenList'
 import UserScreenMovieSection from '../Pages/User/Screens/UserScreenMovieSection'
 import UserMovieDetail from '../Pages/User/MovieDetail/UserMovieDetail'
 import UserPersonDetail from '../Pages/User/PersonDetail/UserPersonDetail'
+import UserShowBooking from '../Pages/User/Showbooking/UserShowBooking'
 
 function UserRoutes() {
   return (
@@ -23,6 +24,10 @@ function UserRoutes() {
         <Route path={'/profile'} element={
         <UserProtected>
           <UserProfile/>
+        </UserProtected>} />
+        <Route path={'/screenwithmovies/show'} element={
+        <UserProtected>
+          <UserShowBooking/>
         </UserProtected>} />
       </Routes>
   )
