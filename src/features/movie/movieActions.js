@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { adminAddMovieToDBService, adminGetAllTMDBMoviesService, adminGetMoviesFromDBService, adminGetPersonsFromDBService, adminGetTMDBMovieDetailService } from "./movieService";
+import { adminAddMovieToDBService, adminDisableMovieService, adminEnableMovieService, adminGetAllTMDBMoviesService, adminGetMoviesFromDBService, adminGetPersonsFromDBService, adminGetTMDBMovieDetailService } from "./movieService";
 import { setAdminsData } from "../admin/adminSlice";
 
 
@@ -58,6 +58,32 @@ export const adminGetMoviesFromDB = createAsyncThunk('adminGetMoviesFromDB', asy
 export const adminGetPersonsFromDB = createAsyncThunk('adminGetPersonsFromDB', async ({page,token},thunkAPI) =>{
     try {
         const response = await adminGetPersonsFromDBService(page,token);
+        console.log(response.data);
+        if(response.data?.newAdminToken){
+            thunkAPI.dispatch(setAdminsData({data:response.data.newAdminData,token:response.data.newAdminToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const adminDisableMovie = createAsyncThunk('adminDisableMovie', async ({data,token},thunkAPI) =>{
+    try {
+        const response = await adminDisableMovieService(data,token);
+        console.log(response.data);
+        if(response.data?.newAdminToken){
+            thunkAPI.dispatch(setAdminsData({data:response.data.newAdminData,token:response.data.newAdminToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const adminEnableMovie = createAsyncThunk('adminEnableMovie', async ({data,token},thunkAPI) =>{
+    try {
+        const response = await adminEnableMovieService(data,token);
         console.log(response.data);
         if(response.data?.newAdminToken){
             thunkAPI.dispatch(setAdminsData({data:response.data.newAdminData,token:response.data.newAdminToken}))

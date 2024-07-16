@@ -84,9 +84,12 @@ function MovieDetail() {
 
         <div className='px-8 sm:px-20 mt-10 lg:mt-8'>
 
+          {
+          movie?.isDisabled || 
           <div className='flex justify-center mt-20'>
-          <button onClick={handleEnroll}  className=' text-black font-bold tracking-[0.5rem] border-2 border-black m-2 bg-[#f6ae2d] text-sm md:text-md px-8 sm:px-10  md:px-12  lg:px-20 py-2 md:py-3 rounded-sm hover:scale-[1.02] transition-all duration-150 ease-in-out'>ENROLL</button>
+            <button onClick={handleEnroll}  className=' text-black font-bold tracking-[0.5rem] border-2 border-black m-2 bg-[#f6ae2d] text-sm md:text-md px-8 sm:px-10  md:px-12  lg:px-20 py-2 md:py-3 rounded-sm hover:scale-[1.02] transition-all duration-150 ease-in-out'>ENROLL</button>
           </div>
+          }
 
           <div className='py-10 text-white flex flex-col gap-4 w-[95%] '>
             <div className='h-[2rem] flex gap-1 sm:gap-4'>

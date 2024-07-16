@@ -20,6 +20,10 @@ export const theatreEditScreenService = (data,token)=>{
     return axios.post('/theatre/editscreen',data,{headers:{Authorization:`Bearer ${token}`}})
 }
 
+export const theatreChangeShowMovieService = (data,token)=>{
+    return axios.post('/theatre/changeshowmovie',data,{headers:{Authorization:`Bearer ${token}`}})
+}
+
 export const theatreRemoveMovieFromScreenService = (data,token)=>{
     return axios.post('/theatre/removemoviefromscreen',data,{headers:{Authorization:`Bearer ${token}`}})
 }

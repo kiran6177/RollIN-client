@@ -10,7 +10,7 @@ import MovieCard2 from './MovieCard2'
 import { IoMdPlayCircle } from "react-icons/io";
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { adminAddMovieToDB, adminGetTMDBMovieDetail } from '../../../features/movie/movieActions'
+import { adminAddMovieToDB, adminDisableMovie, adminEnableMovie, adminGetTMDBMovieDetail } from '../../../features/movie/movieActions'
 import TrailerModal from './TrailerModal'
 import ReleaseModal from './ReleaseModal'
 import { resetDBMovies, resetMovieActions, setSingleMovie } from '../../../features/movie/movieSlice'
@@ -62,8 +62,18 @@ function MovieDetail() {
     setTimeout(()=>{setShowConfirm(true)},250)
   }
 
-  const handleEditMovie = ()=>{
-    
+  const handleDisableMovie = ()=>{
+    console.log(singleMovieDetail);
+    animate("button",{x:[0,'54%']})
+    animate1("button",{x:[0,'54%']})
+    setTimeout(()=>dispatch(adminDisableMovie({data:{movie_id:singleMovieDetail?._id},token:adminToken})))
+  }
+
+  const handleEnableMovie = ()=>{
+    console.log(singleMovieDetail);
+    animate("button",{x:[0,'54%']})
+    animate1("button",{x:[0,'54%']})
+    setTimeout(()=>dispatch(adminEnableMovie({data:{movie_id:singleMovieDetail?._id},token:adminToken})))
   }
 
   const dispactchAddMovie = (release_date)=>{
@@ -97,9 +107,14 @@ function MovieDetail() {
           </div>
         </div>
         {
-          singleMovieDetail && singleMovieDetail?._id ?
+          singleMovieDetail && singleMovieDetail?._id  ?
+           !singleMovieDetail?.isDisabled ?
           <div ref={scope} className='hidden sm:block absolute -bottom-8 lg:bottom-[2rem] xl:bottom-[8rem]  mx-8 md:mx-12 border-2 border-[#f6ae2d] bg-black w-[15rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
-          <button onClick={handleAddMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>EDIT MOVIE</button>
+          <button onClick={handleDisableMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-18 py-1 md:py-3 rounded-full'>DISABLE MOVIE</button>
+          </div>
+          :
+          <div ref={scope} className='hidden sm:block absolute -bottom-8 lg:bottom-[2rem] xl:bottom-[8rem]  mx-8 md:mx-12 border-2 border-[#f6ae2d] bg-black w-[15rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
+          <button onClick={handleEnableMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-18 py-1 md:py-3 rounded-full'>ENABLE MOVIE</button>
           </div>
           :
           <div ref={scope} className='hidden sm:block absolute -bottom-8 lg:bottom-[2rem] xl:bottom-[8rem]  mx-8 md:mx-12 border-2 border-[#f6ae2d] bg-black w-[15rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
@@ -129,9 +144,14 @@ function MovieDetail() {
               <h3>{parseInt(singleMovieDetail?.rating)} / 10</h3>
           </div>
         </div>
+        {
+          singleMovieDetail && singleMovieDetail?._id ?
         <div ref={scope1} className='block sm:hidden  mx-8 sm:mx-16 border-2 border-[#f6ae2d] bg-black w-[12rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
-        <button onClick={handleAddMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-[10px] px-5 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>ADD MOVIE</button>
-        </div>
+          <button onClick={handleDisableMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-[10px] px-5 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>DISABLE MOVIE</button>
+        </div> 
+        :<div ref={scope1} className='block sm:hidden  mx-8 sm:mx-16 border-2 border-[#f6ae2d] bg-black w-[12rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
+          <button onClick={handleAddMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-[10px] px-5 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>ADD MOVIE</button>
+        </div>}
       </div>
 
       <div className='px-8 sm:px-10 mt-6 lg:mt-0'>
@@ -156,7 +176,7 @@ function MovieDetail() {
             {
               singleMovieDetail?.cast && singleMovieDetail.cast.length > 0 &&
               singleMovieDetail?.cast.map((person,i)=>{
-                  return (<CastIcon key={person.person_id + i} person={person} type="cast" />)
+                  return (<CastIcon key={"cast"+person.person_id + i} person={person} type="cast" />)
               })
             }
           </div>
@@ -173,7 +193,7 @@ function MovieDetail() {
           {
               singleMovieDetail?.crew && singleMovieDetail.crew.length > 0 &&
               singleMovieDetail?.crew.map((person,i)=>{
-                  return (<CastIcon key={person.person_id + i} person={person} type="crew" />)
+                  return (<CastIcon key={"crew"+person.person_id + i} person={person} type="crew" />)
               })
             }
 
@@ -191,7 +211,7 @@ function MovieDetail() {
                 addMoviesData ? addMoviesData.length > 0 &&
                 addMoviesData.map((movie,i)=>{
                   if(movie.movie_id != movieid ){
-                    return <MovieCard2 key={movie.movie_id+i} movie={movie} />
+                    return <MovieCard2 key={"add"+movie.movie_id+i} movie={movie} />
                   }
                   return null
                 })

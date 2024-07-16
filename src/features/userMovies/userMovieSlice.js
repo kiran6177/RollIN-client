@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { userGetAllMovies, userGetBannerMovies, userGetMoviesByGenre } from "./userMovieActions";
+import { userGetAllMovies, userGetBannerMovies, userGetMoviesByGenre, userGetOneMovie, userGetPerson, userGetRecommendedMoviesWithLocation, userGetSingleMovie } from "./userMovieActions";
 
 
 const initialState = {
     bannerMovies:null,
+    recommendedMovies:null,
     moviesByGenre:null,
     allMoviesData:null,
     singleMovieDetail:null,
+    allPersonData:null,
     success:false,
     error:'',
     loading:false,
@@ -58,6 +60,58 @@ const userMovieSlice = createSlice({
             state.loading = true;
         })
         .addCase(userGetAllMovies.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userGetRecommendedMoviesWithLocation.fulfilled,(state,action)=>{
+            console.log(action);
+            state.recommendedMovies = action.payload?.resultData
+            state.loading = false;
+        })
+        .addCase(userGetRecommendedMoviesWithLocation.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetRecommendedMoviesWithLocation.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userGetPerson.fulfilled,(state,action)=>{
+            console.log(action);
+            state.allPersonData = state.allPersonData ? [...state.allPersonData , action.payload?.resultData] : [action.payload?.resultData]
+            state.loading = false;
+        })
+        .addCase(userGetPerson.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetPerson.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userGetSingleMovie.fulfilled,(state,action)=>{
+            console.log(action);
+            state.recommendedMovies = state.recommendedMovies ? [...state.recommendedMovies , action.payload?.resultData] : [action.payload?.resultData]
+            state.loading = false;
+        })
+        .addCase(userGetSingleMovie.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetSingleMovie.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userGetOneMovie.fulfilled,(state,action)=>{
+            console.log(action);
+            state.singleMovieDetail =  action.payload?.resultData
+            state.loading = false;
+        })
+        .addCase(userGetOneMovie.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetOneMovie.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload?.reasons
             state.loading = false;

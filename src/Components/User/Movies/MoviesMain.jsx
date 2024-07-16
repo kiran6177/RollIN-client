@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScaleLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
-import MovieCard from '../../Admin/Movies/MovieCard';
+import MovieCard from './MovieCard';
 import { userGetAllMovies } from '../../../features/userMovies/userMovieActions';
 import { resetAllMoviesData } from '../../../features/userMovies/userMovieSlice';
 import ToggleButton from './ToggleButton';
@@ -31,6 +31,7 @@ function MoviesMain() {
     const {allMoviesData} = useSelector(state=>state.userMovie)
     const [page,setPage] = useState(1);
     const [filterArray,setFilterArray] = useState([])
+    const [location,setLocation] = useState(null)
 
     const [open,setOpen] = useState(false)
     const [query,setQuery] = useState('')
@@ -44,7 +45,13 @@ function MoviesMain() {
 
     useEffect(()=>{
         dispatch(resetAllMoviesData())
-        dispatch(userGetAllMovies({page:1}))
+        if(localStorage.getItem('city')){
+          const location = JSON.parse(localStorage.getItem('city')).loc;
+          setLocation(location)
+          dispatch(userGetAllMovies({page:1,location}))
+        }else{
+          dispatch(userGetAllMovies({page:1}))
+        }
     },[])
 
     useEffect(()=>{
@@ -69,17 +76,15 @@ function MoviesMain() {
               languages.push(filter.data)
             }
           })
-          console.log(languages);
-          console.log(genres);
           dispatch(resetAllMoviesData())
-          dispatch(userGetAllMovies({page:page,languages,genres,search:debouncedValue}))
+          dispatch(userGetAllMovies({page:page,languages,genres,search:debouncedValue,location:location}))
         }
       },[filterArray])
 
       useEffect(()=>{
         if(debouncedValue !== ''){
           let languages = []; 
-        let genres = [];
+          let genres = [];
         filterArray.map(filter=>{
           if(filter.type === 'genre'){
             genres.push(filter.data)
@@ -88,12 +93,11 @@ function MoviesMain() {
           }
         })
         dispatch(resetAllMoviesData())
-        dispatch(userGetAllMovies({page:1,languages,genres,search:debouncedValue}))
+        dispatch(userGetAllMovies({page:1,languages,genres,search:debouncedValue,location:location}))
         }
       },[debouncedValue])
 
     const nextPage = ()=>{
-        console.log("next",page);
         let languages = [];
         let genres = [];
         if(filterArray.length > 0){
@@ -104,10 +108,8 @@ function MoviesMain() {
               languages.push(filter.data)
             }
           })
-          console.log(languages);
-          console.log(genres);
         }
-        dispatch(userGetAllMovies({page,languages,genres,search:debouncedValue}))
+        dispatch(userGetAllMovies({page,languages,genres,search:debouncedValue,location:location}))
       }
 
     const handleSetFilter = (newFilter)=>{
@@ -119,14 +121,14 @@ function MoviesMain() {
       setPage(1)
       setFilterArray(filterArray.filter(fill=>fill.data !== filter))
       if(filterArray.length === 1){
-        dispatch(userGetAllMovies({page:1}))
+        dispatch(userGetAllMovies({page:1,location:location}))
       }
     }
 
     const handleReset = ()=>{
       setPage(1)
       setFilterArray([])
-      dispatch(userGetAllMovies({page:1})) 
+      dispatch(userGetAllMovies({page:1,location:location})) 
       buttonRefs.current.map(btn=>{
         btn.reset()
       })
@@ -148,7 +150,7 @@ function MoviesMain() {
           })
         }
         dispatch(resetAllMoviesData())
-        dispatch(userGetAllMovies({page:1,languages,genres,search:debouncedValue}))
+        dispatch(userGetAllMovies({page:1,languages,genres,search:debouncedValue,location:location}))
     }
   return (
     <div className='pt-32 bg-[#15121B]'>

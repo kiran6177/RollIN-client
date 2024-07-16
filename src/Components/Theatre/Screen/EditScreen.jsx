@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import RemoveModal from './RemoveModal';
 import ExtendModal from './ExtendModal';
+import ChangeShowModal from './ChangeShowModal';
 
 
 function EditScreen() {
@@ -32,7 +33,6 @@ function EditScreen() {
 
     const [showData,setShowData] = useState([])
 
-    const [movieSelect,setMovieSelect] = useState(false)
 
     const [tier,setTier] = useState(0);
     const [tierCount,setTierCount] = useState(0)
@@ -55,6 +55,9 @@ function EditScreen() {
 
     const [showRemove,setShowRemove] = useState(false);
     const [showExtend,setShowExtend] = useState(false);
+    const [showChangeMovie,setShowChangeMovie] = useState(false)
+
+    const [isValidWithLayout,SetIsValidWithLayout] = useState(false)
 
     const getDaysDifference = (enroll_to_date)=>{
         console.log("DAYSS");
@@ -88,6 +91,16 @@ function EditScreen() {
                             seatsChanged:false
                         }
                     }))
+                    let tierValidCount = 0;
+                    for(let tier of screen.tiers){
+                        if(tier?.layout?.length > 0){
+                            tierValidCount++
+                        }
+                    }
+                    if(tierValidCount > 0 && tierValidCount === screen?.tiers?.length){
+                        SetIsValidWithLayout(true) 
+                    }
+
                     setEnrolledMovies(screen.running_movies.map((movie)=>{
                         return {
                             ...movie,
@@ -176,19 +189,7 @@ function EditScreen() {
         })
     }
 
-    const handleShowSelect = (movie,show)=>{
-        setShowData(showData.map(sho=>{
-            console.log(sho);
-            if(sho.showtime === show.showtime){
-                return {
-                    ...sho,
-                    movie_id:movie? movie.movie_id : null
-                }
-            }
-            return sho
-        }))
-        setMovieSelect(false)
-    }
+
 
     const handleTierName = (e,index)=>{
         setTierName((prev)=>{
@@ -356,6 +357,9 @@ function EditScreen() {
         setShowExtend(false)
     }
 
+    const handleShowMovieChange = (show)=>{
+        setShowChangeMovie(show)
+    }
 
 
   return (
@@ -429,35 +433,16 @@ function EditScreen() {
                         showData.map((show,i)=>{
                             return(
                                 <div key={show.showtime+i} className='relative flex flex-col gap-6 text-sm sm:text-base sm:flex-row justify-between border-2 border-[#f6ae2d] text-white w-[100%] rounded-sm p-6 my-6'>
-                                    <IoIosClose onClick={()=>{ setShowData(showData.filter((showObj)=>showObj.showtime !== show.showtime))}} className="absolute cursor-pointer right-1 top-1 w-[1.5rem] h-[1.5rem]"/>
-                                    <h3>SHOWTIME : {show.showtime}</h3>
+                                    <IoIosClose onClick={()=>{ 
+                                        // setShowData(showData.filter((showObj)=>showObj.showtime !== show.showtime))
+                                        }} className="absolute cursor-pointer right-1 top-1 w-[1.5rem] h-[1.5rem]"/>
+                                    <div className='flex flex-col'>
+                                        <h3>SHOWTIME : {show.showtime}</h3>
+                                        <p className=' text-xs sm:text-sm text-[#f6ae2d]'>{show?.movie_id !== null? enrolledMovies.find(mov=>mov.movie_id === show?.movie_id)?.title :'No Movie'}</p> 
+                                    </div>
                                     <div className='sm:w-[40%] flex flex-col items-center justify-center'>
-
-                                        {
-                                        enrolledMovies.length > 0 && movieSelect === show.showtime ?
-                                        <div className=' overflow-scroll scrollbar-none flex flex-col justify-start text-black w-[90%] h-[7rem] '>
-                                            
-                                            <div key={'null'} onClick={()=>handleShowSelect(null,show)} className='min-h-[3rem] flex items-center bg-white rounded-sm  ml-[1.5px] mt-[1px] border-black w-[100%]'>
-                                                    <p className='mx-5 w-[100%]  text-ellipsis overflow-hidden'>Invalidate</p>
-                                            </div>
-                                            {
-                                            enrolledMovies.map((movie,i)=>{
-                                                return (
-                                                <div key={i} onClick={()=>handleShowSelect(movie,show)} className='min-h-[3rem] flex items-center bg-white rounded-sm  ml-[1.5px] mt-[1px] border-black w-[100%]'>
-                                                    <p className='mx-5 w-[100%]  text-ellipsis overflow-hidden'>{movie.title}</p>
-                                                </div>
-                                                )
-                                            })
-                                            }
-
-                                        </div>
-                                        :
-                                        <div onClick={()=>setMovieSelect(show.showtime)} className=' flex items-center  text-black w-[90%] h-[3rem] bg-[#f6ae2d] rounded-sm border-2 border-black' >
-                                        <p className='mx-5 text-xs sm:text-base'>{show.movie_id !== null? enrolledMovies.find(mov=>mov.movie_id === show.movie_id)?.title :'Choose Movie'}</p>      
-                                        </div>
-                                        }
-
-
+                                        <button onClick={()=>handleShowMovieChange(show)} disabled={!isValidWithLayout}  className={!isValidWithLayout ? 'bg-[#c38c25c2] text-black px-6 py-2' :'bg-[#f6ae2d] text-black px-6 py-2'} >CHANGE</button>
+                                        {!isValidWithLayout && <p className='text-[10px] text-white tracking-wider'>Complete the Layout.</p>}
                                     </div>
                                 </div>
                             )
@@ -650,6 +635,7 @@ function EditScreen() {
         </div>
         <RemoveModal isOpen={showRemove} set={setShowRemove} handleConfirm={removeMovie} />
         <ExtendModal isOpen={showExtend} set={setShowExtend} handleConfirm={extendMovie} />
+        <ChangeShowModal isOpen={showChangeMovie} set={setShowChangeMovie}  enrolledMovies={enrolledMovies} />
     </div>
   )
 }

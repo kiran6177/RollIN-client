@@ -1,24 +1,19 @@
 import React, {  useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router';
-import oppen from '../../../assets/MM-1207 Oppenheimer.jpg'
 import pinlogo from '../../../assets/pin-logo.png'
 import { FaRegCalendar } from 'react-icons/fa';
 import { MdOutlineTimer } from 'react-icons/md';
 import { AnimatePresence , motion } from 'framer-motion';
-import img2 from '../../../assets/Varshangalkku-Shesham-first-look-poster-1600.webp'
-import img3 from '../../../assets/aavesham.jpg'
-import img4 from '../../../assets/et00396952-tfvujhhwtn-landscape.avif'
 import MovieCard2 from '../../User/Movies/MovieCard2'
-import { userGetBannerMovies, userGetMoviesByGenre } from '../../../features/userMovies/userMovieActions';
+import { userGetBannerMovies, userGetMoviesByGenre, userGetRecommendedMoviesWithLocation } from '../../../features/userMovies/userMovieActions';
 import { IoMdPlayCircle } from 'react-icons/io';
 import TrailerModal from '../Movies/TrailerModal';
 
-const bannerImgs = [oppen,img2,img3,img4]
 
 function Home() {
     const {userData,userToken} = useSelector(state=>state.user);
-    const {bannerMovies,moviesByGenre} = useSelector(state=>state.userMovie)
+    const {bannerMovies,moviesByGenre,recommendedMovies} = useSelector(state=>state.userMovie)
     const navigate = useNavigate()
     const [index,setIndex] = useState(0)
     const [showTrailer,setShowTrailer] = useState(false);
@@ -26,12 +21,15 @@ function Home() {
 
 
     useEffect(()=>{
-      // if(!userToken){
-      //   navigate('/login')
-      //   return
-      // }
-      dispatch(userGetBannerMovies())
-      dispatch(userGetMoviesByGenre())
+      if(localStorage.getItem('city')){
+        const loc = JSON.parse(localStorage.getItem('city')).loc;
+        dispatch(userGetBannerMovies({location:loc}))
+        dispatch(userGetMoviesByGenre({location:loc}))
+        dispatch(userGetRecommendedMoviesWithLocation({location:loc}))
+      }else{
+        dispatch(userGetBannerMovies())
+        dispatch(userGetMoviesByGenre())
+      }
     },[])
 
     useEffect(()=>{
@@ -46,14 +44,16 @@ function Home() {
           clearInterval(timer)
           return
         }
-         timer = setInterval(()=>{
-          setIndex(prev => (prev < bannerImgs.length - 1 ? prev + 1 : 0));
-        },6000)
-
+        if(bannerMovies){
+          timer = setInterval(()=>{
+            setIndex(prev => (prev === (bannerMovies?.length - 1) ? 0 : prev + 1));
+          },6000)
+  
+        }
         return ()=>{
           clearInterval(timer)
         }
-    },[showTrailer])
+    },[showTrailer,bannerMovies])
 
     const handleBookTicket = ()=>{
       console.log("hvjvj");
@@ -86,7 +86,13 @@ function Home() {
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.release_date.split('-')[0]}</h5>
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.runtime + " min"}</h5>
               </div> 
-                <button  className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
+                {
+                (!bannerMovies[index]?.isDislocated && !bannerMovies[index]?.isDisabled) && 
+                <div className='flex w-[100%]'>
+                  <button onClick={()=>navigate(`/moviewithscreens?movie_id=${bannerMovies[index]?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
+                  <button onClick={()=>navigate(`/moviedetail?movie_id=${bannerMovies[index]?._id}`)}  className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-2 sm:px-6  md:px-8  lg:px-10 py-1 md:py-3 rounded-full'>MORE</button>
+                </div>
+                }
             </motion.div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={bannerMovies[index]?.backdrop_path} alt="" className='mt-28 md:mt-0  mx-auto object-fill w-[100%]' />
@@ -111,7 +117,13 @@ function Home() {
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.release_date.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.runtime + " min"}</h5>
           </div>
-            <button className=' w-[65%] sm:w-[40%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
+          { 
+          (!bannerMovies[index]?.isDislocated && !bannerMovies[index]?.isDisabled) && 
+          <div className='flex flex-col sm:flex-row w-[65%] sm:w-[50%]'>
+            <button onClick={()=>navigate(`/moviewithscreens?movie_id=${bannerMovies[index]?._id}`)} className='  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button>
+            <button onClick={()=>navigate(`/moviedetail?movie_id=${bannerMovies[index]?._id}`)}  className='  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-2 sm:px-6  md:px-8  lg:px-10 py-[6px] md:py-3 rounded-full'>MORE</button>
+          </div>
+          }
         </motion.div>
         </AnimatePresence>
           }
@@ -120,6 +132,25 @@ function Home() {
 
 
       <div className='mx-16 py-12'>
+        {
+          recommendedMovies?.length > 0 &&
+          <div className='my-12'>
+              <div className='h-[2rem] flex gap-1 sm:gap-4'>
+                <img src={pinlogo} alt="" className='object-cover h-full' />
+                <h1 className='text-base sm:text-lg font-medium tracking-wide text-white'>Recommended Movies</h1>
+              </div>
+            <div className='flex gap-6 overflow-x-scroll py-6 snap-x scrollbar-none'>
+              {
+                recommendedMovies.map((movie,i)=>{
+                  return(
+                    movie?.isDislocated ||
+                    <MovieCard2  key={movie.movie_id+i} movie={movie} />
+                  )
+                })
+                }
+            </div>
+          </div>
+        }
         {
           moviesByGenre && moviesByGenre.length > 0 && 
           moviesByGenre.map((genreObj,i)=>{
