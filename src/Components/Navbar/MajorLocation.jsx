@@ -39,12 +39,12 @@ function MajorLocation({src,name,set}) {
         const res = await getGeo(desc)
         console.log("MAJ RESS",res);
         localStorage.setItem('city',JSON.stringify({name,loc:res}))
-        window.location.reload()
+        window.location.href = '/'
         set(false)
       }
 
   return (
-    <div onClick={()=>setValue(name)} className='w-[2.5rem] mx-4 sm:w-[4rem] flex flex-col overflow-hidden hover:scale-[1.06] transition-all duration-150 ease-linear hover:drop-shadow-[0px_0px_25px_#f6ae2d]'>
+    <div onClick={()=>{setValue(name);console.log("vlik",name);}} className='w-[2.5rem] mx-4 sm:w-[4rem] flex flex-col overflow-hidden hover:scale-[1.06] transition-all duration-150 ease-linear hover:drop-shadow-[0px_0px_25px_#f6ae2d]'>
         <img src={src} alt="" width={'100% '} className='object-cover aspect-square' />
         <h1 className='text-white text-[10px] sm:text-xs md:text-sm text-center'>{name}</h1>
     </div>

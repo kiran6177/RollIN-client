@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { userGetAllMovies, userGetBannerMovies, userGetMoviesByGenre, userGetPerson, userGetRecommendedMoviesWithLocation, userGetSingleMovie } from "./userMovieActions";
+import { userGetAllMovies, userGetBannerMovies, userGetMoviesByGenre, userGetOneMovie, userGetPerson, userGetRecommendedMoviesWithLocation, userGetSingleMovie } from "./userMovieActions";
 
 
 const initialState = {
@@ -99,6 +99,19 @@ const userMovieSlice = createSlice({
             state.loading = true;
         })
         .addCase(userGetSingleMovie.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userGetOneMovie.fulfilled,(state,action)=>{
+            console.log(action);
+            state.singleMovieDetail =  action.payload?.resultData
+            state.loading = false;
+        })
+        .addCase(userGetOneMovie.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetOneMovie.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload?.reasons
             state.loading = false;

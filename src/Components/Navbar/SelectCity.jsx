@@ -66,6 +66,8 @@ function SelectCity({isOpen,set}) {
                             }
                         </div>
                         <div className='w-[90%] flex justify-evenly flex-wrap'>
+                            {isLoaded &&
+                            <>
                             <MajorLocation src={pune} name={'Pune'} set={set} />
                             <MajorLocation src={mumbai} name={'Mumbai'} set={set} />
                             <MajorLocation src={bengaluru} name={'Bengaluru'} set={set} />
@@ -73,6 +75,8 @@ function SelectCity({isOpen,set}) {
                             <MajorLocation src={chennai} name={'Chennai'} set={set} />
                             <MajorLocation src={kolkata} name={'Kolkata'} set={set} />
                             <MajorLocation src={kochi} name={'Kochi'} set={set} />
+                            </>
+                            }
                         </div>
                         <div className='w-[100%] mx-auto'>
                         {/* <ScaleLoader loading={loading}  color='#f6ae2d' height={20} /> */}

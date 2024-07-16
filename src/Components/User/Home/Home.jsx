@@ -89,7 +89,7 @@ function Home() {
                 {
                 (!bannerMovies[index]?.isDislocated && !bannerMovies[index]?.isDisabled) && 
                 <div className='flex w-[100%]'>
-                  <button  className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
+                  <button onClick={()=>navigate(`/moviewithscreens?movie_id=${bannerMovies[index]?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>BOOK TICKETS</button>
                   <button onClick={()=>navigate(`/moviedetail?movie_id=${bannerMovies[index]?._id}`)}  className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-2 sm:px-6  md:px-8  lg:px-10 py-1 md:py-3 rounded-full'>MORE</button>
                 </div>
                 }
@@ -120,7 +120,7 @@ function Home() {
           { 
           (!bannerMovies[index]?.isDislocated && !bannerMovies[index]?.isDisabled) && 
           <div className='flex flex-col sm:flex-row w-[65%] sm:w-[50%]'>
-            <button className='  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button>
+            <button onClick={()=>navigate(`/moviewithscreens?movie_id=${bannerMovies[index]?._id}`)} className='  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button>
             <button onClick={()=>navigate(`/moviedetail?movie_id=${bannerMovies[index]?._id}`)}  className='  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-2 sm:px-6  md:px-8  lg:px-10 py-[6px] md:py-3 rounded-full'>MORE</button>
           </div>
           }

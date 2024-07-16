@@ -55,7 +55,7 @@ function AutoSearch({set}) {
         const res = await getGeo(desc)
         console.log("ressss",res);
         localStorage.setItem('city',JSON.stringify({name,loc:res}))
-        window.location.reload()
+        window.location.href = '/'
         set(false)
       }
 

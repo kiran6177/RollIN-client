@@ -10,6 +10,8 @@ import UserScreenMovieSection from '../Pages/User/Screens/UserScreenMovieSection
 import UserMovieDetail from '../Pages/User/MovieDetail/UserMovieDetail'
 import UserPersonDetail from '../Pages/User/PersonDetail/UserPersonDetail'
 import UserShowBooking from '../Pages/User/Showbooking/UserShowBooking'
+import UserMovieScreenSection from '../Pages/User/Screens/UserMovieScreenSection'
+import UserCheckout from '../Pages/User/Showbooking/UserCheckout'
 
 function UserRoutes() {
   return (
@@ -20,6 +22,7 @@ function UserRoutes() {
         <Route path={'/persondetail'} element={<UserPersonDetail/>} />
         <Route path={'/screens'} element={<UserScreenList/>} />
         <Route path={'/screenwithmovies'} element={<UserScreenMovieSection/>} />
+        <Route path={'/moviewithscreens'} element={<UserMovieScreenSection/>} />
         <Route path={'/login'} element={<UserLogin/>} />  
         <Route path={'/profile'} element={
         <UserProtected>
@@ -28,6 +31,10 @@ function UserRoutes() {
         <Route path={'/screenwithmovies/show'} element={
         <UserProtected>
           <UserShowBooking/>
+        </UserProtected>} />
+        <Route path={'/buytickets'} element={
+        <UserProtected>
+          <UserCheckout/>
         </UserProtected>} />
       </Routes>
   )
