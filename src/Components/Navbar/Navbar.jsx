@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { userGetBannerMovies } from '../../features/userMovies/userMovieActions';
 import SearchModal from './SearchModal';
 
-function Navbar() {
+function Navbar({hide}) {
   const [isOpen,setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [bgChange,setBgChange] = useState(false)
@@ -41,7 +41,7 @@ function Navbar() {
 
   return (
     <>
-    <div className={bgChange ? 'flex justify-between h-[6rem] items-center bg-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out' :'flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out'}>
+    <div className={bgChange || hide ? 'flex justify-between h-[6rem] items-center bg-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out' :'flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out'}>
 
       <div className='w-[50%] min-[480]:w-[45%] h-[100%] sm:w-[50%] flex items-center gap-14 pl-5 text-white'>
         <div className='h-[100%] w-[100%] sm:w-[40%] md:w-[35%] flex items-center'>
@@ -61,7 +61,7 @@ function Navbar() {
       </div>
       
     </div>  
-    <div className='fixed z-10 mt-20 bg-black w-[100%]  text-[#F6AE2D] px-5 py-2 block sm:hidden'>
+    <div className='fixed z-10 mt-24 bg-black w-[100%]  text-[#F6AE2D] px-5 py-2 block sm:hidden'>
         <button  className='flex items-center'>
           Choose City <FaChevronRight/>
         </button>

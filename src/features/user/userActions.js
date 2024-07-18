@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { googleUserAuthService , userEmailLoginService, userLogoutService, userResendOtpService, userVerifyOtpService} from './userService';
+import { googleUserAuthService , userEditEmailService, userEditProfileService, userEditResendService, userEmailLoginService, userLogoutService, userProfileVerifyOtpService, userResendOtpService, userVerifyOtpService} from './userService';
+import { setUsersData } from './userSlice';
 
 export const googleAuth = createAsyncThunk('userGoogleAuth',async (tokenResponse,thunkAPI)=>{
     try {
@@ -54,3 +55,58 @@ export const userResendOtp = createAsyncThunk('userResendOtp', async (id,thunkAP
     }
 })
 
+export const userEditProfile = createAsyncThunk('userEditProfile', async({data,token},thunkAPI)=>{
+    try {
+        const response = await userEditProfileService(data,token)
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data
+    } catch (error) {
+        console.log(error);
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const userEditEmail = createAsyncThunk('userEditEmail', async({data,token},thunkAPI)=>{
+    try {
+        const response = await userEditEmailService(data,token)
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data
+    } catch (error) {
+        console.log(error);
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const userEditResend = createAsyncThunk('userEditResend', async({data,token},thunkAPI)=>{
+    try {
+        const response = await userEditResendService(data,token)
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data
+    } catch (error) {
+        console.log(error);
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
+export const userProfileVerifyOtp = createAsyncThunk('userProfileVerifyOtp', async({data,token},thunkAPI)=>{
+    try {
+        const response = await userProfileVerifyOtpService(data,token)
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data
+    } catch (error) {
+        console.log(error);
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})

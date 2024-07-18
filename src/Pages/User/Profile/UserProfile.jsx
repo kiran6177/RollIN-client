@@ -6,7 +6,7 @@ import Profile from '../../../Components/User/Profile/Profile'
 function UserProfile() {
   return (
     <>
-    <Navbar/>
+    <Navbar hide={true}/> 
     <Profile/>
     <Footer/>
     </>

@@ -59,6 +59,7 @@ function NavModal({isOpen,set}) {
                   <div className=" flex items-center p-6 gap-3">
                     <FaUserCircle/>
                     <NavLink to={'/profile'} className={'font-medium tracking-wider text-sm'}>Profile</NavLink>
+                    
                 </div>
               </motion.div>
               <motion.div
