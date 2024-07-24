@@ -23,3 +23,7 @@ export const userPayNowService = (data,token)=>{
 export const userPayProcessService = (data,token)=>{
     return axios.post('/booking/paymentprocess',data,{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const userGetOrdersService = (data,token)=>{
+    return axios.post('/booking/getorders',data,{headers:{Authorization:`Bearer ${token}`}})
+}

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { userGetShowData, userGetShowDataByMovie, userGetSingleShowData, userPayNow, userPayProcess, userSeatReservation } from "./userBookingActions";
+import { userGetOrders, userGetShowData, userGetShowDataByMovie, userGetSingleShowData, userPayNow, userPayProcess, userSeatReservation } from "./userBookingActions";
 
 const initialState = {
     singleTheatreShows:null,
@@ -8,6 +8,7 @@ const initialState = {
     selectedSeats:null,
     payment_data:null,
     booking_data:null,
+    orders:null,
     success:false,
     error:'',
     loading:false,
@@ -23,6 +24,9 @@ const userBookingSlice = createSlice({
             state.error = ''
             state.loading = false
             state.message = ''
+        },
+        resetOrders:(state)=>{
+            state.orders = null
         },
         setSelectedSeats:(state,action)=>{
             state.selectedSeats = action.payload
@@ -117,9 +121,22 @@ const userBookingSlice = createSlice({
             state.error = action.payload?.reasons
             state.loading = false;
         })
+        .addCase(userGetOrders.fulfilled,(state,action)=>{
+            console.log(action);
+            state.orders = state.orders?.length > 0 ? [...state.orders,...action.payload?.resultData] : action.payload?.resultData
+            state.loading = false;
+        })
+        .addCase(userGetOrders.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetOrders.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
     }
 })
 
-export const { resetUserBookings , setSelectedSeats , resetSelectedSeats , resetPaymentStatus ,resetBookingData} = userBookingSlice.actions;
+export const { resetUserBookings , setSelectedSeats , resetSelectedSeats , resetPaymentStatus ,resetBookingData , resetOrders} = userBookingSlice.actions;
 
 export default userBookingSlice.reducer;  
