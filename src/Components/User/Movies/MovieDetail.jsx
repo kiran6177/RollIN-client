@@ -10,6 +10,7 @@ import pinlogo from '../../../assets/pin-logo.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { userGetBannerMovies, userGetMoviesByGenre, userGetOneMovie, userGetRecommendedMoviesWithLocation, userGetSingleMovie } from '../../../features/userMovies/userMovieActions'
+import { userGetRecommendedMovies, userGetUpcomingMovies } from '../../../features/userBooking/userBookingActions'
 
 
 function MovieDetail() {
@@ -18,7 +19,9 @@ function MovieDetail() {
     const [searchParams] = useSearchParams();
     const movie_id = searchParams.get("movie_id");
 
-    const {recommendedMovies,error,moviesByGenre,singleMovieDetail} = useSelector(state=>state.userMovie)
+    const {error,moviesByGenre,singleMovieDetail} = useSelector(state=>state.userMovie)
+    const {userData,userToken} = useSelector(state=>state.user);
+    const {recommendedMovies} = useSelector(state=>state.userBooking)
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -36,9 +39,9 @@ function MovieDetail() {
             if(!movieFound){
                 if(localStorage.getItem('city')){
                     const loc = JSON.parse(localStorage.getItem('city')).loc;
-                    dispatch(userGetSingleMovie({location:loc,movie_id}))
+                    dispatch(userGetOneMovie({location:loc,movie_id}))
                 }else{
-                    dispatch(userGetSingleMovie({movie_id}))
+                    dispatch(userGetOneMovie({movie_id}))
                 }
             }
         }else{
@@ -46,7 +49,8 @@ function MovieDetail() {
                 const loc = JSON.parse(localStorage.getItem('city')).loc;
                 dispatch(userGetBannerMovies({location:loc}))
                 dispatch(userGetMoviesByGenre({location:loc}))
-                dispatch(userGetRecommendedMoviesWithLocation({location:loc}))
+                dispatch(userGetUpcomingMovies({data:{location:loc},token:userToken}))
+                dispatch(userGetRecommendedMovies({data:{location:loc},token:userToken}))
             }else{ 
                 dispatch(userGetBannerMovies())
                 dispatch(userGetMoviesByGenre())
@@ -66,6 +70,9 @@ function MovieDetail() {
       }
     },[error,singleMovieDetail])
 
+    const today = new Date()
+    today.setHours(0,0,0,0)
+
   return (
     <div className='pt-0 min-h-[80vh] bg-[#15121B]'>
     <Toaster richColors />
@@ -82,7 +89,7 @@ function MovieDetail() {
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
               </div> 
-              {movie?.isDislocated || <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>BOOK TICKETS</button>}
+              {(!movie?.isDislocated && !movie?.isDisabled) && movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>BOOK TICKETS</button> :  <button onClick={()=>{}} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>SET REMINDER</button>}
             </div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={movie?.backdrop_path} alt="" className='mt-20 md:mt-0  mx-auto object-fill w-[100%]' />
@@ -100,7 +107,7 @@ function MovieDetail() {
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
           </div>
-          {(!movie?.isDislocated && !movie?.isDisabled) && <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button>}
+          {(!movie?.isDislocated && !movie?.isDisabled) && movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button> : <button onClick={()=>{}} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>SET REMINDER</button>}
         </div>
           }
  

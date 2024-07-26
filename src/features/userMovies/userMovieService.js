@@ -12,9 +12,9 @@ export const userGetAllMoviesService = (filters)=>{
     return axios.post('/movie/getallmovieswithfilters',{filters})
 }
 
-export const userGetRecommendedMoviesWithLocationService = (data)=>{
-    return axios.post(`/movie/getrecommendedmovies`,data)
-}
+// export const userGetRecommendedMoviesWithLocationService = (data)=>{
+//     return axios.post(`/movie/getrecommendedmovies`,data)
+// }
 
 export const userGetPersonService = (data)=>{
     return axios.post(`/movie/getperson`,data)

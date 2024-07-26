@@ -123,11 +123,7 @@ function ChangeShowModal({isOpen,set,enrolledMovies}) {
                                         <p className='mx-5 w-[100%]  text-ellipsis overflow-hidden'>Invalidate</p>
                                 </div>
                                 {
-                                enrolledMovies.filter(movie=>{
-                                    const today = new Date()
-                                    today.setHours(0,0,0,0)
-                                    return new Date(movie.release_date) <= today
-                                }).map((movie,i)=>{
+                                enrolledMovies.map((movie,i)=>{
                                     return (
                                     <div key={i} onClick={()=>handleShowSelect(movie)} className='min-h-[3rem] flex items-center bg-white rounded-sm  ml-[1.5px] mt-[1px] border-black w-[100%]'>
                                         <p className='mx-5 w-[100%]  text-ellipsis overflow-hidden'>{movie.title}</p>

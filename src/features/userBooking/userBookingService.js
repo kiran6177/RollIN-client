@@ -27,3 +27,11 @@ export const userPayProcessService = (data,token)=>{
 export const userGetOrdersService = (data,token)=>{
     return axios.post('/booking/getorders',data,{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const userGetUpcomingMoviesService = (data,token)=>{
+    return axios.post('/booking/getupcomingmovies',data,{headers:{Authorization:`Bearer ${token}`}})
+}
+
+export const userGetRecommendedMoviesService = (data,token)=>{
+    return axios.post('/booking/getrecommendedmovies',data,{headers:{Authorization:`Bearer ${token}`}})
+}

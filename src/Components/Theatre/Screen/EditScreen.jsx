@@ -393,8 +393,7 @@ function EditScreen() {
 
             {enrolledMovies && enrolledMovies.length > 0 && 
             <div className='border-2 border-[#f6ae2d] rounded-md bg-black px-8 py-6 my-6'>
-                <h4 className='text-[#f6ae2d] tracking-wider mb-8'>ENROLLED MOVIES</h4>
-                
+                <h4 className='text-[#f6ae2d] tracking-wider m'>ENROLLED MOVIES</h4>
                 {
                 enrolledMovies.map((movie,i)=>{
                     return(
@@ -425,7 +424,8 @@ function EditScreen() {
 
 
             <div className='border-2 border-[#f6ae2d] rounded-md bg-black px-8 py-6 my-6'>
-                <h4 className='text-[#f6ae2d] tracking-wider mb-8'>SHOWS</h4>
+                <h4 className='text-[#f6ae2d] tracking-wider '>SHOWS</h4>
+                <p className='text-white text-xs b-8'><sup>*</sup> Extended movies needed Show re-assignment.</p>
                 <div className='flex flex-col lg:flex-row justify-between'>
                     <div className='lg:w-[55%]'>
                     {

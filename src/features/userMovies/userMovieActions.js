@@ -41,18 +41,18 @@ export const userGetAllMovies = createAsyncThunk('userGetAllMovies', async (filt
     }
 })
 
-export const userGetRecommendedMoviesWithLocation = createAsyncThunk('userGetRecommendedMoviesWithLocation', async (data,thunkAPI) =>{
-    try {
-        const response =  await userGetRecommendedMoviesWithLocationService(data); 
-        console.log(response.data);
-        // if(response.data?.newUserToken){
-        //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
-        // }
-        return response.data;
-    } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.error);
-    }
-})
+// export const userGetRecommendedMoviesWithLocation = createAsyncThunk('userGetRecommendedMoviesWithLocation', async (data,thunkAPI) =>{
+//     try {
+//         const response =  await userGetRecommendedMoviesWithLocationService(data); 
+//         console.log(response.data);
+//         // if(response.data?.newUserToken){
+//         //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+//         // }
+//         return response.data;
+//     } catch (error) {
+//         return thunkAPI.rejectWithValue(error.response.data.error);
+//     }
+// })
 
 export const userGetPerson = createAsyncThunk('userGetPerson', async (data,thunkAPI) =>{
     try {
@@ -67,18 +67,18 @@ export const userGetPerson = createAsyncThunk('userGetPerson', async (data,thunk
     }
 })
 
-export const userGetSingleMovie = createAsyncThunk('userGetSingleMovie', async (data,thunkAPI) =>{
-    try {
-        const response =  await userGetSingleMovieService(data); 
-        console.log(response.data);
-        // if(response.data?.newUserToken){
-        //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
-        // }
-        return response.data;
-    } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data.error);
-    }
-})
+// export const userGetSingleMovie = createAsyncThunk('userGetSingleMovie', async (data,thunkAPI) =>{
+//     try {
+//         const response =  await userGetSingleMovieService(data); 
+//         console.log(response.data);
+//         // if(response.data?.newUserToken){
+//         //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+//         // }
+//         return response.data;
+//     } catch (error) {
+//         return thunkAPI.rejectWithValue(error.response.data.error);
+//     }
+// })
 
 export const userGetOneMovie = createAsyncThunk('userGetOneMovie', async (data,thunkAPI) =>{
     try {

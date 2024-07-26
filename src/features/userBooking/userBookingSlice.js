@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { userGetOrders, userGetShowData, userGetShowDataByMovie, userGetSingleShowData, userPayNow, userPayProcess, userSeatReservation } from "./userBookingActions";
+import { userGetOrders, userGetRecommendedMovies, userGetShowData, userGetShowDataByMovie, userGetSingleShowData, userGetUpcomingMovies, userPayNow, userPayProcess, userSeatReservation } from "./userBookingActions";
 
 const initialState = {
     singleTheatreShows:null,
@@ -8,6 +8,8 @@ const initialState = {
     selectedSeats:null,
     payment_data:null,
     booking_data:null,
+    upcomingMovies:null,
+    recommendedMovies:null,
     orders:null,
     success:false,
     error:'',
@@ -130,6 +132,32 @@ const userBookingSlice = createSlice({
             state.loading = true;
         })
         .addCase(userGetOrders.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userGetUpcomingMovies.fulfilled,(state,action)=>{
+            console.log(action);
+            state.upcomingMovies = action.payload?.resultData
+            state.loading = false;
+        })
+        .addCase(userGetUpcomingMovies.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetUpcomingMovies.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userGetRecommendedMovies.fulfilled,(state,action)=>{
+            console.log(action);
+            state.recommendedMovies = action.payload?.resultData
+            state.loading = false;
+        })
+        .addCase(userGetRecommendedMovies.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetRecommendedMovies.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload?.reasons
             state.loading = false;
