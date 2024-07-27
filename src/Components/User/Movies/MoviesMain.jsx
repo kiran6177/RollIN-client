@@ -159,8 +159,8 @@ function MoviesMain() {
       <div className='text-white my-10'>
         <div className='flex flex-col gap-4 my-4'>
         <h3 className='text-lg font-medium tracking-wider'>Search</h3>
-        <div className='flex gap-8'>
-          <input value={query} onChange={(e)=>setQuery(e.target.value)} type="text" className='bg-black border-2 border-[#f6ae2d] rounded-md p-2 w-[70%]' />
+        <div className='flex flex-col md:flex-row gap-8'>
+          <input value={query} onChange={(e)=>setQuery(e.target.value)} type="text" className='bg-black border-2 border-[#f6ae2d] rounded-md p-2 md:w-[70%]' />
           <button onClick={handleSearch} className='border-2 border-[#f6ae2d] rounded-md text-black bg-[#f6ae2d] px-6 py-2 hover:bg-black hover:text-white transition-all duration-150 ease-in-out'>SEARCH</button>
         </div>
         </div>
@@ -178,10 +178,10 @@ function MoviesMain() {
           }
 
         </div>
-        <div className='flex gap-6 mt-4'>
-          <div className='border-2 border-[#f6ae2d] w-[40%] bg-black rounded-sm p-6'>
+        <div className='flex flex-col lg:flex-row gap-6 mt-4'>
+          <div className='border-2 border-[#f6ae2d] xl:w-[40%] bg-black rounded-sm p-6'>
             <h3 className='text-[#f6ae2d]'>LANGUAGE</h3>
-            <div className='my-4 flex gap-4 flex-wrap text-white'>
+            <div className='my-4 flex gap-4 flex-wrap text-white max-h-[10rem] overflow-y-scroll lg:max-h-max'>
               {
                 languages && languages.length > 0 &&
                 languages.map((lang,i)=>{
@@ -195,9 +195,9 @@ function MoviesMain() {
             
 
           </div>
-          <div className='border-2 border-[#f6ae2d] w-[40%] bg-black rounded-sm p-6'>
+          <div className='border-2 border-[#f6ae2d] xl:w-[40%] bg-black rounded-sm p-6'>
             <h3 className='text-[#f6ae2d]'>GENRE</h3>
-            <div className='my-4 flex gap-4 flex-wrap text-white'>
+            <div className='my-4 flex gap-4 flex-wrap text-white max-h-[10rem] overflow-y-scroll lg:max-h-max'>
               {
                 GENRES && GENRES.length > 0 &&
                 GENRES.map((genre,i)=>{

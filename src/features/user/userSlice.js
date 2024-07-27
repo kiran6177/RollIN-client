@@ -1,5 +1,5 @@
 import {  createSlice } from '@reduxjs/toolkit';
-import { googleAuth, userEmailLogin, userLogout, userResendOtp, userVerifyOtp } from './userActions';
+import { googleAuth, userEditEmail, userEditProfile, userEditResend, userEmailLogin, userLogout, userProfileVerifyOtp, userResendOtp, userVerifyOtp } from './userActions';
 
 
 
@@ -41,6 +41,7 @@ const userSlice = createSlice({
             state.userData = action.payload.data;
             state.userToken = action.payload.accessToken;
             state.success = true;
+            state.loading = false
         })
         .addCase(googleAuth.pending,(state)=>{
             state.loading = true;
@@ -55,6 +56,7 @@ const userSlice = createSlice({
             //     state.userToken = action.payload?.newUserToken;
             //     state.userData = action.payload?.newUserData 
             // }
+            state.loading = false
         })
         .addCase(userLogout.pending,(state)=>{
             state.loading = true;
@@ -109,6 +111,86 @@ const userSlice = createSlice({
             state.loading = true;
         })
         .addCase(userResendOtp.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userEditProfile.fulfilled,(state,action)=>{
+            console.log(action);
+            if(action.payload?.resultData){
+                state.userData = action.payload.resultData
+                state.message = 'Profile Updated Successfully.'
+            }
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userEditProfile.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userEditProfile.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            if(action.payload && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized User!!'){
+                state.userToken = null;
+                state.userData = null;
+            }
+            state.loading = false;
+        })
+        .addCase(userEditEmail.fulfilled,(state,action)=>{
+            console.log(action);
+            if(action.payload?.resultData){
+                console.log("EMAIL CHANGED LOGOUT");
+                state.message = 'OTP is sent to your email.'
+            }
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userEditEmail.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userEditEmail.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            if(action.payload && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized User!!'){
+                state.userToken = null;
+                state.userData = null;
+            }
+            state.loading = false;
+        })
+        .addCase(userProfileVerifyOtp.fulfilled,(state,action)=>{
+            console.log(action);
+            if(action.payload?.resultData){
+                state.userData = action.payload.resultData
+                state.message = 'Email Updated Successfully.'
+            }
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userProfileVerifyOtp.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userProfileVerifyOtp.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            if(action.payload && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized User!!'){
+                state.userToken = null;
+                state.userData = null;
+            }
+            state.loading = false;
+        })
+        .addCase(userEditResend.fulfilled,(state,action)=>{
+            console.log(action);
+            if(action.payload.success){
+                state.message = 'OTP Resend Successfully.'
+            }
+            // state.userData = action.payload.userData
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userEditResend.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userEditResend.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload?.reasons
             state.loading = false;

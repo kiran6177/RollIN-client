@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutUser } from '../../../features/user/userSlice';
 import { useNavigate } from 'react-router';
-import { userLogout } from '../../../features/user/userActions';
+import ProfileNavbar from './ProfileNavbar';
+const ProfileData  = lazy(()=>import('./ProfileData'));
+const Orders = lazy(()=>import('./Orders'));
 
 function Profile() {
-
+    const [selected,setSelected] = useState('PROFILE')
     const dispatch = useDispatch();
     const {userToken} = useSelector(state=>state.user)
+
     const navigate = useNavigate()
     useEffect(()=>{
         if(!userToken){
@@ -16,16 +18,14 @@ function Profile() {
         }
     },[userToken])
 
-    const handleLogout = ()=>{
-        dispatch(logoutUser())
-        dispatch(userLogout(userToken))
-    }
+
 
   return (
-    <div className='pt-32 bg-[#15121B]'>
+    <div className='pt-36 sm:pt-24 bg-[#15121B]'>
+      <ProfileNavbar selected={selected} setSelected={setSelected} />
       <div className='p-12'>
-      <h2 className='text-white font-semibold text-4xl'>User Profile</h2>
-      <button onClick={handleLogout} className='border-2 border-[#f6ae2d] bg-[#F6AE2D] px-12 py-2 rounded-sm font-semibold tracking-widest my-5 hover:bg-[black] hover:text-white transition-all duration-150 ease-in-out'>LOGOUT</button>
+        {selected === 'PROFILE' && <Suspense><ProfileData/></Suspense>}
+        {selected === 'ORDERS' && <Suspense><Orders/></Suspense>}
       </div>
     </div>
   )

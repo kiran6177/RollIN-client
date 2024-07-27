@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userGetShowDataByMovieService, userGetShowDataService, userGetSingleShowDataService, userPayNowService, userPayProcessService, userSeatReservationService } from "./userBookingService";
+import { userGetOrdersService, userGetRecommendedMoviesService, userGetShowDataByMovieService, userGetShowDataService, userGetSingleShowDataService, userGetUpcomingMoviesService, userPayNowService, userPayProcessService, userSeatReservationService } from "./userBookingService";
 import { setUsersData } from "../user/userSlice";
 
 export const userGetShowData = createAsyncThunk('userGetShowData', async (data,thunkAPI) =>{
@@ -70,6 +70,45 @@ export const userPayNow = createAsyncThunk('userPayNow', async ({data,token},thu
 export const userPayProcess = createAsyncThunk('userPayProcess', async ({data,token},thunkAPI) =>{
     try {
         const response =  await userPayProcessService(data,token); 
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userGetOrders = createAsyncThunk('userGetOrders', async ({data,token},thunkAPI) =>{
+    try {
+        const response =  await userGetOrdersService(data,token); 
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userGetUpcomingMovies = createAsyncThunk('userGetUpcomingMovies', async ({data,token},thunkAPI) =>{
+    try {
+        const response =  await userGetUpcomingMoviesService(data,token); 
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userGetRecommendedMovies = createAsyncThunk('userGetRecommendedMovies', async ({data,token},thunkAPI) =>{
+    try {
+        const response =  await userGetRecommendedMoviesService(data,token); 
         console.log(response.data);
         if(response.data?.newUserToken){
             thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))

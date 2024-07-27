@@ -1,24 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from '../features/user/userSlice.js'
-import adminReducer from '../features/admin/adminSlice.js'
-import theatreReducer from '../features/theatre/theatreSlice.js'
-import movieReducer from '../features/movie/movieSlice.js'
-import userMovieReducer from '../features/userMovies/userMovieSlice.js'
-import userTheatreReducer from '../features/userTheatres/userTheatreSlice.js'
-import theatreFeatReducer from '../features/theatreFeat/theatreFeatSlice.js'
-import theatreBookingReducer from '../features/theatreBookings/theatreBookingSlice.js'
-import userBookingReducer from '../features/userBooking/userBookingSlice.js'
+import rootReducer from '../features/rootReducer.js';
+import { persistStore,persistReducer, PAUSE, PERSIST, REGISTER, REHYDRATE, PURGE, FLUSH } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-export const store = configureStore({
-    reducer:{
-        user: userReducer,
-        admin:adminReducer,
-        theatre:theatreReducer,
-        movie:movieReducer,
-        userMovie:userMovieReducer,
-        userTheatre:userTheatreReducer,
-        theatreFeat:theatreFeatReducer,
-        theatreBooking:theatreBookingReducer,
-        userBooking:userBookingReducer
-    }
+const persistConfig = {
+    key: 'root',
+    storage,
+  }
+
+const persistedReducer = persistReducer(persistConfig,rootReducer)
+
+const store = configureStore({
+    reducer:persistedReducer,
+    middleware:(getDefaultMiddleware)=>
+        getDefaultMiddleware({
+            serializableCheck:{
+                ignoreActions:[PAUSE,PERSIST,REGISTER,REHYDRATE,PURGE,FLUSH]
+            }
+        })
 })
+
+export const persistor = persistStore(store);
+export default store

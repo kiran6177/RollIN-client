@@ -37,6 +37,7 @@ function ChangeShowModal({isOpen,set,enrolledMovies}) {
     const [hasData,setHasData] = useState(false);
     const [hasFilledBookings,setHasFilledBookings] = useState(false);
 
+
     useEffect(()=>{
         if(isOpen){
             const data = {screen_id,showdata:isOpen} 
@@ -91,6 +92,8 @@ function ChangeShowModal({isOpen,set,enrolledMovies}) {
 
     const handleBookingCancel = ()=>{
         console.log("cancel");
+        console.log(isOpen);
+        dispatch(theatreCancelShowBookings({data:{screen_id,showdata:isOpen},token:theatreToken}))
     }
 
     const handleNoBookingCancel = ()=>{

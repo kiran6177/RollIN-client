@@ -14,6 +14,10 @@ import TheatreMovieDetail from '../Pages/Theatre/MovieEnroll/TheatreMovieDetail'
 import TheatreSeatLayout from '../Pages/Theatre/SeatLayout/TheatreSeatLayout'
 import TheatreScreenDetail from '../Pages/Theatre/ScreenDetail/TheatreScreenDetail'
 import TheatreScreenHome from '../Pages/Theatre/ScreenHome/TheatreScreenHome'
+import TheatreBookingsHome from '../Pages/Theatre/Bookings/TheatreBookingsHome'
+import TheatreBookingsScreen from '../Pages/Theatre/Bookings/TheatreBookingsScreen'
+import TheatreShowReservations from '../Pages/Theatre/Bookings/TheatreShowReservations'
+import TheatreBookingsList from '../Pages/Theatre/Bookings/TheatreBookingsList'
 
 function TheatreRoutes() {
   return (
@@ -73,6 +77,26 @@ function TheatreRoutes() {
         <Route path='/movies/moviedetail' element={
         <TheatreProtected>
             <TheatreMovieDetail/>  
+        </TheatreProtected>
+        } />
+        <Route path='/bookings' element={
+        <TheatreProtected>
+            <TheatreBookingsHome/> 
+        </TheatreProtected>
+        } />
+        <Route path='/bookings/list' element={
+        <TheatreProtected>
+            <TheatreBookingsList/> 
+        </TheatreProtected>
+        } />
+        <Route path='/bookings/screen' element={
+        <TheatreProtected>
+            <TheatreBookingsScreen/> 
+        </TheatreProtected>
+        } />
+        <Route path='/bookings/reservations' element={
+        <TheatreProtected>
+            <TheatreShowReservations/> 
         </TheatreProtected>
         } />
     </Routes>

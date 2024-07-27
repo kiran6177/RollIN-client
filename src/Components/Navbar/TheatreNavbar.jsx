@@ -39,6 +39,7 @@ function TheatreNavbar({hide}) {
           </div>
           {theatreToken && <><NavLink to={'/theatre/movies'} className={'font-normal tracking-widest hidden lg:block'}>Movies</NavLink>
           <NavLink to={'/theatre/screens'} className={'font-normal tracking-widest hidden lg:block'}>Screens</NavLink>
+          <NavLink to={'/theatre/bookings'} className={'font-normal tracking-widest hidden lg:block'}>Bookings</NavLink>
           </>}
         </div>
         
