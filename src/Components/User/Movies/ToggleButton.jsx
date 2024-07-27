@@ -22,7 +22,7 @@ function ToggleButton({data,setToFilter,removeFromFilter,setAdded,type},ref) {
                 removeFromFilter(data)
             }
         }
-    } className={active+`border-2 border-[#f6ae2d] rounded-full px-6 py-1  font-medium text-sm`}>{data}</button>
+    } className={active+`border-2 border-[#f6ae2d] rounded-full px-6 py-1  font-medium text-xs md:text-sm`}>{data}</button>
   )
 }
 

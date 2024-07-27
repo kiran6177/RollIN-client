@@ -23,3 +23,7 @@ export const userGetPersonService = (data)=>{
 export const userGetSingleMovieService = (data)=>{
     return axios.post(`/movie/getsinglemovie`,data)
 }
+
+export const userMovieQueryService = (data)=>{
+    return axios.post(`/movie/querymovie`,data)
+}

@@ -7,3 +7,7 @@ export const userGetTheatresService = (data)=>{
 export const userGetSingleTheatreService = (data)=>{
     return axios.post('/theatre/getsingletheatre',data)
 }
+
+export const userTheatreQueryService = (data)=>{
+    return axios.post('/theatre/querytheatre',data)
+}

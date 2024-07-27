@@ -29,10 +29,18 @@ function Orders() {
     const {orders} = useSelector(state=>state.userBooking)
     const [page,setPage] = useState(1)
     const scrollRef = useRef(null)
+    const [ordersList,setOrdersList] = useState([]);
+    const [selected,setSelected] = useState('UPCOMING')
+
     useEffect(()=>{
       const data = {page:1}
       dispatch(resetOrders())
       dispatch(userGetOrders({data,token:userToken}))
+
+      return ()=>{
+      dispatch(resetOrders())
+      setPage(1)
+      } 
     },[])
 
     const nextPage = ()=>{
@@ -41,16 +49,31 @@ function Orders() {
       setPage(prev=>prev+1)
     }
 
+    useEffect(()=>{
+      if(orders?.length > 0 && selected){
+          let today = new Date()
+          today.setUTCHours(0,0,0,0)
+          console.log(today,"day");
+          if(selected === 'UPCOMING'){
+            let upcomingOrders = orders.filter(order=>new Date(order.show_date) >= today);
+            setOrdersList(upcomingOrders)
+          }else{
+            let watchedOrders = orders.filter(order=>new Date(order.show_date) < today)
+            setOrdersList(watchedOrders)
+          }
+      }
+    },[orders,selected])
+
   return (
     <div className='my-8'>
-          <h2 className='text-white text-3xl font-semibold tracking-widest'>ORDERS</h2>
-
+          <h2 className='text-white text-3xl font-semibold tracking-widest mb-5'>ORDERS</h2>
+          <span className='bg-[#c0871dd4] flex max-w-fit   font-medium tracking-wider gap-4 flex-wrap'><button onClick={()=>{setSelected('UPCOMING')}} className={selected === 'UPCOMING' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>UPCOMING</button><button onClick={()=>{setSelected('WATCHED')}} className={selected === 'WATCHED' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>WATCHED</button></span>
           <div ref={scrollRef} className='my-6 mx-auto flex flex-wrap gap-6 justify-evenly '>
         {
-            orders &&  orders.length > 0 ?
-            <InfiniteScroll dataLength={orders?.length} scrollThreshold={'750px'} scrollableTarget={scrollRef} next={nextPage} loader={<ScaleLoader className='absolute -bottom-[6rem] ' color='#f6ae2d'/>} hasMore={true} className='my-6 py-4 px-2 mx-auto flex flex-wrap gap-7 relative  justify-evenly scrollbar-none'>
+            ordersList &&  ordersList.length > 0 ?
+            <InfiniteScroll dataLength={ordersList?.length} scrollThreshold={'750px'} scrollableTarget={scrollRef} next={nextPage} loader={<ScaleLoader className='absolute -bottom-[6rem] ' color='#f6ae2d'/>} hasMore={true} className='my-6 py-4 px-2 mx-auto flex flex-wrap gap-7 relative  justify-evenly scrollbar-none'>
             {
-            orders.map((order)=>{
+            ordersList.map((order)=>{
               let {movie,theatre_id} = order
               let ticketCount = 0;
               order.seatdata.forEach(seatObject => {
@@ -97,7 +120,7 @@ function Orders() {
                         <h2>Tickets</h2>
                       </div>
                     </div>
-                    {new Date() < new Date(order.show_date) &&<button onClick={()=>setShowTicket(order)} className='bg-[#f6ae2d] absolute right-0 bottom-0 font-medium px-4 py-1 text-xs rounded-sm tracking-wider'>MORE</button>}
+                    {new Date().setUTCHours(0,0,0,0) <= new Date(order.show_date) &&<button onClick={()=>setShowTicket(order)} className='bg-[#f6ae2d] absolute right-0 bottom-0 font-medium px-4 py-1 text-xs rounded-sm tracking-wider'>MORE</button>}
                   </div>
             </motion.div>
             )

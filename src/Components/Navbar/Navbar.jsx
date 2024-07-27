@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import logo from '../../assets/logo.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { FaSearch , FaUserCircle, FaChevronRight  } from "react-icons/fa";
@@ -8,7 +8,7 @@ import NavModal from './NavModal';
 import SelectCity from './SelectCity';
 import { useDispatch } from 'react-redux';
 import { userGetBannerMovies } from '../../features/userMovies/userMovieActions';
-import SearchModal from './SearchModal';
+const SearchModal =  lazy(()=>import('./SearchModal'));
 
 function Navbar({hide}) {
   const [isOpen,setIsOpen] = useState(false);
@@ -66,7 +66,9 @@ function Navbar({hide}) {
           Choose City <FaChevronRight/>
         </button>
     </div>
-    <SearchModal isOpen={showSearch} set={setShowSearch} />
+    <Suspense>
+      <SearchModal isOpen={showSearch} set={setShowSearch} />
+    </Suspense>
     <NavModal isOpen={isOpen} set={setIsOpen} />
     <SelectCity isOpen={showSelectCity} set={setShowSelectCity} />
     </>

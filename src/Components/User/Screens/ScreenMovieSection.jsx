@@ -79,7 +79,21 @@ function ScreenMovieSection() {
         }
     },[theatresDetailData]) 
 
-
+    useEffect(()=>{
+        if(singleTheatre && singleTheatre?._id !== theatre_id){
+            console.log("WROKED");
+            dispatch(userGetSingleTheatre({theatre_id}))
+            if(selectedDate){
+                const day = selectedDate.split(' ')[1];
+                const currentDate = new Date();
+                currentDate.setUTCDate(day);
+                currentDate.setUTCHours(0,0,0,0);
+                const datetoAdd = currentDate.toISOString()
+                const data = {date:datetoAdd,theatre_id}
+                dispatch(userGetShowData(data))
+            }
+        }
+    },[theatre_id])
 
     const handleShowBooking = (show)=>{
         const day = selectedDate.split(' ')[1];

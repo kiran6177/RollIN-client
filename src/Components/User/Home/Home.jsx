@@ -45,9 +45,11 @@ function Home() {
         let timer;
         if(showTrailer){
           clearInterval(timer)
+          setIndex(0)
           return
         }
         if(bannerMovies){
+          console.log("TIMER STARTED");
           timer = setInterval(()=>{
             setIndex(prev => (prev === (bannerMovies?.length - 1) ? 0 : prev + 1));
           },6000)
@@ -58,9 +60,6 @@ function Home() {
         }
     },[showTrailer,bannerMovies])
 
-    const handleBookTicket = ()=>{
-      console.log("hvjvj");
-    }
  
   return (
     <div className='pt-2 bg-[#15121B] '>
