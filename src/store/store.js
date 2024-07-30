@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from '../features/rootReducer.js';
-import { persistStore,persistReducer, PAUSE, PERSIST, REGISTER, REHYDRATE, PURGE, FLUSH } from 'redux-persist';
+import { persistStore,persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
@@ -8,15 +8,15 @@ const persistConfig = {
     storage,
   }
 
-const persistedReducer = persistReducer(persistConfig,rootReducer)
+const persistedReducer = persistReducer(persistConfig,rootReducer);
+
 
 const store = configureStore({
     reducer:persistedReducer,
     middleware:(getDefaultMiddleware)=>
         getDefaultMiddleware({
-            serializableCheck:{
-                ignoreActions:[PAUSE,PERSIST,REGISTER,REHYDRATE,PURGE,FLUSH]
-            }
+            immutableCheck:false,
+            serializableCheck:false
         })
 })
 

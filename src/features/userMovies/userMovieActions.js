@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userGetAllMoviesService, userGetBannerMoviesService, userGetMoviesByGenreService, userGetPersonService, userGetRecommendedMoviesWithLocationService, userGetSingleMovieService, userMovieQueryService } from "./userMovieService";
+import { userAddReviewService, userGetAllMoviesService, userGetBannerMoviesService, userGetMoviesByGenreService, userGetPersonService, userGetRecommendedMoviesWithLocationService, userGetReviewsService, userGetSingleMovieService, userLikeUnlikeReviewService, userMovieQueryService } from "./userMovieService";
 import { setUsersData } from "../user/userSlice";
 
 export const userGetBannerMovies = createAsyncThunk('userGetBannerMovies', async (data,thunkAPI) =>{
@@ -100,6 +100,45 @@ export const userMovieQuery = createAsyncThunk('userMovieQuery', async (data,thu
         // if(response.data?.newUserToken){
         //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
         // }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userGetReviews = createAsyncThunk('userGetReviews', async (data,thunkAPI) =>{
+    try {
+        const response =  await userGetReviewsService(data); 
+        console.log(response.data);
+        // if(response.data?.newUserToken){
+        //     thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        // }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userAddReview = createAsyncThunk('userAddReview', async ({data,token},thunkAPI) =>{
+    try {
+        const response =  await userAddReviewService(data,token); 
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userLikeUnlikeReview = createAsyncThunk('userLikeUnlikeReview', async ({data,token},thunkAPI) =>{
+    try {
+        const response =  await userLikeUnlikeReviewService(data,token); 
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
         return response.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.error);

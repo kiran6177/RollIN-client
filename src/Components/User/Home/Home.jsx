@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react'
+import React, {  lazy, Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router';
 import pinlogo from '../../../assets/pin-logo.png'
@@ -8,9 +8,8 @@ import { AnimatePresence , motion } from 'framer-motion';
 import MovieCard2 from '../../User/Movies/MovieCard2'
 import { userGetBannerMovies, userGetMoviesByGenre } from '../../../features/userMovies/userMovieActions';
 import { IoMdPlayCircle } from 'react-icons/io';
-import TrailerModal from '../Movies/TrailerModal';
 import { userGetRecommendedMovies, userGetUpcomingMovies } from '../../../features/userBooking/userBookingActions';
-
+const TrailerModal = lazy(()=>import('../Movies/TrailerModal'));
 
 function Home() {
     const {userData,userToken} = useSelector(state=>state.user);
@@ -45,7 +44,6 @@ function Home() {
         let timer;
         if(showTrailer){
           clearInterval(timer)
-          setIndex(0)
           return
         }
         if(bannerMovies){
@@ -98,7 +96,9 @@ function Home() {
             </motion.div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={bannerMovies[index]?.backdrop_path} alt="" className='mt-28 md:mt-0  mx-auto object-fill w-[100%]' />
-          <TrailerModal isOpen={showTrailer} set={setShowTrailer} videoKey={bannerMovies[index]?.video_link} />
+          <Suspense>
+            <TrailerModal isOpen={showTrailer} set={setShowTrailer} videoKey={bannerMovies[index]?.video_link} />
+          </Suspense>
           </motion.div>
           </AnimatePresence>
           }

@@ -12,6 +12,7 @@ import UserPersonDetail from '../Pages/User/PersonDetail/UserPersonDetail'
 import UserShowBooking from '../Pages/User/Showbooking/UserShowBooking'
 import UserMovieScreenSection from '../Pages/User/Screens/UserMovieScreenSection'
 import UserCheckout from '../Pages/User/Showbooking/UserCheckout'
+import UserReviewMain from '../Pages/User/Review/UserReviewMain'
 
 function UserRoutes() {
   return (
@@ -21,6 +22,7 @@ function UserRoutes() {
         <Route path={'/moviedetail'} element={<UserMovieDetail/>} />
         <Route path={'/persondetail'} element={<UserPersonDetail/>} />
         <Route path={'/screens'} element={<UserScreenList/>} />
+        <Route path={'/reviews'} element={<UserReviewMain/>} />
         <Route path={'/screenwithmovies'} element={<UserScreenMovieSection/>} />
         <Route path={'/moviewithscreens'} element={<UserMovieScreenSection/>} />
         <Route path={'/login'} element={<UserLogin/>} />  
