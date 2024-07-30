@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import MovieCard2 from './MovieCard2'
 import CastIcon from './CastIcon'
-import { FaRegCalendar } from 'react-icons/fa'
+import { FaRegCalendar, FaRegStar, FaStar } from 'react-icons/fa'
 import { MdOutlineTimer } from 'react-icons/md'
-import { Toaster } from 'sonner'
+import { toast, Toaster } from 'sonner'
 import { IoMdPlayCircle } from 'react-icons/io'
 import TrailerModal from './TrailerModal'
 import pinlogo from '../../../assets/pin-logo.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { userGetBannerMovies, userGetMoviesByGenre, userGetOneMovie, userGetRecommendedMoviesWithLocation, userGetSingleMovie } from '../../../features/userMovies/userMovieActions'
+import { userGetBannerMovies, userGetMoviesByGenre, userGetOneMovie, userGetRecommendedMoviesWithLocation, userGetReviews, userGetSingleMovie } from '../../../features/userMovies/userMovieActions'
 import { userGetRecommendedMovies, userGetUpcomingMovies } from '../../../features/userBooking/userBookingActions'
+import ReviewBox from '../Reviews/ReviewBox'
+import ReviewHashtag from '../Reviews/ReviewHashtag'
+import AddReviewModal from '../Reviews/AddReviewModal'
+import { resetReviewData, resetUserMovieActions } from '../../../features/userMovies/userMovieSlice'
 
 
 function MovieDetail() {
@@ -18,33 +22,19 @@ function MovieDetail() {
     const [showTrailer,setShowTrailer] = useState(false)
     const [searchParams] = useSearchParams();
     const movie_id = searchParams.get("movie_id");
+    const [stars,setStars] = useState(new Array(5).fill(false));
 
-    const {error,moviesByGenre,singleMovieDetail} = useSelector(state=>state.userMovie)
+    const {error,moviesByGenre,singleMovieDetail,message,reviews,hashtags} = useSelector(state=>state.userMovie)
     const {userData,userToken} = useSelector(state=>state.user);
     const {recommendedMovies} = useSelector(state=>state.userBooking)
+
+    const [showAddReview,setShowAddReview] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(()=>{
-        if(recommendedMovies){
-            let movieFound = false;
-            for(let movie of recommendedMovies){
-                if(movie._id == movie_id){
-                    setMovie(movie)
-                    movieFound = true;
-                    return
-                }
-            }
-            if(!movieFound){
-                if(localStorage.getItem('city')){
-                    const loc = JSON.parse(localStorage.getItem('city')).loc;
-                    dispatch(userGetOneMovie({location:loc,movie_id}))
-                }else{
-                    dispatch(userGetOneMovie({movie_id}))
-                }
-            }
-        }else{
+        if(!recommendedMovies){
             if(localStorage.getItem('city')){
                 const loc = JSON.parse(localStorage.getItem('city')).loc;
                 dispatch(userGetBannerMovies({location:loc}))
@@ -62,13 +52,25 @@ function MovieDetail() {
       if(singleMovieDetail && singleMovieDetail?._id === movie_id){
         console.log(singleMovieDetail);
         setMovie(singleMovieDetail)
+        if(singleMovieDetail?.rating){
+          console.log(Math.floor(singleMovieDetail.rating/2));
+          setStars(prev=>prev.map((each,i)=>{
+              if(i < Math.floor(singleMovieDetail.rating/2)){
+                  return true
+              }
+              return false
+          }))
+         }
         return
+      }else{
+        if(localStorage.getItem('city')){
+          const loc = JSON.parse(localStorage.getItem('city')).loc;
+          dispatch(userGetOneMovie({location:loc,movie_id}))
+        }else{
+            dispatch(userGetOneMovie({movie_id}))
+        }
       }
-      // if(error?.length > 0 && !singleMovieDetail){
-      //   dispatch(userGetOneMovie({movie_id}))
-      //   return
-      // }
-    },[error,singleMovieDetail])
+    },[singleMovieDetail])
 
     useEffect(()=>{
       if(movie && movie?._id !== movie_id){
@@ -80,7 +82,24 @@ function MovieDetail() {
             dispatch(userGetOneMovie({movie_id}))
         }
       }
+      if(movie_id){
+        dispatch(resetReviewData())
+      }
     },[movie_id])
+
+    useEffect(()=>{
+      if(!reviews){
+        dispatch(userGetReviews({movie_id}))
+      }
+    },[reviews])
+
+    useEffect(()=>{
+      if(message === "Review added successfully."){
+        toast.success(message)
+        setShowAddReview(false)
+        dispatch(resetUserMovieActions())
+      }
+    },[message])
 
     const today = new Date()
     today.setHours(0,0,0,0)
@@ -101,6 +120,17 @@ function MovieDetail() {
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
               </div> 
+              <div className=' flex gap-1 flex-wrap md:gap-8 '>
+                  <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'>Rating : {
+                                stars?.map((el,i)=>{
+                                    return(
+                                        stars[i]  
+                                        ? <FaStar key={i}  className='text-[#f6ae2d]' /> 
+                                        : <FaRegStar key={i} className='text-[#f6ae2d]' /> 
+                                    )
+                                })
+                             } </h5>
+              </div> 
               {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>BOOK TICKETS</button> :  <button onClick={()=>{}} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>SET REMINDER</button>:null}
             </div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
@@ -118,6 +148,17 @@ function MovieDetail() {
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{movie?.genres[0] ? movie?.genres[0]?.name ? movie?.genres[0]?.name : movie?.genres[0]  : '' }{movie?.genres[1] ? movie?.genres[1]?.name ? " / "+ movie?.genres[1]?.name : " / "+ movie?.genres[1] : '' }{movie?.genres[2] ? movie?.genres[2]?.name ? " / "+ movie?.genres[2]?.name :" / "+ movie?.genres[2] : '' }</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.release_date.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{movie?.runtime + " min"}</h5>
+          </div>
+          <div className=' flex gap-1 flex-wrap md:gap-8 '>
+              <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'>Rating :  {
+                                stars?.map((el,i)=>{
+                                    return(
+                                        stars[i]  
+                                        ? <FaStar key={i}  className='text-[#f6ae2d]' /> 
+                                        : <FaRegStar key={i} className='text-[#f6ae2d]' /> 
+                                    )
+                                })
+                             }</h5>
           </div>
           {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button> : <button onClick={()=>{}} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>SET REMINDER</button> : null}
         </div>
@@ -174,7 +215,44 @@ function MovieDetail() {
 
           </div>
 
-          <div className='py-10 text-white flex flex-col gap-4 w-[95%] '>
+          <div className='py-10 text-white flex flex-col gap-4 w-[100%] '>
+            <div className='h-[2rem] flex gap-1 sm:gap-4'>
+              <img src={pinlogo} alt="" className='object-cover h-full' />
+              <h1 className='text-base sm:text-lg font-medium tracking-wide'>Top Reviews</h1>
+            </div>
+              <div className='px-6 flex justify-between'>
+                <div className='flex overflow-x-scroll w-[85%] scrollbar-none gap-5'>
+                  {hashtags && Object.entries(hashtags).map((tagObj,i)=>{
+                    if(i < 10){
+                      return(
+                        <ReviewHashtag key={tagObj+i} tag={tagObj[0]} count={tagObj[1]} />
+                      )
+                    }
+                    return null
+                  })}
+
+                </div>
+                <div>
+                  <button onClick={()=>navigate(`/reviews?movie_id=${movie_id}`)} className='text-[#f6ae2d] tracking-wide'>View Reviews </button>
+                </div>
+              </div>
+            <div className='flex gap-8 overflow-x-scroll px-6 py-3 snap-x scrollbar-none'>
+           {
+            reviews?.length > 0 && reviews.map((eachReview,i)=>{
+              if(i < 10){
+                return (
+                  <ReviewBox key={eachReview?._id} review={eachReview} />
+                )
+              }
+              return null
+            })
+           } 
+            </div>
+             {userToken && new Date(movie?.release_date) < today && <> <button onClick={()=>setShowAddReview(true)} className='bg-[#f6ae2d] border-2 border-[#f6ae2d] max-w-fit px-7 py-[6px] text-black tracking-wider font-medium rounded-sm mx-auto hover:bg-black hover:text-white transition-all duration-150 ease-linear'>ADD REVIEW</button>
+              <AddReviewModal isOpen={showAddReview} set={setShowAddReview} /></>}
+          </div>
+
+          <div className='py-10 text-white flex flex-col gap-4 w-[100%] '>
             <div className='h-[2rem] flex gap-1 sm:gap-4'>
               <img src={pinlogo} alt="" className='object-cover h-full' />
               <h1 className='text-base sm:text-lg font-medium tracking-wide'>You might also like</h1>

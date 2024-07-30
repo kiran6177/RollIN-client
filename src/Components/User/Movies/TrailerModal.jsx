@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { createPortal } from 'react-dom'
 import { IoIosClose } from 'react-icons/io';
 import { motion } from 'framer-motion';
@@ -28,9 +28,7 @@ const opts = {
   };
 
 function TrailerModal({isOpen,set,videoKey}) {
-    useEffect(()=>{
-        console.log(videoKey);
-    },[videoKey])
+
     if(isOpen){ 
         return createPortal(
             <div className='w-[100%] h-[100vh] fixed top-0 pt-32 md:pt-26 flex items-center justify-center bg-[#00000091]'>

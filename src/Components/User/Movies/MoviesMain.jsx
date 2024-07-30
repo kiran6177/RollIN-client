@@ -52,6 +52,9 @@ function MoviesMain() {
         }else{
           dispatch(userGetAllMovies({page:1}))
         }
+        return ()=>{
+        dispatch(resetAllMoviesData())
+        }
     },[])
 
     useEffect(()=>{

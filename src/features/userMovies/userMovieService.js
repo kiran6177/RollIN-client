@@ -27,3 +27,15 @@ export const userGetSingleMovieService = (data)=>{
 export const userMovieQueryService = (data)=>{
     return axios.post(`/movie/querymovie`,data)
 }
+
+export const userGetReviewsService = (data)=>{
+    return axios.post(`/movie/getreviews`,data)
+}
+
+export const userAddReviewService = (data,token)=>{
+    return axios.post(`/movie/addreview`,data,{headers:{Authorization:`Bearer ${token}`}})
+}
+
+export const userLikeUnlikeReviewService = (data,token)=>{
+    return axios.post(`/movie/likeunlikereview`,data,{headers:{Authorization:`Bearer ${token}`}})
+}
