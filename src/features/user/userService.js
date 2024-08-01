@@ -35,3 +35,7 @@ export const userEditResendService = (data,access_token)=>{
 export const userProfileVerifyOtpService = (data,access_token)=>{
     return axios.post('/auth/user/verifyotpprofile',data,{headers:{Authorization:`Bearer ${access_token}`}})
 }
+
+export const userGetNotificationsService = (data,access_token)=>{
+    return axios.post('/auth/user/getnotifications',data,{headers:{Authorization:`Bearer ${access_token}`}})
+}

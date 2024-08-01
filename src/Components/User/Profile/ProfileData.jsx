@@ -7,6 +7,7 @@ import { profileReducer } from './ProfileReducer';
 import { LuImagePlus } from "react-icons/lu";
 import { toast, Toaster } from 'sonner';
 import { useNavigate } from 'react-router';
+import { useSocket } from '../../../hooks/socket';
 const UpdateOtpModal = lazy(()=> import('./UpdateOtpModal'));
 
 function ProfileData() {
@@ -20,6 +21,7 @@ function ProfileData() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     
     const [showOtp,setShowOtp] = useState(false);
+    const socket = useSocket();
 
     const [profileState,profileDispatch] = useReducer(profileReducer,{firstname:'',lastname:'',email:'',mobile:0,street:'',landmark:'',city:'',state:'',pincode:0})
 
@@ -67,6 +69,7 @@ function ProfileData() {
     },[message,error])
 
     const handleLogout = ()=>{
+        socket?.emit('remove-user',userData?.id)
         dispatch(logoutUser())
         dispatch(userLogout(userToken))
     }

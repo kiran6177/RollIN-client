@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { googleUserAuthService , userEditEmailService, userEditProfileService, userEditResendService, userEmailLoginService, userLogoutService, userProfileVerifyOtpService, userResendOtpService, userVerifyOtpService} from './userService';
+import { googleUserAuthService , userEditEmailService, userEditProfileService, userEditResendService, userEmailLoginService, userGetNotificationsService, userLogoutService, userProfileVerifyOtpService, userResendOtpService, userVerifyOtpService} from './userService';
 import { setUsersData } from './userSlice';
 
 export const googleAuth = createAsyncThunk('userGoogleAuth',async (tokenResponse,thunkAPI)=>{
@@ -110,3 +110,18 @@ export const userProfileVerifyOtp = createAsyncThunk('userProfileVerifyOtp', asy
         return thunkAPI.rejectWithValue(error.response.data.error)
     }
 })
+
+export const userGetNotifications = createAsyncThunk('userGetNotifications', async({data,token},thunkAPI)=>{
+    try {
+        const response = await userGetNotificationsService(data,token)
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data
+    } catch (error) {
+        console.log(error);
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+

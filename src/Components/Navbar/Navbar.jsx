@@ -6,9 +6,12 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { FiChevronDown } from "react-icons/fi";
 import NavModal from './NavModal';
 import SelectCity from './SelectCity';
-import { useDispatch } from 'react-redux';
-import { userGetBannerMovies } from '../../features/userMovies/userMovieActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSocket } from '../../hooks/socket';
+import { updateUnread } from '../../features/user/userSlice';
+import { AnimatePresence } from 'framer-motion';
 const SearchModal =  lazy(()=>import('./SearchModal'));
+const NotificationToast = lazy(()=>import('./NotificationToast'));
 
 function Navbar({hide}) {
   const [isOpen,setIsOpen] = useState(false);
@@ -17,8 +20,12 @@ function Navbar({hide}) {
 
   const [showSelectCity,setShowSelectCity] = useState(false);
   const [showSearch,setShowSearch] = useState(false);
+  const {unread} = useSelector(state=>state.user)
+
+  const [showNotification,setShowNotification] = useState(false);
 
   const dispatch = useDispatch()
+  const socket = useSocket();
 
   const handleProfile = ()=>{
     navigate('/profile')
@@ -31,11 +38,28 @@ function Navbar({hide}) {
     }
   }
 
+
   useEffect(()=>{
     if(!localStorage.getItem("city")){
       setShowSelectCity(true)
     }
   },[])
+
+  useEffect(()=>{
+    const handleNewNotification = (notification)=>{
+      console.log("NEW",notification);
+      dispatch(updateUnread(notification))
+      setShowNotification(notification);
+      setTimeout(()=>{
+        setShowNotification(false)
+      },6000)
+    }
+    socket?.on('new-notifications',handleNewNotification)
+
+    return ()=>{
+      socket?.off('new-notifications',handleNewNotification)
+    }
+  },[socket])
 
   window.addEventListener('scroll',handleScroll)
 
@@ -56,8 +80,11 @@ function Navbar({hide}) {
             {localStorage.getItem("city") ? JSON.parse(localStorage.getItem('city'))?.name?.split(',')[0] :'Choose City' }<FiChevronDown/>
           </button>
           <FaSearch onClick={()=>setShowSearch(true)} className='text-white w-[1.5rem] h-[1.5rem]'  />
+          <div className='relative'>
           <FaUserCircle onClick={handleProfile} className='text-white w-[1.7rem] h-[1.7rem] hidden lg:block ' />
+          {unread && <p className='bg-red-500 absolute -top-2 -right-2 w-[1.4rem] h-[1.4rem] rounded-full text-white font-semibold flex items-center justify-center text-xs p-2'>{unread?.length}</p>}
           <RxHamburgerMenu onClick={()=>setIsOpen(true)} className='text-white w-[1.7rem] h-[1.7rem] block opacity-100 lg:hidden lg:opacity-0 transition-all duration-500 ease-in-out' />
+          </div>
       </div>
       
     </div>  
@@ -71,6 +98,7 @@ function Navbar({hide}) {
     </Suspense>
     <NavModal isOpen={isOpen} set={setIsOpen} />
     <SelectCity isOpen={showSelectCity} set={setShowSelectCity} />
+    <AnimatePresence>    {showNotification && <Suspense><NotificationToast notification={showNotification} /></Suspense>} </AnimatePresence>
     </>
   )
 }
