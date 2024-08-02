@@ -10,6 +10,7 @@ function NotificationToast({notification}) {
   const [desc,setDesc] = useState('');
 
   const {userData} = useSelector(state=>state.user);
+  const {theatreData} = useSelector(state=>state.theatre);
 
   useEffect(()=>{
     if(userData && notification){
@@ -24,7 +25,19 @@ function NotificationToast({notification}) {
         setDesc("Don't Miss It.")
       }
     }
-  },[notification,userData])
+    if(theatreData && notification){
+      if(notification?.type === "ENROLLMENT_ENDED"){
+        setImage(notification?.moviedata?.backdrop_path)
+        setHeader(`Hey ${theatreData?.name}, ${notification?.moviedata?.title}'s enrollment is ending.!! `);
+        setDesc("Enroll or Extend to continue booking.")
+      }
+      if(notification?.type === "BOOKINGS_ENDED"){
+        setImage(notification?.moviedata?.backdrop_path)
+        setHeader(`Hey ${theatreData?.name}, ${notification?.showdata?.show_time} show bookings ends today.!! `);
+        setDesc("Change movie to continue bookings.")
+      }
+    }
+  },[notification,userData,theatreData])
 
   return (
     <motion.div 
@@ -38,7 +51,7 @@ function NotificationToast({notification}) {
         <IoNotificationsSharp className='text-[#f6ae2d] w-[2rem] h-[2rem] animate-bounce' />
         </div>
         <div className='flex flex-col gap-2'>
-          <h2 className='text-[#f6ae2d] tracking-wider text-sm sm:text-base whitespace-nowrap z-[51]'>{header}</h2>
+          <h2 className='text-[#f6ae2d] tracking-wider text-sm sm:text-base  '>{header}</h2>
           <h2 className='text-white font-light tracking-wide text-xs sm:text-sm'>{desc}</h2>
         </div>
       </div>

@@ -1,27 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { userGetNotifications } from '../../../features/user/userActions';
-import ShowNotificationBox from '../../Notifications/ShowNotificationBox';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useDispatch, useSelector } from 'react-redux'
 import { ScaleLoader } from 'react-spinners';
-import { resetNotifications } from '../../../features/user/userSlice';
+import { Toaster } from 'sonner'
+import WarningNotficationBox from '../../Notifications/WarningNotficationBox';
+import { resetTheatreNotifications, theatreGetNotifications } from '../../../features/theatre/theatreSlice';
 import { useSocket } from '../../../hooks/socket';
-import MovieReminderNotfication from '../../Notifications/MovieReminderNotfication';
+import BookingWarnNotification from '../../Notifications/BookingWarnNotification';
 
-function Notifications() {
-    const dispatch = useDispatch();
-    const {userToken,notifications} = useSelector(state=>state.user);
+function NotificationsHome() {
+
+    const {theatreToken,notifications} = useSelector(state=>state.theatre);
     const scrollRef = useRef(null);
+    const dispatch = useDispatch();
     const [page,setPage] = useState(1);
-
     const socket = useSocket();
-
+    
     useEffect(()=>{
-        dispatch(userGetNotifications({data:{page:1},token:userToken}))
-        return ()=>{
-            dispatch(resetNotifications())
+        if(theatreToken){
+            dispatch(theatreGetNotifications({data:{page:1},token:theatreToken}))
         }
-    },[])
+        return ()=>{
+            dispatch(resetTheatreNotifications())
+        }
+    },[theatreToken])
+
 
     useEffect(()=>{
         if(notifications?.length > 0){
@@ -31,20 +34,21 @@ function Notifications() {
                 }
                 return acc
             },[])
-            console.log(unreadNotificationsIds);
-            socket?.emit('read-notifications',unreadNotificationsIds)
+            console.log("THEATREUNREAD",unreadNotificationsIds);
+            socket?.emit('read-notifications-theatre',unreadNotificationsIds)
         }
     },[notifications])
 
     const nextPage = ()=>{
-        dispatch(userGetNotifications({data:{page:page+1},token:userToken}));
+        dispatch(theatreGetNotifications({data:{page:page+1},token:theatreToken}))
         setPage(prev=>prev+1);
     }
 
   return (
-    <div className='my-8'>
-          <h2 className='text-white text-3xl font-semibold tracking-widest mb-5'>NOTIFICATIONS</h2>
-
+    <div className='py-10 bg-[#15121B] '>
+        <Toaster richColors />
+        <div className='pt-28 px-12  min-h-[10rem]'>
+            <h5 className='text-white text-4xl font-semibold tracking-widest'>NOTIFICATIONS</h5>
             <div ref={scrollRef} className='flex flex-col gap-8'>
             {
                 notifications &&  notifications.length > 0 ?
@@ -52,10 +56,10 @@ function Notifications() {
                 {
                 notifications.map((eachNoti)=>{
                     switch(eachNoti.type){
-                        case 'SHOW_ALERT':
-                            return (<ShowNotificationBox key={eachNoti._id} notification={eachNoti} />)
-                        case 'MOVIE_REMINDER':
-                            return (<MovieReminderNotfication key={eachNoti._id} notification={eachNoti} />)
+                        case 'ENROLLMENT_ENDED':
+                            return (<WarningNotficationBox key={eachNoti._id} notification={eachNoti} />)
+                        case 'BOOKINGS_ENDED':
+                            return (<BookingWarnNotification key={eachNoti._id} notification={eachNoti} />)
                         default :
                             return null
                     }
@@ -66,8 +70,9 @@ function Notifications() {
                 : <div className='text-white tracking-widest'> NO NOTIFICATIONS.</div>
             }
             </div>
+        </div>
     </div>
   )
 }
 
-export default Notifications
+export default NotificationsHome

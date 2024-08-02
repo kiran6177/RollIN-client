@@ -11,7 +11,7 @@ import { useSocket } from '../../hooks/socket';
 import { updateUnread } from '../../features/user/userSlice';
 import { AnimatePresence } from 'framer-motion';
 const SearchModal =  lazy(()=>import('./SearchModal'));
-const NotificationToast = lazy(()=>import('./NotificationToast'));
+const NotificationToast = lazy(()=>import('../Notifications/NotificationToast'));
 
 function Navbar({hide}) {
   const [isOpen,setIsOpen] = useState(false);

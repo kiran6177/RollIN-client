@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import { getTimeFrame } from '../../../utils/getTimeFrame';
+import { getTimeFrame } from '../../utils/getTimeFrame';
 
 const cardVariants = {
   hidden:{
