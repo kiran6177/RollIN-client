@@ -101,6 +101,10 @@ function TheatreNavModal({isOpen,set}) {
                     <img src={PinLogo} alt="" className="w-8" />
                     <NavLink to={'/theatre/bookings'} className={'font-medium tracking-widest text-sm '}>Bookings</NavLink>
                 </div>
+                <div className="text-white flex items-center py-5">
+                    <img src={PinLogo} alt="" className="w-8" />
+                    <NavLink to={'/theatre/notifications'} className={'font-medium tracking-widest text-sm '}>Notifications</NavLink>
+                </div>
                 </>
                 }
               </motion.div>

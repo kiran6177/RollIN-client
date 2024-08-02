@@ -84,8 +84,13 @@ function ScreenMovieSection() {
             console.log("WROKED");
             dispatch(userGetSingleTheatre({theatre_id}))
             if(selectedDate){
+                const now = new Date()
+                const todayDay = now.getDate();
                 const day = selectedDate.split(' ')[1];
                 const currentDate = new Date();
+                if(Math.abs(todayDay - parseInt(day)) > 4){
+                    currentDate.setUTCMonth(currentDate.getUTCMonth()+1)
+                }
                 currentDate.setUTCDate(day);
                 currentDate.setUTCHours(0,0,0,0);
                 const datetoAdd = currentDate.toISOString()
@@ -96,8 +101,13 @@ function ScreenMovieSection() {
     },[theatre_id])
 
     const handleShowBooking = (show)=>{
+        const now = new Date()
+        const todayDay = now.getDate();
         const day = selectedDate.split(' ')[1];
         const currentDate = new Date();
+        if(Math.abs(todayDay - parseInt(day)) > 4){
+            currentDate.setUTCMonth(currentDate.getUTCMonth()+1)
+        }
         currentDate.setUTCDate(day);
         currentDate.setUTCHours(0,0,0,0);
         const datetoAdd = currentDate.toISOString()

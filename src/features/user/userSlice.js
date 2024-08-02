@@ -1,11 +1,13 @@
 import {  createSlice } from '@reduxjs/toolkit';
-import { googleAuth, userEditEmail, userEditProfile, userEditResend, userEmailLogin, userLogout, userProfileVerifyOtp, userResendOtp, userVerifyOtp } from './userActions';
+import { googleAuth, userEditEmail, userEditProfile, userEditResend, userEmailLogin, userGetNotifications, userLogout, userProfileVerifyOtp, userResendOtp, userVerifyOtp } from './userActions';
 
 
 
 const initialState = {
     userData: null,
     userToken:null,
+    notifications:null,
+    unread:null,
     success:false,
     error:'',
     loading:false,
@@ -22,6 +24,9 @@ const userSlice = createSlice({
             state.loading = false
             state.message = ''
         },
+        resetNotifications:(state)=>{
+            state.notifications = null
+        },
         logoutUser:(state)=>{
             state.userData = null
             state.userToken = null
@@ -29,10 +34,17 @@ const userSlice = createSlice({
             state.error = ''
             state.loading = false
             state.message = ''
+            state.unread = null
         },
         setUsersData:(state,action)=>{
             state.userData = action.payload?.data
             state.userToken = action.payload?.token
+        },
+        setUnread:(state,action)=>{
+            state.unread = action.payload
+        },
+        updateUnread:(state,action)=>{
+            state.unread = state.unread?.length > 0 ? [...state.unread,action.payload] : [action.payload]
         }
     },
     extraReducers(builder){
@@ -195,9 +207,27 @@ const userSlice = createSlice({
             state.error = action.payload?.reasons
             state.loading = false;
         })
+        .addCase(userGetNotifications.fulfilled,(state,action)=>{
+            console.log(action);
+            state.notifications = state.notifications?.length > 0 ? [...state.notifications,...action.payload?.resultData] : action.payload?.resultData
+            state.success = true;
+            state.loading = false;
+        })
+        .addCase(userGetNotifications.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userGetNotifications.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            if(action.payload && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized User!!'){
+                state.userToken = null;
+                state.userData = null;
+            }
+            state.loading = false;
+        })
     }
 })
 
-export const { resetActions , logoutUser , setUsersData} =  userSlice.actions
+export const { resetActions , logoutUser , setUsersData , resetNotifications , setUnread , updateUnread } =  userSlice.actions
 
 export default userSlice.reducer

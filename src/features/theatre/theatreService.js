@@ -35,3 +35,7 @@ export const theatreResendOtpService = (id)=>{
 export const theatreProfileUpdateService = (data,token)=>{
     return axios.put('/auth/theatre/updateprofile',data,{headers:{Authorization:`Bearer ${token}`,"Content-Type":"multipart/form-data"}})
 }
+
+export const theatreGetNotificationsService = (data,token)=>{
+    return axios.post('/auth/theatre/getnotifications',data,{headers:{Authorization:`Bearer ${token}`}})
+}

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userGetSingleTheatre, userGetTheatres, userTheatreQuery } from "./userTheatreActions";
+import { userGetSingleTheatre, userGetTheatres, userSetReminder, userTheatreQuery } from "./userTheatreActions";
 
 const initialState = {
     allTheatresData:null,
@@ -15,7 +15,12 @@ const userTheatreSlice = createSlice({
     name:'userTheatre',
     initialState,
     reducers:{
-
+        resetUserTheatreActions:(state)=>{
+            state.success = false
+            state.error = ''
+            state.loading = false
+            state.message = ''
+        }
     },
     extraReducers:(builder)=>{
         builder
@@ -58,9 +63,22 @@ const userTheatreSlice = createSlice({
             state.error = action.payload?.reasons || ['Some error occured!!']
             state.loading = false;
         })
+        .addCase(userSetReminder.fulfilled,(state,action)=>{
+            console.log(action);
+            state.message = "Reminder added Successfully!!"
+            state.loading = false;
+        })
+        .addCase(userSetReminder.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userSetReminder.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ['Some error occured!!']
+            state.loading = false;
+        })
     }
 })
 
-export const {} = userTheatreSlice.actions
+export const { resetUserTheatreActions } = userTheatreSlice.actions
 
 export default userTheatreSlice.reducer

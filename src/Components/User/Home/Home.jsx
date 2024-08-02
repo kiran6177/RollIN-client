@@ -12,7 +12,7 @@ import { userGetRecommendedMovies, userGetUpcomingMovies } from '../../../featur
 const TrailerModal = lazy(()=>import('../Movies/TrailerModal'));
 
 function Home() {
-    const {userData,userToken} = useSelector(state=>state.user);
+    const {userData,userToken,socket} = useSelector(state=>state.user);
     const {bannerMovies,moviesByGenre} = useSelector(state=>state.userMovie)
     const {upcomingMovies,recommendedMovies} = useSelector(state=>state.userBooking)
     const navigate = useNavigate()
@@ -32,6 +32,7 @@ function Home() {
         dispatch(userGetBannerMovies())
         dispatch(userGetMoviesByGenre())
       }
+      
     },[])
 
     useEffect(()=>{
@@ -58,7 +59,6 @@ function Home() {
         }
     },[showTrailer,bannerMovies])
 
- 
   return (
     <div className='pt-2 bg-[#15121B] '>
         <div className='relative text-white h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] xl:h-[80vh] overflow-hidden'>

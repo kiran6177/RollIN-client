@@ -18,6 +18,7 @@ import TheatreBookingsHome from '../Pages/Theatre/Bookings/TheatreBookingsHome'
 import TheatreBookingsScreen from '../Pages/Theatre/Bookings/TheatreBookingsScreen'
 import TheatreShowReservations from '../Pages/Theatre/Bookings/TheatreShowReservations'
 import TheatreBookingsList from '../Pages/Theatre/Bookings/TheatreBookingsList'
+import TheatreNotificationsHome from '../Pages/Theatre/Notifications/TheatreNotificationsHome'
 
 function TheatreRoutes() {
   return (
@@ -97,6 +98,11 @@ function TheatreRoutes() {
         <Route path='/bookings/reservations' element={
         <TheatreProtected>
             <TheatreShowReservations/> 
+        </TheatreProtected>
+        } />
+        <Route path='/notifications' element={
+        <TheatreProtected>
+            <TheatreNotificationsHome/> 
         </TheatreProtected>
         } />
     </Routes>

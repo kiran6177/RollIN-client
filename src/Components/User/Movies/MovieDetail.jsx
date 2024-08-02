@@ -15,6 +15,8 @@ import ReviewBox from '../Reviews/ReviewBox'
 import ReviewHashtag from '../Reviews/ReviewHashtag'
 import AddReviewModal from '../Reviews/AddReviewModal'
 import { resetReviewData, resetUserMovieActions } from '../../../features/userMovies/userMovieSlice'
+import { userSetReminder } from '../../../features/userTheatres/userTheatreActions'
+import { resetUserTheatreActions } from '../../../features/userTheatres/userTheatreSlice'
 
 
 function MovieDetail() {
@@ -27,6 +29,10 @@ function MovieDetail() {
     const {error,moviesByGenre,singleMovieDetail,message,reviews,hashtags} = useSelector(state=>state.userMovie)
     const {userData,userToken} = useSelector(state=>state.user);
     const {recommendedMovies} = useSelector(state=>state.userBooking)
+
+    const theatreError = useSelector(state=>state.userTheatre.error)
+    const theatreMessage = useSelector(state=>state.userTheatre.message)
+
 
     const [showAddReview,setShowAddReview] = useState(false);
 
@@ -101,8 +107,27 @@ function MovieDetail() {
       }
     },[message])
 
+    useEffect(()=>{
+      if(theatreMessage){
+        toast.success(theatreMessage)
+        dispatch(resetUserTheatreActions())
+      }
+      if(theatreError?.length > 0){
+        theatreError.map(err=>toast.error(err))
+        dispatch(resetUserTheatreActions())
+      }
+    },[theatreError,theatreMessage])
+
     const today = new Date()
     today.setHours(0,0,0,0)
+
+    const handleSetReminder = (movie_id)=>{
+      if(!userToken){
+        toast.error("Please Login to set reminder!!")
+        return
+      }
+      dispatch(userSetReminder({data:{movie_id},token:userToken}))
+    }
 
   return (
     <div className='pt-0 min-h-[80vh] bg-[#15121B]'>
@@ -131,7 +156,7 @@ function MovieDetail() {
                                 })
                              } </h5>
               </div> 
-              {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>BOOK TICKETS</button> :  <button onClick={()=>{}} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>SET REMINDER</button>:null}
+              {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>BOOK TICKETS</button> :  <button onClick={()=>handleSetReminder(movie?._id)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>SET REMINDER</button>:null}
             </div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={movie?.backdrop_path} alt="" className='mt-20 md:mt-0  mx-auto object-fill w-[100%]' />
@@ -160,7 +185,7 @@ function MovieDetail() {
                                 })
                              }</h5>
           </div>
-          {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button> : <button onClick={()=>{}} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>SET REMINDER</button> : null}
+          {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button> : <button onClick={()=>handleSetReminder(movie?._id)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>SET REMINDER</button> : null}
         </div>
           }
  

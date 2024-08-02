@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { completeTheatreService, loginTheatreService, logoutTheatreService, signupTheatreService, theatreGoogleAuthService, theatreLoginOtpVerifyService, theatreProfileUpdateService, theatreRegisterOtpVerifyService, theatreResendOtpService } from "./theatreService";
+import { completeTheatreService, loginTheatreService, logoutTheatreService, signupTheatreService, theatreGetNotificationsService, theatreGoogleAuthService, theatreLoginOtpVerifyService, theatreProfileUpdateService, theatreRegisterOtpVerifyService, theatreResendOtpService } from "./theatreService";
 
 export const theatreSignup = createAsyncThunk('theatreSignup',async (data,thunkAPI)=>{
     try {
@@ -89,10 +89,22 @@ export const theatreProfileUpdate = createAsyncThunk('theatreProfileUpdate', asy
     }
 })
 
+export const theatreGetNotifications = createAsyncThunk('theatreGetNotifications', async ({data,token},thunkAPI) =>{
+    try {
+        const response = await theatreGetNotificationsService(data,token)
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error)
+    }
+})
+
 const initialState = {
     theatreData:null,
     theatreToken:null,
     success:false,
+    unread:null,
+    notifications:null,
     error:'',
     loading:false,
     message:''
@@ -115,12 +127,22 @@ const theatreSlice = createSlice({
             state.error = ''
             state.loading = false
             state.message = ''
+            state.notifications = null
+            state.unread = null
         },
         setTheatreData:(state,action)=>{
             state.theatreData = action.payload?.data
             state.theatreToken = action.payload?.token
+        },
+        resetTheatreNotifications:(state)=>{
+            state.notifications = null
+        },
+        setTheatreUnread:(state,action)=>{
+            state.unread = action.payload
+        },
+        updateTheatreUnread:(state,action)=>{
+            state.unread = state.unread?.length > 0 ? [...state.unread,action.payload] : [action.payload]
         }
-        
     },
     extraReducers:(builder)=>{
         builder
@@ -287,9 +309,26 @@ const theatreSlice = createSlice({
             state.error = action.payload.reasons
             state.loading = false
         })
+        .addCase(theatreGetNotifications.fulfilled,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.notifications = state.notifications?.length > 0 ? [...state.notifications,...action.payload?.resultData] : action.payload?.resultData
+        })
+        .addCase(theatreGetNotifications.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreGetNotifications.rejected,(state,action)=>{
+            console.log(action.payload);
+            if(action.payload && action.payload.reasons.length > 0 && (action.payload.reasons[0] === 'UnAuthorized Theatre!!' || action.payload.reasons[0] === 'You are temporarily blocked by admin!!') ){
+                state.theatreToken = null;
+                state.theatreData = null;
+            }
+            state.error = action.payload.reasons
+            state.loading = false
+        })
     }
 })
 
-export const  { resetTheatreActions,logoutTheatre ,setTheatreData} = theatreSlice.actions
+export const  { resetTheatreActions,logoutTheatre ,setTheatreData , resetTheatreNotifications ,updateTheatreUnread , setTheatreUnread} = theatreSlice.actions
 
 export default theatreSlice.reducer
