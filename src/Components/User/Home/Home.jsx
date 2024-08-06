@@ -5,11 +5,12 @@ import pinlogo from '../../../assets/pin-logo.png'
 import { FaRegCalendar } from 'react-icons/fa';
 import { MdOutlineTimer } from 'react-icons/md';
 import { AnimatePresence , motion } from 'framer-motion';
-import MovieCard2 from '../../User/Movies/MovieCard2'
 import { userGetBannerMovies, userGetMoviesByGenre } from '../../../features/userMovies/userMovieActions';
 import { IoMdPlayCircle } from 'react-icons/io';
 import { userGetRecommendedMovies, userGetUpcomingMovies } from '../../../features/userBooking/userBookingActions';
+import MovieCard2Skelton from '../../../Skelton/MovieCard2Skelton';
 const TrailerModal = lazy(()=>import('../Movies/TrailerModal'));
+const MovieCard2 = lazy(()=>import('../../User/Movies/MovieCard2'))
 
 function Home() {
     const {userData,userToken,socket} = useSelector(state=>state.user);
@@ -96,7 +97,7 @@ function Home() {
             </motion.div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
             <img src={bannerMovies[index]?.backdrop_path} alt="" className='mt-28 md:mt-0  mx-auto object-fill w-[100%]' />
-          <Suspense>
+          <Suspense fallback={<MovieCard2Skelton/>} >
             <TrailerModal isOpen={showTrailer} set={setShowTrailer} videoKey={bannerMovies[index]?.video_link} />
           </Suspense>
           </motion.div>
@@ -146,7 +147,9 @@ function Home() {
                 upcomingMovies.map((movie,i)=>{
                   return(
                     movie?.isDislocated ||
-                    <MovieCard2  key={movie.movie_id+i} movie={movie} />
+                    <Suspense key={movie.movie_id+i} fallback={<MovieCard2Skelton/>} >
+                      <MovieCard2   movie={movie} />
+                    </Suspense>
                   )
                 })
                 }
@@ -165,7 +168,9 @@ function Home() {
                 recommendedMovies.map((movie,i)=>{
                   return(
                     movie?.isDislocated ||
-                    <MovieCard2  key={movie.movie_id+i} movie={movie} />
+                    <Suspense key={movie.movie_id+i} fallback={<MovieCard2Skelton/>} >
+                      <MovieCard2   movie={movie} />
+                    </Suspense>
                   )
                 })
                 }
@@ -186,7 +191,9 @@ function Home() {
                   {
                     genreObj.movies.map(movie=>{
                       return(
-                        <MovieCard2  key={movie.movie_id+i} movie={movie} />
+                        <Suspense key={movie.movie_id+i} fallback={<MovieCard2Skelton/>} >
+                          <MovieCard2   movie={movie} />
+                        </Suspense>
                       )
                     })
                     }

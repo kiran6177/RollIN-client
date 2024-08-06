@@ -30,6 +30,7 @@ function BookingsScreenShows() {
         dispatch(theatreGetBookingsByScreen({data,token:theatreToken}))
         setPage(prev=>prev+1)
     }
+    window.history.scrollRestoration = "manual"
 
   return (
 <div className='py-10 bg-[#15121B] '>

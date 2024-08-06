@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { Toaster, toast } from 'sonner'
 import pinlogo from '../../../assets/pin-logo.png'
 import { FaRegCalendar } from 'react-icons/fa'
 import { MdOutlineTimer } from "react-icons/md";
 import { FaLanguage } from 'react-icons/fa6'
 import { useAnimate } from 'framer-motion'
-import CastIcon from './CastIcon'
-import MovieCard2 from './MovieCard2'
 import { IoMdPlayCircle } from "react-icons/io";
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { adminAddMovieToDB, adminDisableMovie, adminEnableMovie, adminGetTMDBMovieDetail } from '../../../features/movie/movieActions'
-import TrailerModal from './TrailerModal'
-import ReleaseModal from './ReleaseModal'
 import { resetDBMovies, resetMovieActions, setSingleMovie } from '../../../features/movie/movieSlice'
+import LoadingSpinner from '../../Loaders/LoadingSpinner';
+import CastIconSkelton from '../../../Skelton/CastIconSkelton';
+import MovieCard2Skelton from '../../../Skelton/MovieCard2Skelton';
+const TrailerModal = lazy(()=>import('./TrailerModal')) 
+const ReleaseModal = lazy(()=>import('./ReleaseModal')) 
+const CastIcon = lazy(()=>import('./CastIcon')); 
+const MovieCard2 = lazy(()=>import('./MovieCard2'));
 
 function MovieDetail() {
   const [scope,animate] = useAnimate();
   const [scope1,animate1] = useAnimate();
   const [searchParams] = useSearchParams()
-  const  {addMoviesData,singleMovieDetail,error,moviesData} = useSelector(state=>state.movie);
+  const {addMoviesData,singleMovieDetail,error,moviesData,loading} = useSelector(state=>state.movie);
   const {adminToken} = useSelector(state=>state.admin);
   let movieid = searchParams.get("id");
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [showTrailer,setShowTrailer] = useState(false);
   const [showConfirm,setShowConfirm] = useState(false);
+  const [load,setLoad] = useState(true);
 
   useEffect(()=>{
     window.scrollTo(0,0)
@@ -82,8 +85,9 @@ function MovieDetail() {
     dispatch(adminAddMovieToDB({movieid,release_date,token:adminToken})) 
   }
 
-  return (
+    return (
     <>
+    {load && <LoadingSpinner/>}
     <div className='pt-28 lg:pl-56 min-h-[100vh] bg-[#15121B]'>
     <Toaster richColors />
     <div className='mt-4 w-[80%] lg:w-[90%] border-2 border-[#f6ae2d] rounded-md bg-black mx-auto overflow-hidden'>
@@ -108,7 +112,7 @@ function MovieDetail() {
         </div>
         {
           singleMovieDetail && singleMovieDetail?._id  ?
-           !singleMovieDetail?.isDisabled ?
+          !singleMovieDetail?.isDisabled ?
           <div ref={scope} className='hidden sm:block absolute -bottom-8 lg:bottom-[2rem] xl:bottom-[8rem]  mx-8 md:mx-12 border-2 border-[#f6ae2d] bg-black w-[15rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
           <button onClick={handleDisableMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-18 py-1 md:py-3 rounded-full'>DISABLE MOVIE</button>
           </div>
@@ -123,7 +127,7 @@ function MovieDetail() {
         }
 
         <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[47%] top-[32%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
-        <img src={singleMovieDetail?.backdrop_path} width={"100%"} alt="" />
+        <img src={singleMovieDetail?.backdrop_path} width={"100%"} alt="" onLoad={(e)=>setLoad(false)}  />
       </div>
  
       <div className=' '>
@@ -146,7 +150,7 @@ function MovieDetail() {
         </div>
         {
           singleMovieDetail && singleMovieDetail?._id ?
-        <div ref={scope1} className='block sm:hidden  mx-8 sm:mx-16 border-2 border-[#f6ae2d] bg-black w-[12rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
+          <div ref={scope1} className='block sm:hidden  mx-8 sm:mx-16 border-2 border-[#f6ae2d] bg-black w-[12rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
           <button onClick={handleDisableMovie} className=' text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-[10px] px-5 sm:px-10  md:px-12  lg:px-20 py-1 md:py-3 rounded-full'>DISABLE MOVIE</button>
         </div> 
         :<div ref={scope1} className='block sm:hidden  mx-8 sm:mx-16 border-2 border-[#f6ae2d] bg-black w-[12rem] sm:w-[17rem] md:w-[20rem] lg:w-[25rem] rounded-full overflow-hidden'>
@@ -176,7 +180,7 @@ function MovieDetail() {
             {
               singleMovieDetail?.cast && singleMovieDetail.cast.length > 0 &&
               singleMovieDetail?.cast.map((person,i)=>{
-                  return (<CastIcon key={"cast"+person.person_id + i} person={person} type="cast" />)
+                  return (<Suspense key={"cast"+person.person_id + i} fallback={<CastIconSkelton/>}><CastIcon  person={person} type="cast" /></Suspense>)
               })
             }
           </div>
@@ -191,9 +195,9 @@ function MovieDetail() {
 
           <div className='flex gap-8 overflow-x-scroll p-6 snap-x scrollbar-none'>
           {
-              singleMovieDetail?.crew && singleMovieDetail.crew.length > 0 &&
+            singleMovieDetail?.crew && singleMovieDetail.crew.length > 0 &&
               singleMovieDetail?.crew.map((person,i)=>{
-                  return (<CastIcon key={"crew"+person.person_id + i} person={person} type="crew" />)
+                return (<Suspense key={"crew"+person.person_id + i} fallback={<CastIconSkelton/>}><CastIcon  person={person} type="crew" /></Suspense>)
               })
             }
 
@@ -211,7 +215,7 @@ function MovieDetail() {
                 addMoviesData ? addMoviesData.length > 0 &&
                 addMoviesData.map((movie,i)=>{
                   if(movie.movie_id != movieid ){
-                    return <MovieCard2 key={"add"+movie.movie_id+i} movie={movie} />
+                    return (<Suspense key={"add"+movie.movie_id+i} fallback={<MovieCard2Skelton/>}><MovieCard2  movie={movie} /></Suspense>)
                   }
                   return null
                 })
@@ -219,7 +223,7 @@ function MovieDetail() {
                 moviesData ? moviesData.length > 0 &&
                 moviesData.map((movie,i)=>{
                   if(movie.movie_id != movieid ){
-                    return <MovieCard2 key={movie.movie_id+i} movie={movie} />
+                    return (<Suspense key={movie.movie_id+i} fallback={<MovieCard2Skelton/>}><MovieCard2  movie={movie} /></Suspense>)
                   }
                   return null
                 }) : ''
@@ -231,10 +235,10 @@ function MovieDetail() {
       
     </div>
     </div> 
-    <TrailerModal isOpen={showTrailer} set={setShowTrailer} videoKey={singleMovieDetail?.video_link} />
-    <ReleaseModal isOpen={showConfirm} set={setShowConfirm} handleAction={dispactchAddMovie}/>
+    <Suspense><TrailerModal isOpen={showTrailer} set={setShowTrailer} videoKey={singleMovieDetail?.video_link} /></Suspense>
+    <Suspense><ReleaseModal isOpen={showConfirm} set={setShowConfirm} handleAction={dispactchAddMovie}/></Suspense>
     </>
   )
 }
-  
+
 export default MovieDetail

@@ -7,6 +7,7 @@ import store, { persistor }  from './store/store';
 import ErrorBoundary from './utils/ErrorBoundary';
 import { PersistGate } from 'redux-persist/integration/react';
 import SocketProvider from './Provider/SocketProvider';
+import LoadingProvider from './Provider/LoadingProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,9 +15,11 @@ root.render(
     <ErrorBoundary>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor} >
-          <SocketProvider>
-            <App />
-          </SocketProvider>
+          <LoadingProvider>
+            <SocketProvider>
+              <App />
+            </SocketProvider>
+          </LoadingProvider>
         </PersistGate>
       </Provider>
     </ErrorBoundary>

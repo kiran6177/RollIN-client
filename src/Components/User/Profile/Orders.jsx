@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
-import TicketModal from './TicketModal';
-import img from '../../../assets/MV5BOWMyNTA2M2UtMmZkNC00ZWE5LThjZGItODcxNGU2MDBhYTk1XkEyXkFqcGdeQXVyOTU0NjY5MzM@._V1_.jpg'
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { userGetOrders } from '../../../features/userBooking/userBookingActions';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ScaleLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import { resetOrders } from '../../../features/userBooking/userBookingSlice';
+const TicketModal = lazy(()=>import('./TicketModal'));
 
 const cardVariants = {
   hidden:{
@@ -85,7 +84,7 @@ function Orders() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{once:true}}
-                key={order._id} className='my-8 flex flex-col lg:flex-row bg-black gap-10 border-2 border-[#f6ae2d] rounded-sm p-8 '>
+                key={order._id} className='my-8 flex flex-col lg:flex-row bg-black gap-10 border-2 border-[#f6ae2d] rounded-sm p-8 w-[100%]'>
                   <div className='w-[70%] md:w-[40%] mx-auto lg:mx-0 lg:w-[15%]'>
                   <div className='w-[100%] rounded-sm border-[1px] border-[#f6ae2d] overflow-hidden'>
                     <img src={movie?.poster_path} alt=""  className='object-cover aspect-[4/5]' />
@@ -129,7 +128,7 @@ function Orders() {
             </InfiniteScroll>
             : <div className='text-white tracking-widest'> NO ORDERS.</div>
         }
-                  <TicketModal isOpen={showTicket} set={setShowTicket} />
+                <Suspense><TicketModal isOpen={showTicket} set={setShowTicket} /></Suspense>
       </div>
       </div>
   )

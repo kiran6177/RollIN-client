@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react'
+import React, { lazy, Suspense,  useEffect, useState } from 'react'
 import logo from '../../assets/logo.png'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { FaSearch , FaUserCircle, FaChevronRight  } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FiChevronDown } from "react-icons/fi";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSocket } from '../../hooks/socket';
 import { updateUnread } from '../../features/user/userSlice';
 import { AnimatePresence } from 'framer-motion';
+import LoadingProgress from '../Loaders/LoadingProgress';
 const SearchModal =  lazy(()=>import('./SearchModal'));
 const NotificationToast = lazy(()=>import('../Notifications/NotificationToast'));
 
@@ -19,13 +20,15 @@ function Navbar({hide}) {
   const [bgChange,setBgChange] = useState(false)
 
   const [showSelectCity,setShowSelectCity] = useState(false);
-  const [showSearch,setShowSearch] = useState(false);
+  const [showSearch,setShowSearch] = useState(false); 
   const {unread} = useSelector(state=>state.user)
 
   const [showNotification,setShowNotification] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
 
   const dispatch = useDispatch()
   const socket = useSocket();
+  const {key} = useLocation();
 
   const handleProfile = ()=>{
     navigate('/profile')
@@ -38,6 +41,19 @@ function Navbar({hide}) {
     }
   }
 
+  useEffect(()=>{
+    if(isLoading){
+      setBgChange(true)
+    }else{
+      setBgChange(false)
+    }
+  },[isLoading])
+
+  useEffect(()=>{
+    console.log("loading....");
+    setIsLoading(true);
+    
+  },[key])
 
   useEffect(()=>{
     if(!localStorage.getItem("city")){
@@ -93,7 +109,8 @@ function Navbar({hide}) {
           Choose City <FaChevronRight/>
         </button>
     </div>
-    <Suspense>
+    {isLoading && <LoadingProgress setIsLoading={setIsLoading} />}
+    <Suspense >
       <SearchModal isOpen={showSearch} set={setShowSearch} />
     </Suspense>
     <NavModal isOpen={isOpen} set={setIsOpen} />

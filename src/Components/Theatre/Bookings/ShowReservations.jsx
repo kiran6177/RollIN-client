@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { BiSolidSpeaker } from 'react-icons/bi'
 import { LuArmchair } from 'react-icons/lu'
 import { MdChair } from 'react-icons/md'
@@ -7,13 +7,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast, Toaster } from 'sonner'
 import { theatreGetSingleShow } from '../../../features/theatreBookings/theatreBookingActions'
-import SoldConfirmModal from './SoldConfirmModal'
 import { resetTheatreBookingActions } from '../../../features/theatreBookings/theatreBookingSlice'
+import LoadingSpinner from '../../Loaders/LoadingSpinner'
+const SoldConfirmModal = lazy(()=>import('./SoldConfirmModal')) 
 
 function ShowReservations() {
     const [show,setShow] = useState(null)
     const {theatreToken} = useSelector(state=>state.theatre)
-    const {screenshows,singleShowDetails,message,error} = useSelector(state=>state.theatreBooking)
+    const {screenshows,singleShowDetails,message,error,loading} = useSelector(state=>state.theatreBooking)
     const [searchParams] = useSearchParams()
     const show_id = searchParams.get("show_id");
     const date = searchParams.get("date")
@@ -99,9 +100,12 @@ function ShowReservations() {
         }
         setShowTooltip('')
     }
+    if(loading){
+        return <LoadingSpinner/>
+    }else{
 
-  return (
-<div className='py-10 bg-[#15121B] '>
+        return (
+            <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
             <div className='flex justify-between items-center'>
@@ -240,11 +244,12 @@ function ShowReservations() {
                     </div>
                 </div>    
             </div>
-            
-            <SoldConfirmModal isOpen={showSold} set={setShowSold} />   
+            <Suspense>
+                <SoldConfirmModal isOpen={showSold} set={setShowSold} />   
+            </Suspense>
         </div>
     </div>
-  )
+  )}
 }
 
 export default ShowReservations

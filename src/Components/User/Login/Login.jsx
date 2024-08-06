@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react'
+import React, {  lazy, Suspense, useEffect, useState } from 'react'
 import './Login.css'
 import { FcGoogle } from "react-icons/fc";
 import { TfiEmail } from "react-icons/tfi";
@@ -7,8 +7,9 @@ import { useGoogleLogin } from '@react-oauth/google'
 import {  resetActions } from '../../../features/user/userSlice';
 import { useLocation, useNavigate } from 'react-router';
 import { Toaster ,toast } from 'sonner'
-import EmailModal from './EmailModal';
 import { googleAuth } from '../../../features/user/userActions';
+import LoadingSpinner from '../../Loaders/LoadingSpinner';
+const EmailModal = lazy(()=>import('./EmailModal')) ;
 
 function Login() {
   const [showMail,setShowMail] = useState(false);
@@ -78,7 +79,9 @@ function Login() {
       </div>
     </div>
     {showMail && 
+      <Suspense fallback={<LoadingSpinner/>}>
         <EmailModal showMail={showMail} set={setShowMail} />
+      </Suspense>
       }
     </>
   )

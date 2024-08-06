@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { lazy, Suspense, useState } from 'react'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import logo from '../../assets/logo.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { FaSearch, FaUserCircle } from 'react-icons/fa'
-import AdminNavModal from './AdminNavModal'
 import { useSelector } from 'react-redux'
+import LoadingSpinner from '../Loaders/LoadingSpinner'
+const AdminNavModal = lazy(()=>import('./AdminNavModal')) 
 
 function AdminNavbar() {
   const [isOpen,setIsOpen] = useState(false);
@@ -38,7 +39,9 @@ function AdminNavbar() {
       </div>
       
     </div>  
-    <AdminNavModal isOpen={isOpen} set={setIsOpen} />
+      <Suspense fallback={<LoadingSpinner/>}>
+        <AdminNavModal isOpen={isOpen} set={setIsOpen} />
+      </Suspense>
     </>
   )
 }
