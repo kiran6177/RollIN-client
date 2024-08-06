@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
 import { resetOrdersData } from '../../../features/theatreBookings/theatreBookingSlice';
 import useDebounce from '../../../hooks/debounce';
+import LoadingSpinner from '../../Loaders/LoadingSpinner';
 
 const cardVariants = {
     hidden:{
@@ -27,8 +28,9 @@ function BookingsList() {
     const [selected,setSelected] = useState('ALL')
     const dispatch = useDispatch();
     const {theatreToken} = useSelector(state=>state.theatre)
-    const {ordersData} = useSelector(state=>state.theatreBooking)
+    const {ordersData,loading} = useSelector(state=>state.theatreBooking)
     const {theatreScreenData} = useSelector(state=>state.theatreFeat)
+    const theatreFeatLoading = useSelector(state=>state.theatreFeat.loading)
     const scrollRef = useRef(null);
     const [page,setPage] = useState(1);
     const [searchParams] = useSearchParams();
@@ -74,8 +76,13 @@ function BookingsList() {
         dispatch(theatreGetCompleteBookings({data,token:theatreToken}))
         setPage(prev=>prev+1)
     }
-  return (
-    <div className='py-10 bg-[#15121B] '>
+
+    if(loading || theatreFeatLoading){
+        return <LoadingSpinner/>
+    }else{
+
+        return (
+            <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
             <div className='flex flex-col justify-between'>
@@ -99,7 +106,7 @@ function BookingsList() {
                 });
                 return (
                 <motion.div 
-                    variants={cardVariants}
+                variants={cardVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{once:true}}
@@ -129,7 +136,7 @@ function BookingsList() {
                             return (
                             <h2 key={seatObj?.tier_name+i}  className='text-sm sm:text-lg text-white my-2'>{seatObj?.tier_name} - <span className='text-[#f6ae2d] font-semibold tracking-wider'>{seatObj?.seats.join(', ')}</span></h2>
                             )
-                            })
+                        })
                         }
                         <h2 className='text-md sm:text-xl text-white my-2'>Booking ID : {order?.order_id}</h2>
                         </div>
@@ -149,7 +156,7 @@ function BookingsList() {
         </div>
         </div>
     </div>
-  )
+  )}
 }
 
 export default BookingsList

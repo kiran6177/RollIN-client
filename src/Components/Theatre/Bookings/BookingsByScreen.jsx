@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Toaster } from 'sonner'
 import ScreenBox2 from './ScreenBox2'
 import { useDispatch, useSelector } from 'react-redux'
-import { theatreGetBookingsByScreen } from '../../../features/theatreBookings/theatreBookingActions'
 import { theatreGetTheatreData } from '../../../features/theatreFeat/theatreFeatAction'
 import { useNavigate } from 'react-router'
 

@@ -12,6 +12,7 @@ import SelectTickets from './SelectTickets';
 import { HiOutlinePencil } from "react-icons/hi";
 import SessionTimedOutModal from './SessionTimedOutModal';
 import { resetUserBookings, setSelectedSeats } from '../../../features/userBooking/userBookingSlice';
+import LoadingSpinner from '../../Loaders/LoadingSpinner';
 
 function ShowSeats() {
     const [searchParams] = useSearchParams();
@@ -19,9 +20,10 @@ function ShowSeats() {
     const date = searchParams.get('date')
     const theatre_id = searchParams.get('theatre_id')
     const {theatresDetailData} = useSelector(state=>state.userTheatre)
-    const {singleShowData,message} = useSelector(state=>state.userBooking)
+    const {singleShowData,message,loading} = useSelector(state=>state.userBooking)
     const {userToken} = useSelector(state=>state.user)
     const [singleTheatre,setSingleTheatre] = useState(null);
+    const theatreLoading = useSelector(state=>state.userTheatre.loading)
 
     const [currentDate,setCurrentDate] = useState('')
     const [ticketCount,setTicketCount] = useState(0);
@@ -181,7 +183,9 @@ function ShowSeats() {
         dispatch(userSeatReservation({data,token:userToken}))
         dispatch(setSelectedSeats(seatData))
     }
-
+    if(theatreLoading || loading){
+        return <LoadingSpinner/>
+    }else{
   return (
     <div className='py-10 bg-[#15121B] '>
         <div className='pt-28 sm:px-12  min-h-[10rem] '>
@@ -320,11 +324,12 @@ function ShowSeats() {
                     </div>
                 </div>
             </div>
-        </div> 
-        <SelectTickets isOpen={showSelectTicket} set={setShowSelectTicket} setTicketCount={setTicketCount} />
-        <SessionTimedOutModal isOpen={showSession} set={setShowSession} url={location?.state?.previousUrl} />
-    </div>
-  )
+            </div> 
+            <SelectTickets isOpen={showSelectTicket} set={setShowSelectTicket} setTicketCount={setTicketCount} />
+            <SessionTimedOutModal isOpen={showSession} set={setShowSession} url={location?.state?.previousUrl} />
+        </div>
+    )
+    }
 }
 
 export default ShowSeats

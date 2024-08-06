@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Toaster } from 'sonner'
-import MovieCard2 from './MovieCard2'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { ScaleLoader } from 'react-spinners'
 import { theatreGetAllMovies } from '../../../features/theatreFeat/theatreFeatAction'
-
 import { resetMovieList } from '../../../features/theatreFeat/theatreFeatSlice'
 import useDebounce from '../../../hooks/debounce'
-import ToggleButton from './ToggleButton'
 import { languages } from '../../../constants/movie-constants/languages'
 import { GENRES } from '../../../constants/movie-constants/genres'
+import MovieCard2Skelton from '../../../Skelton/MovieCard2Skelton'
+import ToggleButtonSkelton from '../../../Skelton/ToggleButtonSkelton'
+const ToggleButton = lazy(()=>import('./ToggleButton')) 
+const MovieCard2 = lazy(()=>import('./MovieCard2')) 
 
 const cardVariants = {
     hidden:{
@@ -188,11 +189,12 @@ function MovieEnroll() {
                 languages && languages.length > 0 &&
                 languages.map((lang,i)=>{
                   return(
-                    <ToggleButton key={lang+i} type={'language'} ref={(element)=>buttonRefs.current[i] = element} data={lang.name} setToFilter={handleSetFilter} removeFromFilter={removeFromFilter} setAdded={setOpen}/>
+                    <Suspense key={lang+i} fallback={<ToggleButtonSkelton/>}>
+                      <ToggleButton  type={'language'} ref={(element)=>buttonRefs.current[i] = element} data={lang.name} setToFilter={handleSetFilter} removeFromFilter={removeFromFilter} setAdded={setOpen}/>
+                    </Suspense>
                   )
                 })
               }
-
             </div>
             
 
@@ -204,7 +206,9 @@ function MovieEnroll() {
                 GENRES && GENRES.length > 0 &&
                 GENRES.map((genre,i)=>{
                   return(
-                    <ToggleButton key={genre+i} type={'genre'} ref={(element)=>genreButtonRefs.current[i] = element} data={genre.name} setToFilter={handleSetFilter} removeFromFilter={removeFromFilter} setAdded={setOpen}/>
+                    <Suspense key={genre+i} fallback={<ToggleButtonSkelton/>}>
+                      <ToggleButton  type={'genre'} ref={(element)=>genreButtonRefs.current[i] = element} data={genre.name} setToFilter={handleSetFilter} removeFromFilter={removeFromFilter} setAdded={setOpen}/>
+                    </Suspense>
                   )
                 })
               }
@@ -227,7 +231,9 @@ function MovieEnroll() {
                     viewport={{once:true}}
                     key={movie.title+movie._id+i}
                     >
-                    <MovieCard2  movie={movie} />
+                    <Suspense fallback={<MovieCard2Skelton/>} >
+                      <MovieCard2  movie={movie} />
+                    </Suspense>
                 </motion.div>
                 )
                 })

@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import MovieCard2 from './MovieCard2'
-import CastIcon from './CastIcon'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { FaRegCalendar, FaRegStar, FaStar } from 'react-icons/fa'
 import { MdOutlineTimer } from 'react-icons/md'
 import { toast, Toaster } from 'sonner'
@@ -17,6 +15,11 @@ import AddReviewModal from '../Reviews/AddReviewModal'
 import { resetReviewData, resetUserMovieActions } from '../../../features/userMovies/userMovieSlice'
 import { userSetReminder } from '../../../features/userTheatres/userTheatreActions'
 import { resetUserTheatreActions } from '../../../features/userTheatres/userTheatreSlice'
+import CastIconSkelton from '../../../Skelton/CastIconSkelton'
+import MovieCard2Skelton from '../../../Skelton/MovieCard2Skelton'
+import LoadingSpinner from '../../Loaders/LoadingSpinner'
+const MovieCard2 = lazy(()=>import('./MovieCard2')) 
+const CastIcon = lazy(()=>import('./CastIcon')) 
 
 
 function MovieDetail() {
@@ -26,7 +29,7 @@ function MovieDetail() {
     const movie_id = searchParams.get("movie_id");
     const [stars,setStars] = useState(new Array(5).fill(false));
 
-    const {error,moviesByGenre,singleMovieDetail,message,reviews,hashtags} = useSelector(state=>state.userMovie)
+    const {singleMovieDetail,message,reviews,hashtags,loading} = useSelector(state=>state.userMovie)
     const {userData,userToken} = useSelector(state=>state.user);
     const {recommendedMovies} = useSelector(state=>state.userBooking)
 
@@ -80,7 +83,6 @@ function MovieDetail() {
 
     useEffect(()=>{
       if(movie && movie?._id !== movie_id){
-        console.log("WROKED");
         if(localStorage.getItem('city')){
             const loc = JSON.parse(localStorage.getItem('city')).loc;
             dispatch(userGetOneMovie({location:loc,movie_id}))
@@ -128,9 +130,12 @@ function MovieDetail() {
       }
       dispatch(userSetReminder({data:{movie_id},token:userToken}))
     }
+    if(loading){
+      return <LoadingSpinner />
+    }else{
 
-  return (
-    <div className='pt-0 min-h-[80vh] bg-[#15121B]'>
+      return (
+        <div className='pt-0 min-h-[80vh] bg-[#15121B]'>
     <Toaster richColors />
     <div className='relative text-white h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] xl:h-[80vh] overflow-hidden'>
           {
@@ -149,11 +154,11 @@ function MovieDetail() {
                   <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'>Rating : {
                                 stars?.map((el,i)=>{
                                     return(
-                                        stars[i]  
-                                        ? <FaStar key={i}  className='text-[#f6ae2d]' /> 
-                                        : <FaRegStar key={i} className='text-[#f6ae2d]' /> 
+                                      stars[i]  
+                                      ? <FaStar key={i}  className='text-[#f6ae2d]' /> 
+                                      : <FaRegStar key={i} className='text-[#f6ae2d]' /> 
                                     )
-                                })
+                                  })
                              } </h5>
               </div> 
               {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>BOOK TICKETS</button> :  <button onClick={()=>handleSetReminder(movie?._id)} className='w-[80%] text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-[4.5rem] py-1 md:py-3 rounded-full'>SET REMINDER</button>:null}
@@ -176,13 +181,13 @@ function MovieDetail() {
           </div>
           <div className=' flex gap-1 flex-wrap md:gap-8 '>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'>Rating :  {
-                                stars?.map((el,i)=>{
-                                    return(
-                                        stars[i]  
-                                        ? <FaStar key={i}  className='text-[#f6ae2d]' /> 
-                                        : <FaRegStar key={i} className='text-[#f6ae2d]' /> 
-                                    )
-                                })
+                stars?.map((el,i)=>{
+                  return(
+                    stars[i]  
+                    ? <FaStar key={i}  className='text-[#f6ae2d]' /> 
+                    : <FaRegStar key={i} className='text-[#f6ae2d]' /> 
+                  )
+                })
                              }</h5>
           </div>
           {(!movie?.isDislocated && !movie?.isDisabled) ? movie?.isAssigned ? <button onClick={()=>navigate(`/moviewithscreens?movie_id=${movie?._id}`)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>BOOK TICKETS</button> : <button onClick={()=>handleSetReminder(movie?._id)} className='w-[85%] sm:w-[50%]  text-black font-medium tracking-widest border-2 border-black m-2 bg-[#f6ae2d] text-xs px-6 sm:px-10  md:px-12  lg:px-20 py-[6px] md:py-3 rounded-full'>SET REMINDER</button> : null}
@@ -215,7 +220,7 @@ function MovieDetail() {
               {
                 movie?.cast && movie.cast.length > 0 &&
                 movie?.cast.map((person,i)=>{
-                    return (<CastIcon key={'cast'+person._id + i} person={person} type="cast" />)
+                  return (<Suspense key={'cast'+person._id + i} fallback={<CastIconSkelton/>}><CastIcon  person={person} type="cast" /></Suspense>)
                 })
               }
             </div>
@@ -230,9 +235,9 @@ function MovieDetail() {
 
             <div className='flex gap-8 overflow-x-scroll p-6 snap-x scrollbar-none'>
             {
-                movie?.crew && movie.crew.length > 0 &&
+              movie?.crew && movie.crew.length > 0 &&
                 movie?.crew.map((person,i)=>{
-                    return (<CastIcon key={'crew'+person._id + i} person={person} type="crew" />)
+                  return (<Suspense key={'crew'+person._id + i} fallback={<CastIconSkelton/>}><CastIcon  person={person} type="crew" /></Suspense>)
                 })
               }
 
@@ -263,14 +268,14 @@ function MovieDetail() {
               </div>
             <div className='flex gap-8 overflow-x-scroll px-6 py-3 snap-x scrollbar-none'>
            {
-            reviews?.length > 0 && reviews.map((eachReview,i)=>{
-              if(i < 10){
-                return (
-                  <ReviewBox key={eachReview?._id} review={eachReview} />
-                )
-              }
-              return null
-            })
+             reviews?.length > 0 && reviews.map((eachReview,i)=>{
+               if(i < 10){
+                 return (
+                   <ReviewBox key={eachReview?._id} review={eachReview} />
+                  )
+                }
+                return null
+              })
            } 
             </div>
              {userToken && new Date(movie?.release_date) < today && <> <button onClick={()=>setShowAddReview(true)} className='bg-[#f6ae2d] border-2 border-[#f6ae2d] max-w-fit px-7 py-[6px] text-black tracking-wider font-medium rounded-sm mx-auto hover:bg-black hover:text-white transition-all duration-150 ease-linear'>ADD REVIEW</button>
@@ -287,18 +292,18 @@ function MovieDetail() {
                   recommendedMovies ? recommendedMovies.length > 0 &&
                   recommendedMovies.map((movieObj,i)=>{
                     if(movieObj._id != movie_id ){
-                      return <MovieCard2 key={movieObj._id+i} movie={movieObj} />
+                      return (<Suspense key={movieObj._id+i} fallback={<MovieCard2Skelton/>} ><MovieCard2  movie={movieObj} /></Suspense>)
                     }
                     return null
                   })
-                 : ''
+                  : ''
                 }
               </div>
           </div>
 
         </div>
     </div>
-  )
+  )}
 }
 
 export default MovieDetail

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Toaster, toast } from 'sonner';
 import { resetAdminActions } from '../../../features/admin/adminSlice';
-import MovieCard from '../Movies/MovieCard';
 
 function Home() {
     const {adminData,adminToken,message} = useSelector(state=>state.admin);

@@ -6,13 +6,15 @@ import ScreenImageModal from './ScreenImageModal'
 import { FaInfoCircle } from "react-icons/fa";
 import { getMonthByNumber } from '../../../utils/monthByNumber'
 import { userGetShowData } from '../../../features/userBooking/userBookingActions'
+import LoadingSpinner from '../../Loaders/LoadingSpinner'
 
 function ScreenMovieSection() {
     const [searchParams] = useSearchParams()
     const dispatch = useDispatch()
     const theatre_id = searchParams.get("theatre_id")
     const {theatresDetailData} = useSelector(state=>state.userTheatre)
-    const {singleTheatreShows} = useSelector(state=>state.userBooking)
+    const {singleTheatreShows,loading} = useSelector(state=>state.userBooking)
+    const theatreLoading = useSelector(state=>state.userTheatre.loading)
 
     const [showImage,setShowImage] = useState(false)
     const [singleTheatre,setSingleTheatre] = useState(null);
@@ -115,9 +117,11 @@ function ScreenMovieSection() {
         console.log(show);
         navigate(`/screenwithmovies/show?show_id=${show?.show_id}&date=${datetoAdd}&theatre_id=${theatre_id}`,{state:{redirectURL:`/screenwithmovies/show?show_id=${show?.show_id}&date=${datetoAdd}&theatre_id=${theatre_id}`}})
     }
-
-  return (
-    <div className='py-10 bg-[#15121B] '>
+    if(loading || theatreLoading){
+        return <LoadingSpinner/>
+    }else{
+        return (
+            <div className='py-10 bg-[#15121B] '>
         <div className='pt-28 px-12  min-h-[10rem] '>
             <div className='border-2 border-[#f6ae2d] rounded-sm bg-black '>
                 <div className='border-b-2 border-[#f6ae2d] py-6 px-10 flex flex-col gap-4'>
@@ -162,14 +166,13 @@ function ScreenMovieSection() {
                             )
                         })
                     }
-                    
-
+                    </div>
                 </div>
+                <ScreenImageModal isOpen={showImage} set={setShowImage} theatre={singleTheatre} />
             </div>
-            <ScreenImageModal isOpen={showImage} set={setShowImage} theatre={singleTheatre} />
         </div>
-    </div>
-  )
+    )
+    }
 }
 
 export default ScreenMovieSection

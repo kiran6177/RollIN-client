@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScaleLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
-import MovieCard from './MovieCard';
 import { userGetAllMovies } from '../../../features/userMovies/userMovieActions';
 import { resetAllMoviesData } from '../../../features/userMovies/userMovieSlice';
 import ToggleButton from './ToggleButton';
 import { languages } from '../../../constants/movie-constants/languages';
 import { GENRES } from '../../../constants/movie-constants/genres';
 import useDebounce from '../../../hooks/debounce';
+import MovieCard2Skelton from '../../../Skelton/MovieCard2Skelton';
+const MovieCard = lazy(()=>import('./MovieCard'));
 
 const cardVariants = {
     hidden:{
@@ -228,7 +229,9 @@ function MoviesMain() {
                 viewport={{once:true}}
                 key={movie.title+movie.movie_id+i}
                 >
-                <MovieCard  movie={movie} />
+                <Suspense fallback={<MovieCard2Skelton/>}>
+                  <MovieCard  movie={movie} />
+                </Suspense>
             </motion.div>
             )
             })
