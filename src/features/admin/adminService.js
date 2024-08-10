@@ -30,3 +30,16 @@ export const approveTheatreService = (theatreid,token) =>{
     return axios.post('/auth/admin/approvetheatre',{theatreid},{headers:{Authorization:`Bearer ${token}`}})
 
 }
+
+export const adminGetRegistrationDetailsService = (data,token) =>{
+    return axios.post('/auth/admin/getregistrationdetails',data,{headers:{Authorization:`Bearer ${token}`}})
+    
+}
+
+export const adminGetHighMoviesService = (token) =>{
+    return axios.get('/booking/gethighgrossmovies',{headers:{Authorization:`Bearer ${token}`}})
+}
+
+export const adminGetRecentMoviesService = (token) =>{
+    return axios.get('/movie/getrecentmovies',{headers:{Authorization:`Bearer ${token}`}})
+}

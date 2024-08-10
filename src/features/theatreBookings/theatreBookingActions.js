@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { theatreBookSeatService, theatreCancelShowBookingsService, theatreGetBookingsByScreenService, theatreGetCompleteBookingsService, theatreGetShowBookingStatusService, theatreGetSingleShowService } from "./theatreBookingService";
+import { theatreBookSeatService, theatreCancelShowBookingsService, theatreGetBookingsByScreenService, theatreGetCompleteBookingsService, theatreGetLatestOrdersService, theatreGetMovieCollectionsService, theatreGetScreenCollectionsService, theatreGetShowBookingStatusService, theatreGetSingleShowService } from "./theatreBookingService";
 import { setTheatreData } from "../theatre/theatreSlice";
 
 export const theatreGetShowBookingStatus = createAsyncThunk('theatreGetShowBookingStatus',async ({data,token},thunkAPI)=>{
@@ -70,6 +70,45 @@ export const theatreGetCompleteBookings = createAsyncThunk('theatreGetCompleteBo
 export const theatreBookSeat = createAsyncThunk('theatreBookSeat',async ({data,token},thunkAPI)=>{
     try {
         const response =  await theatreBookSeatService(data,token);
+        console.log(response.data);
+        if(response.data?.newTheatreToken){
+            thunkAPI.dispatch(setTheatreData({data:response.data.newTheatreData,token:response.data.newTheatreToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const theatreGetScreenCollections = createAsyncThunk('theatreGetScreenCollections',async ({data,token},thunkAPI)=>{
+    try {
+        const response =  await theatreGetScreenCollectionsService(data,token);
+        console.log(response.data);
+        if(response.data?.newTheatreToken){
+            thunkAPI.dispatch(setTheatreData({data:response.data.newTheatreData,token:response.data.newTheatreToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const theatreGetMovieCollections = createAsyncThunk('theatreGetMovieCollections',async ({token},thunkAPI)=>{
+    try {
+        const response =  await theatreGetMovieCollectionsService(token);
+        console.log(response.data);
+        if(response.data?.newTheatreToken){
+            thunkAPI.dispatch(setTheatreData({data:response.data.newTheatreData,token:response.data.newTheatreToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const theatreGetLatestOrders = createAsyncThunk('theatreGetLatestOrders',async ({token},thunkAPI)=>{
+    try {
+        const response =  await theatreGetLatestOrdersService(token);
         console.log(response.data);
         if(response.data?.newTheatreToken){
             thunkAPI.dispatch(setTheatreData({data:response.data.newTheatreData,token:response.data.newTheatreToken}))

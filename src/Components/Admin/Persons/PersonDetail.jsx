@@ -78,7 +78,7 @@ function PersonDetail() {
                         {   singlePersonDetail?.moviesOfPerson && singlePersonDetail.moviesOfPerson.length > 0 &&
                             singlePersonDetail.moviesOfPerson.map(movie=>{
                                 return(
-                                    <MovieCard2 movie={movie}/>
+                                    <MovieCard2 key={movie?._id} movie={movie}/>
                                 )
                             })
                         }

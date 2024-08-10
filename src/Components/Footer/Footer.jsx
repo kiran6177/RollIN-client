@@ -1,10 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaHeadset,FaReceipt, FaSquareXTwitter } from "react-icons/fa6";
 import { FaEnvelopeOpenText , FaRegCopyright , FaLinkedin, FaYoutube, FaInstagram, FaFacebook} from "react-icons/fa";
 import logo from '../../assets/logo.png'
+import { useNavigate } from 'react-router';
+import { GENRES } from '../../constants/movie-constants/genres';
+import { languages } from '../../constants/movie-constants/languages';
+import { useSelector } from 'react-redux';
 
 
 function Footer() {
+    const [genres,setGenres] = useState([]);
+    const [randomLanguages,setRandomLanguages] = useState([]);
+    const {upcomingMovies} = useSelector(state=>state.userBooking)
+
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        console.log("GENRE");
+        if(GENRES?.length > 0){
+            let genreIds = []
+            let randomGenres = [];
+            for(let i = 0 ; i < 6 ; i++){
+                let randomIndex = Math.floor(Math.random() * GENRES.length);
+                if(!genreIds.includes(GENRES[randomIndex]?.id)){
+                    randomGenres.push(GENRES[randomIndex])
+                    genreIds.push(GENRES[randomIndex]?.id)
+                }else{
+                    i--
+                }
+            }
+            setGenres(randomGenres)
+        }
+        if(languages?.length > 0){
+            let languageIds = []
+            let randomLang = [];
+            for(let i = 0 ; i < 6 ; i++){
+                let randomIndex = Math.floor(Math.random() * languages.length);
+                if(!languageIds.includes(languages[randomIndex]?.id)){
+                    randomLang.push(languages[randomIndex])
+                    languageIds.push(languages[randomIndex]?.id)
+                }else{
+                    i--
+                }
+            }
+            setRandomLanguages(randomLang)
+        }
+    },[])
   return (
     <div >
       <div className='bg-[#F6AE2D] h-[16rem] sm:h-[8rem] flex flex-col sm:flex-row justify-evenly'>
@@ -22,17 +63,40 @@ function Footer() {
         </div>
       </div>
       <div className='h-auto bg-black '>
+            {
+            upcomingMovies?.length > 0 &&
             <div className='text-white px-[5rem] lg:px-[7rem] pt-[5rem] py-[2rem] flex flex-col gap-4'>
                 <h5 className='font-semibold'>UPCOMING MOVIES</h5>
-                <div className='flex justify-start gap-14 flex-wrap text-sm'><p className='min-w-[150px]'>Malayali From India</p><p className='min-w-[150px]'>Nadikar</p><p className='min-w-[150px]'>Aavesham</p><p className='min-w-[150px]'>Kingdom of Planet of Apes</p><p className='min-w-[150px]'>Manjummel Boys</p><p className='min-w-[150px]'>Shaithan</p></div>
+                <div className='flex justify-start gap-14 flex-wrap text-sm'>
+                    {
+                        upcomingMovies.map((movie,i)=>{
+                            if(i < 6){
+                                return <p key={movie?.movie_id} onClick={()=>navigate(`/moviedetail?movie_id=${movie?.movie_id}`)} className='min-w-[150px] cursor-pointer'>{movie?.title}</p>
+                            }
+                        })
+                    }
+                </div>
             </div>
+            }
             <div className='text-white px-[5rem] lg:px-[7rem] py-[3rem] flex flex-col gap-4'>
                 <h5 className='font-semibold'>MOVIES BY GENRE</h5>
-                <div className='flex justify-start gap-14 flex-wrap text-sm'><p className='min-w-[150px]'>Drama Movies</p><p className='min-w-[150px]'>Comedy Movies</p><p className='min-w-[150px]'>Thriller Movies</p><p className='min-w-[150px]'>Action Movies</p><p className='min-w-[150px]'>Romantic Movies</p><p className='min-w-[150px]'>Sci-Fi Movies</p></div>
+                <div className='flex justify-start gap-14 flex-wrap text-sm'>
+                  {
+                    genres?.length > 0 && genres?.map((genreObj,i)=>{
+                        return <p onClick={()=>navigate(`/movies?genre=${genreObj?.name}`)} key={'genre'+genreObj?.id} className='min-w-[150px] cursor-pointer'>{genreObj?.name} Movies</p>
+                    })  
+                  }
+                </div>
             </div>
             <div className='text-white px-[5rem] lg:px-[7rem] py-[3rem] flex flex-col gap-4'>
                 <h5 className='font-semibold'>MOVIES BY LANGUAGE</h5>
-                <div className='flex justify-start gap-14 flex-wrap text-sm'><p className='min-w-[150px]'>Movies in Malayalam</p><p className='min-w-[150px]'>Movies in Tamil</p><p className='min-w-[150px]'>Movies in Hindi</p><p className='min-w-[150px]'>Movies in English</p><p className='min-w-[150px]'>Movies in Telugu</p></div>
+                <div className='flex justify-start gap-14 flex-wrap text-sm'>
+                    {
+                        randomLanguages?.length > 0 && randomLanguages?.map((langObj,i)=>{
+                            return <p onClick={()=>navigate(`/movies?lang=${langObj?.name}`)} key={'lang'+langObj?.id} className='min-w-[150px] cursor-pointer'>Movies in {langObj?.name} </p>
+                        })  
+                    }
+                </div>
             </div>
             <div className='text-white px-[5rem] lg:px-[7rem] py-[3rem] flex flex-col gap-4'>
                 <h5 className='font-semibold'>THEATRES BY CITIES</h5>

@@ -23,3 +23,15 @@ export const theatreGetCompleteBookingsService = (data,token)=>{
 export const theatreBookSeatService = (data,token)=>{
     return axios.post('/booking/bookseat',data,{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const theatreGetScreenCollectionsService = (data,token)=>{
+    return axios.post('/booking/getscreencollection',data,{headers:{Authorization:`Bearer ${token}`}})
+}
+
+export const theatreGetMovieCollectionsService = (token)=>{
+    return axios.get('/booking/getmoviecollection',{headers:{Authorization:`Bearer ${token}`}})
+}
+
+export const theatreGetLatestOrdersService = (token)=>{
+    return axios.get('/booking/getlatestorders',{headers:{Authorization:`Bearer ${token}`}})
+}

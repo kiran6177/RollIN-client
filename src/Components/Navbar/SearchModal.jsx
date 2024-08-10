@@ -81,7 +81,7 @@ function SearchModal({isOpen,set}) {
         }
         if(allTheatresData?.length > 0){
             setScreenResults(allTheatresData)
-        }else{
+        }else if(allTheatresData?.length !== 0){
             if(localStorage.getItem('city')){
                 const loc = JSON.parse(localStorage.getItem('city')).loc;
                 dispatch(userGetTheatres({location:loc}))

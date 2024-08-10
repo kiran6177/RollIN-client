@@ -45,7 +45,7 @@ function NotificationToast({notification}) {
     animate={{x:0}}
     transition={{type:'spring'}}
     exit={{x:1000}}
-    className='bg-black border-2 border-[#f6ae2d] rounded-md fixed w-[80vw] sm:w-[60vw] lg:w-[40vw] h-[6rem] sm:h-[7rem] z-50 top-[4.5rem] right-[3rem] shadow-[0px_0px_35px_rgba(245,176,63,0.6)] overflow-hidden flex justify-between'>
+    className='bg-black border-2 border-[#f6ae2d] rounded-md fixed w-[80vw] sm:w-[68vw] lg:w-[40vw] h-[6rem] sm:h-[7rem] z-50 top-[4.5rem] right-[3rem] shadow-[0px_0px_35px_rgba(245,176,63,0.6)] overflow-hidden flex justify-between'>
       <div className='flex gap-5 p-4 '>
         <div className='flex items-center justify-center'>
         <IoNotificationsSharp className='text-[#f6ae2d] w-[2rem] h-[2rem] animate-bounce' />

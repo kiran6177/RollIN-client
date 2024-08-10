@@ -90,12 +90,12 @@ function TheatreSingleView() {
             <h2 className='text-[#f6ae2d] font-semibold text-4xl'>{theatre.name}</h2>
             <h4 className='text-white font-medium text-xl'>Email : &nbsp;  {theatre.email}</h4>
             
-            <div className='w-[90%] h-[20rem] mx-auto flex flex-wrap gap-12 '>
+            <div className='w-[90%]  mx-auto flex flex-wrap gap-12 '>
             {
               theatre.images && theatre.images.length > 0 &&
               theatre.images.map((image,i)=>{
                 return (
-                    <img key={i} src={image} alt="" className='max-w-[30%] object-contain bg-black border-black' /> 
+                    <img key={i} src={image} alt="" className='max-w-[30%] aspect-square object-contain bg-black border-black' /> 
                 )
               })
             }
