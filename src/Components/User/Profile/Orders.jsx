@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userGetOrders } from '../../../features/userBooking/userBookingActions';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ScaleLoader } from 'react-spinners';
+import { IoInformationCircle } from "react-icons/io5";
 import { motion } from 'framer-motion';
 import { resetOrders } from '../../../features/userBooking/userBookingSlice';
+import { getShowDate } from '../../../utils/getShowDate';
 const TicketModal = lazy(()=>import('./TicketModal'));
 
 const cardVariants = {
@@ -120,6 +122,13 @@ function Orders() {
                       </div>
                     </div>
                     {new Date().setUTCHours(0,0,0,0) <= new Date(order.show_date) &&<button onClick={()=>setShowTicket(order)} className='bg-[#f6ae2d] absolute right-0 bottom-0 font-medium px-4 py-1 text-xs rounded-sm tracking-wider'>MORE</button>}
+                    <div>
+                      {(Math.abs(getShowDate(order?.show_date,order?.show_time) - new Date()) < 4 * 60 * 60 * 1000) ? 
+                      <h4 className='text-white text-sm flex items-center gap-3'><IoInformationCircle className='w-[1.3rem] h-[1.3rem]' /> Cancellation unavailable.</h4> 
+                      :
+                      <button onClick={()=>''} className='text-black border-2 border-[#f6ae2d] bg-[#f6ae2d] px-6 py-2 rounded-sm tracking-widest font-medium hover:bg-black hover:text-white transition-all duration-200 ease-linear'>CANCEL TICKET</button>
+                      }
+                    </div>
                   </div>
             </motion.div>
             )

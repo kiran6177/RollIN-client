@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { theatreBookSeat, theatreCancelShowBookings, theatreGetBookingsByScreen, theatreGetCompleteBookings, theatreGetShowBookingStatus, theatreGetSingleShow } from "./theatreBookingActions"
+import { theatreBookSeat, theatreCancelShowBookings, theatreGetBookingsByScreen, theatreGetCompleteBookings, theatreGetLatestOrders, theatreGetMovieCollections, theatreGetScreenCollections, theatreGetShowBookingStatus, theatreGetSingleShow } from "./theatreBookingActions"
 
 const initialState = { 
     reservationStatus:null,
     screenshows:null,
     singleShowDetails:null,
     ordersData:null,
+    screenCollections:null,
+    movieCollections:null,
+    latestOrders:null,
     success:false,
     error:'',
     loading:false,
@@ -30,6 +33,10 @@ const theatreBookingSlice = createSlice({
         },
         resetScreenShows:(state)=>{
             state.screenshows = null
+        },
+        resetCollections:(state)=>{
+            state.screenCollections = null
+            state.movieCollections = null
         }
     },
     extraReducers:(builder)=>{
@@ -125,9 +132,54 @@ const theatreBookingSlice = createSlice({
             state.loading = false
             state.error = action.payload?.reasons
         })
+        .addCase(theatreGetScreenCollections.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            state.screenCollections = action.payload?.resultData
+            state.loading = false
+
+        })
+        .addCase(theatreGetScreenCollections.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreGetScreenCollections.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
+        .addCase(theatreGetMovieCollections.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            state.movieCollections = action.payload?.resultData
+            state.loading = false
+
+        })
+        .addCase(theatreGetMovieCollections.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreGetMovieCollections.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
+        .addCase(theatreGetLatestOrders.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            state.latestOrders = action.payload?.resultData
+            state.loading = false
+
+        })
+        .addCase(theatreGetLatestOrders.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreGetLatestOrders.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
     }
 })
 
-export const { resetReservationStatus , resetTheatreBookingActions ,resetScreenShows , resetOrdersData} = theatreBookingSlice.actions;
+export const { resetReservationStatus , resetTheatreBookingActions ,resetScreenShows , resetOrdersData, resetCollections} = theatreBookingSlice.actions;
 
 export default theatreBookingSlice.reducer

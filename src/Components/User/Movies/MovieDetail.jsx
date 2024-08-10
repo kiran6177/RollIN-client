@@ -89,6 +89,7 @@ function MovieDetail() {
         }else{
             dispatch(userGetOneMovie({movie_id}))
         }
+        window.scrollTo(0,0)
       }
       if(movie_id){
         dispatch(resetReviewData())

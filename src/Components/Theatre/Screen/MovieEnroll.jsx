@@ -11,6 +11,8 @@ import { languages } from '../../../constants/movie-constants/languages'
 import { GENRES } from '../../../constants/movie-constants/genres'
 import MovieCard2Skelton from '../../../Skelton/MovieCard2Skelton'
 import ToggleButtonSkelton from '../../../Skelton/ToggleButtonSkelton'
+import { useLocation, useNavigate } from 'react-router'
+import { useSearchParams } from 'react-router-dom'
 const ToggleButton = lazy(()=>import('./ToggleButton')) 
 const MovieCard2 = lazy(()=>import('./MovieCard2')) 
 
@@ -44,15 +46,34 @@ function MovieEnroll() {
     const genreButtonRefs = useRef([])
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams();
+    const genre = searchParams.get('genre');
+    const lang = searchParams.get('lang');
 
     useEffect(()=>{
-        dispatch(resetMovieList())
-        dispatch(theatreGetAllMovies({filters:{page:1},token:theatreToken}))
-    },[])
+      console.log("GGGG");
+        if((!genre || genre === '') && (!lang || lang === '')){
+          console.log("Wroke");
+          dispatch(resetMovieList())
+          dispatch(theatreGetAllMovies({filters:{page:1},token:theatreToken}))
+        }else{
+          dispatch(resetMovieList())
+          if(genre){
+            setFilterArray([{type:'genre',data:genre}])
+          }else{
+            setFilterArray([{type:'language',data:lang}])
+          }
+          window.scrollTo(0,0)
+        } 
+    },[genre,lang])
+
 
     useEffect(()=>{
         if(moviesList?.length > 0){
           setPage((prev)=>prev+1)
+        }else{
+          setPage(1)
         }
       },[moviesList])
 
@@ -64,7 +85,7 @@ function MovieEnroll() {
           setOpen(false)
           dispatch(resetMovieList())
         }else{
-          
+          setOpen(true)
           filterArray.map(filter=>{
             if(filter.type === 'genre'){
               genres.push(filter.data)
@@ -129,13 +150,19 @@ function MovieEnroll() {
     const handleReset = ()=>{
       setPage(1)
       setFilterArray([])
-      dispatch(theatreGetAllMovies({filters:{page:1},token:theatreToken}))
-      buttonRefs.current.map(btn=>{
-        btn.reset()
-      })
-      genreButtonRefs.current.map(btn=>{
-        btn.reset()
-      })
+      if((!genre || genre === '') && (!lang || lang === '')){
+        dispatch(theatreGetAllMovies({filters:{page:1},token:theatreToken}))
+        buttonRefs.current.map(btn=>{
+          btn.reset()
+        })
+        genreButtonRefs.current.map(btn=>{
+          btn.reset()
+        })
+      }else{
+        navigate(`/theatre/movies`)
+        dispatch(resetMovieList())
+        dispatch(theatreGetAllMovies({filters:{page:1},token:theatreToken}))
+      }
     }
       
     const handleSearch = ()=>{

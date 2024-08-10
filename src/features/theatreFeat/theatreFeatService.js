@@ -39,3 +39,7 @@ export const theatreEditTierService = (data,token)=>{
 export const theatreChangeTierOrderService = (data,token)=>{
     return axios.post('/theatre/changetierorder',data,{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const theatreGetRunningMoviesService = (token)=>{
+    return axios.get('/theatre/getrunningmovies',{headers:{Authorization:`Bearer ${token}`}})
+}

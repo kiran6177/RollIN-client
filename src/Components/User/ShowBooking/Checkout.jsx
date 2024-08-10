@@ -246,12 +246,12 @@ function Checkout() {
                 
             </div>
 
-            <div className='flex justify-between my-8'>
-                    <div className='w-[68%] font-medium tracking-wider bg-black border-2 border-[#f6ae2d] rounded-md py-6 px-10'> 
+            <div className='flex flex-col gap-6 md:gap-0 md:flex-row justify-between my-8'>
+                    <div className='md:w-[68%] font-medium tracking-wider bg-black border-2 border-[#f6ae2d] rounded-md py-6 px-10'> 
                         <h3 className='text-[#f6ae2d] '>Share Contact Details</h3>
                         <h3 className='text-white text-sm my-5'>We send tickets for you.</h3>
                         <div>
-                        <div className="w-[80%] ">
+                        <div className="md:w-[80%] ">
                             <label className='text-white text-xs tracking-widest'>Enter your Email</label>
                             <input type="text" value={email} onChange={(e)=>{
                                 setEmail(e.target.value);
@@ -265,7 +265,7 @@ function Checkout() {
                                 }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
                             {emailError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{emailError}</p>}
                         </div>
-                        <div className="w-[80%] ">
+                        <div className="md:w-[80%] ">
                             <label className='text-white text-xs tracking-widest'>Enter Mobile Number</label>
                             <input type="number" value={mobile} onChange={(e)=>{
                                 setMobile(e.target.value);
@@ -281,7 +281,7 @@ function Checkout() {
                         </div>
                         </div>
                     </div>
-                    <div className='w-[30%]  tracking-wider bg-black border-2 flex flex-col justify-between border-[#f6ae2d] rounded-md '>
+                    <div className='md:w-[30%]  tracking-wider bg-black border-2 flex flex-col justify-between border-[#f6ae2d] rounded-md '>
                         <div className='mb-5 py-6 px-10'>
                             <h3 className='font-medium text-[#f6ae2d] my-3'>Booking Summary</h3>
 

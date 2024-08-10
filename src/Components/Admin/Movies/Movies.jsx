@@ -47,20 +47,16 @@ function Movies() {
       }
     },[adminToken,message])
 
-    useEffect(()=>{
-      if(moviesData?.length > 0){
-        setPage((prev)=>prev+1)
-      }
-    },[moviesData])
+
 
     const nextPage = ()=>{
       console.log("next",page);
-      dispatch(adminGetMoviesFromDB({page,token:adminToken}))
+      dispatch(adminGetMoviesFromDB({page:page+1,token:adminToken}))
+      setPage((prev)=>prev+1)
     }
-  if(loading){
-    return <LoadingSpinner/>
-  }else{
     return (
+      <>
+      {loading && <LoadingSpinner/>}
       <div className='pt-28 lg:pl-56 min-h-[100vh] bg-[#15121B]'>
       <Toaster richColors />
       <div className='p-8 sm:p-12 w-[95%] mx-auto'>
@@ -97,7 +93,8 @@ function Movies() {
       </div>
       </div>
     </div>
-  )}
+    </>
+  )
 }
 
 export default Movies

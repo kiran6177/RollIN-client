@@ -10,6 +10,7 @@ import { languages } from '../../../constants/movie-constants/languages';
 import { GENRES } from '../../../constants/movie-constants/genres';
 import useDebounce from '../../../hooks/debounce';
 import MovieCard2Skelton from '../../../Skelton/MovieCard2Skelton';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 const MovieCard = lazy(()=>import('./MovieCard'));
 
 const cardVariants = {
@@ -43,24 +44,51 @@ function MoviesMain() {
     const genreButtonRefs = useRef([])
 
     const dispatch = useDispatch()
+    const navigate = useNavigate();
+
+    const [searchParams] = useSearchParams();
+    const genre = searchParams.get('genre');
+    const lang = searchParams.get('lang');
 
     useEffect(()=>{
         dispatch(resetAllMoviesData())
         if(localStorage.getItem('city')){
           const location = JSON.parse(localStorage.getItem('city')).loc;
           setLocation(location)
-          dispatch(userGetAllMovies({page:1,location}))
+          if((!genre || genre === '') && (!lang || lang === '')){
+            dispatch(userGetAllMovies({page:1,location}))
+          }else{
+            dispatch(resetAllMoviesData())
+            if(genre){
+              setFilterArray([{type:'genre',data:genre}])
+            }else{
+              setFilterArray([{type:'language',data:lang}])
+            }
+            window.scrollTo(0,0)
+          }
         }else{
-          dispatch(userGetAllMovies({page:1}))
+          if((!genre || genre === '') && (!lang || lang === '')){
+            dispatch(userGetAllMovies({page:1}))
+          }else{
+            dispatch(resetAllMoviesData())
+            if(genre){
+              setFilterArray([{type:'genre',data:genre}])
+            }else{
+              setFilterArray([{type:'language',data:lang}])
+            }
+            window.scrollTo(0,0)
+          }
         }
         return ()=>{
         dispatch(resetAllMoviesData())
         }
-    },[])
+    },[genre,lang])
 
     useEffect(()=>{
         if(allMoviesData?.length > 0){
           setPage((prev)=>prev+1)
+        }else{
+          setPage(1)
         }
       },[allMoviesData])
 
@@ -72,7 +100,7 @@ function MoviesMain() {
           setOpen(false)
           dispatch(resetAllMoviesData())
         }else{
-          
+          setOpen(true)
           filterArray.map(filter=>{
             if(filter.type === 'genre'){
               genres.push(filter.data)
@@ -132,6 +160,7 @@ function MoviesMain() {
     const handleReset = ()=>{
       setPage(1)
       setFilterArray([])
+      if((!genre || genre === '') && (!lang || lang === '')){
       dispatch(userGetAllMovies({page:1,location:location})) 
       buttonRefs.current.map(btn=>{
         btn.reset()
@@ -139,6 +168,11 @@ function MoviesMain() {
       genreButtonRefs.current.map(btn=>{
         btn.reset()
       })
+      }else{
+        navigate(`/movies`)
+        dispatch(resetAllMoviesData())
+        dispatch(userGetAllMovies({page:1,location}))
+      }
     }
       
     const handleSearch = ()=>{

@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { theatreAddScreen, theatreChangeShowMovie, theatreChangeTierOrder, theatreEditScreen, theatreEditTier, theatreEnrollMovie, theatreExtendMovieForScreen, theatreGetAllMovies, theatreGetShowBookingStatus, theatreGetTheatreData, theatreRemoveMovieFromScreen } from "./theatreFeatAction";
+import { theatreAddScreen, theatreChangeShowMovie, theatreChangeTierOrder, theatreEditScreen, theatreEditTier, theatreEnrollMovie, theatreExtendMovieForScreen, theatreGetAllMovies, theatreGetRunningMovies, theatreGetShowBookingStatus, theatreGetTheatreData, theatreRemoveMovieFromScreen } from "./theatreFeatAction";
 
 const initialState = {
     theatreScreenData:null,
     singleScreenData:null,
     editScreenData:null,
     moviesList:null,
+    runningMovies:null,
     success:false,
     error:'',
     loading:false,
@@ -38,6 +39,7 @@ const theatreFeatSlice = createSlice({
     extraReducers:(builder)=>{
         builder
         .addCase(theatreGetTheatreData.fulfilled,(state,action)=>{
+            console.log(action);
             state.success = true
             state.theatreScreenData = action.payload?.resultData
             state.loading = false
@@ -248,6 +250,21 @@ const theatreFeatSlice = createSlice({
             state.loading = true
         })
         .addCase(theatreChangeShowMovie.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
+        .addCase(theatreGetRunningMovies.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            state.runningMovies = action.payload?.resultData
+            state.loading = false
+
+        })
+        .addCase(theatreGetRunningMovies.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreGetRunningMovies.rejected,(state,action)=>{
             console.log(action);
             state.loading = false
             state.error = action.payload?.reasons

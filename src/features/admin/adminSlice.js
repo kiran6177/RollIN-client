@@ -1,5 +1,5 @@
 import {  createSlice } from "@reduxjs/toolkit";
-import { adminLogin,adminGetTheatres,adminGetUsers,adminLogout,approveTheatre,blockUnblockTheatres,blockUnblockUsers } from "./adminActions";
+import { adminLogin,adminGetTheatres,adminGetUsers,adminLogout,approveTheatre,blockUnblockTheatres,blockUnblockUsers, adminGetHighMovies, adminGetRegistrationDetails, adminGetRecentMovies } from "./adminActions";
 
 
 const initialState = {
@@ -7,6 +7,9 @@ const initialState = {
     adminToken:null,
     usersData:null,
     theatresData:null,
+    grossMovies:null,
+    registrationData:null,
+    recentMovies:null,
     success:false,
     error:'',
     loading:false,
@@ -203,6 +206,63 @@ const adminSlice = createSlice({
             state.loading = true
         })
         .addCase(approveTheatre.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ["Some Error Occured!!"]
+            if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
+                state.adminData = null
+                state.adminToken = null
+                state.usersData = null
+                state.theatresData = null
+            }
+            state.loading = false
+        })
+        .addCase(adminGetHighMovies.fulfilled,(state,action)=>{
+            console.log(action);
+            state.grossMovies = action.payload?.resultData
+            state.loading = false
+        })
+        .addCase(adminGetHighMovies.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(adminGetHighMovies.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ["Some Error Occured!!"]
+            if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
+                state.adminData = null
+                state.adminToken = null
+                state.usersData = null
+                state.theatresData = null
+            }
+            state.loading = false
+        })
+        .addCase(adminGetRegistrationDetails.fulfilled,(state,action)=>{
+            console.log(action);
+            state.registrationData = action.payload?.resultData
+            state.loading = false
+        })
+        .addCase(adminGetRegistrationDetails.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(adminGetRegistrationDetails.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons || ["Some Error Occured!!"]
+            if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){
+                state.adminData = null
+                state.adminToken = null
+                state.usersData = null
+                state.theatresData = null
+            }
+            state.loading = false
+        })
+        .addCase(adminGetRecentMovies.fulfilled,(state,action)=>{
+            console.log(action);
+            state.recentMovies = action.payload?.resultData
+            state.loading = false
+        })
+        .addCase(adminGetRecentMovies.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(adminGetRecentMovies.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload?.reasons || ["Some Error Occured!!"]
             if(action.payload?.reasons && action.payload.reasons.length > 0 && action.payload.reasons[0] === 'UnAuthorized Admin!!'){

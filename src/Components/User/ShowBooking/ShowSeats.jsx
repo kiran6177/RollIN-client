@@ -190,7 +190,7 @@ function ShowSeats() {
     <div className='py-10 bg-[#15121B] '>
         <div className='pt-28 sm:px-12  min-h-[10rem] '>
             <div className='sm:border-2 border-[#f6ae2d] rounded-sm bg-black px-4 sm:px-0'>
-                <div className='border-b-2 border-[#f6ae2d] py-6 px-10 flex  gap-4 justify-between'>
+                <div className='border-b-2 border-[#f6ae2d] py-6 px-10 flex flex-col md:flex-row gap-4 justify-between'>
                     <div className='flex flex-col gap-4'>
                         <h5 onClick={()=>navigate(`/moviedetail?movie_id=${singleShow?.movie?.movie_id}`)} className='text-[#f6ae2d] text-2xl sm:text-4xl font-semibold tracking-widest cursor-pointer'>{singleShow?.movie?.title}</h5>
                         <h6 onClick={()=>navigate(`/screenwithmovies?theatre_id=${theatre_id}`)} className='text-white text-md sm:text-base flex gap-3 items-center cursor-pointer'><IoLocationOutline className='text-[#f6ae2d]' /> {singleTheatre?.name}  </h6>

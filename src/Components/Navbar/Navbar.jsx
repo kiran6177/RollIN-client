@@ -104,9 +104,9 @@ function Navbar({hide}) {
       </div>
       
     </div>  
-    <div className='fixed z-10 mt-24 bg-black w-[100%]  text-[#F6AE2D] px-5 py-2 block sm:hidden'>
-        <button  className='flex items-center'>
-          Choose City <FaChevronRight/>
+    <div className='fixed z-30 mt-20 bg-black w-[100%]  text-[#F6AE2D] px-5 py-2 block sm:hidden'>
+        <button onClick={()=>setShowSelectCity(true)} className='flex items-center'>
+        {localStorage.getItem("city") ? JSON.parse(localStorage.getItem('city'))?.name?.split(',')[0] :'Choose City' }<FaChevronRight/>
         </button>
     </div>
     {isLoading && <LoadingProgress setIsLoading={setIsLoading} />}
