@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { userGetOrders, userGetRecommendedMovies, userGetShowData, userGetShowDataByMovie, userGetSingleShowData, userGetUpcomingMovies, userPayNow, userPayProcess, userSeatReservation } from "./userBookingActions";
+import { userCancelTicket, userGetOrders, userGetRecommendedMovies, userGetShowData, userGetShowDataByMovie, userGetSingleShowData, userGetUpcomingMovies, userPayNow, userPayProcess, userSeatReservation } from "./userBookingActions";
 
 const initialState = {
     singleTheatreShows:null,
@@ -158,6 +158,19 @@ const userBookingSlice = createSlice({
             state.loading = true;
         })
         .addCase(userGetRecommendedMovies.rejected,(state,action)=>{
+            console.log(action);
+            state.error = action.payload?.reasons
+            state.loading = false;
+        })
+        .addCase(userCancelTicket.fulfilled,(state,action)=>{
+            console.log(action);
+            state.message = "Cancelled Successfully. Refund Initiated."
+            state.loading = false;
+        })
+        .addCase(userCancelTicket.pending,(state)=>{
+            state.loading = true;
+        })
+        .addCase(userCancelTicket.rejected,(state,action)=>{
             console.log(action);
             state.error = action.payload?.reasons
             state.loading = false;

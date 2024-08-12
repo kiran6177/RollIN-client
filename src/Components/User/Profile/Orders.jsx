@@ -5,9 +5,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { ScaleLoader } from 'react-spinners';
 import { IoInformationCircle } from "react-icons/io5";
 import { motion } from 'framer-motion';
-import { resetOrders } from '../../../features/userBooking/userBookingSlice';
+import { resetOrders, resetUserBookings } from '../../../features/userBooking/userBookingSlice';
 import { getShowDate } from '../../../utils/getShowDate';
+import { toast, Toaster } from 'sonner';
 const TicketModal = lazy(()=>import('./TicketModal'));
+const CancelConfirmModal = lazy(()=>import('./CancelConfirmModal'))
 
 const cardVariants = {
   hidden:{
@@ -27,11 +29,31 @@ function Orders() {
     const [showTicket,setShowTicket] = useState(false);
     const dispatch = useDispatch();
     const {userToken} = useSelector(state=>state.user)
-    const {orders} = useSelector(state=>state.userBooking)
+    const {orders,error,message} = useSelector(state=>state.userBooking)
     const [page,setPage] = useState(1)
     const scrollRef = useRef(null)
     const [ordersList,setOrdersList] = useState([]);
     const [selected,setSelected] = useState('UPCOMING')
+    const [showCancelConfirm,setShowCancelConfirm] = useState(false);
+    const [showInfo,setShowInfo] = useState(false);
+
+    useEffect(()=>{
+      if(message === "Cancelled Successfully. Refund Initiated."){
+        toast.success(message)
+        dispatch(resetUserBookings())
+        dispatch(resetOrders())
+        if(userToken){
+          const data = {page:1}
+          dispatch(userGetOrders({data,token:userToken}))
+        }
+        return
+      }
+      if(error?.length > 0){
+        error?.map(err=>toast.error(err))
+        dispatch(resetUserBookings())
+        return
+      }
+    },[error,message])
 
     useEffect(()=>{
       const data = {page:1}
@@ -56,19 +78,32 @@ function Orders() {
           today.setUTCHours(0,0,0,0)
           console.log(today,"day");
           if(selected === 'UPCOMING'){
-            let upcomingOrders = orders.filter(order=>new Date(order.show_date) >= today);
+            let upcomingOrders = orders.filter(order=>(new Date(order.show_date) >= today) && order.refund_id === null);
             setOrdersList(upcomingOrders)
-          }else{
-            let watchedOrders = orders.filter(order=>new Date(order.show_date) < today)
+          }else if(selected === 'WATCHED'){
+            let watchedOrders = orders.filter(order=>(new Date(order.show_date) < today) && order.refund_id === null)
             setOrdersList(watchedOrders)
+          }else{
+            let cancelledOrders = orders.filter(order=>order.refund_id !== null)
+            console.log(cancelledOrders);
+            setOrdersList(cancelledOrders)
           }
       }
     },[orders,selected])
 
+    const handleCancelTicket = (order_id)=>{
+      setShowCancelConfirm(order_id)
+    }
+
   return (
     <div className='my-8'>
+      <Toaster richColors/>
           <h2 className='text-white text-3xl font-semibold tracking-widest mb-5'>ORDERS</h2>
-          <span className='bg-[#c0871dd4] flex max-w-fit   font-medium tracking-wider gap-4 flex-wrap'><button onClick={()=>{setSelected('UPCOMING')}} className={selected === 'UPCOMING' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>UPCOMING</button><button onClick={()=>{setSelected('WATCHED')}} className={selected === 'WATCHED' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>WATCHED</button></span>
+          <span className='bg-[#c0871dd4] flex max-w-fit   font-medium tracking-wider gap-4 flex-wrap'>
+            <button onClick={()=>{setSelected('UPCOMING')}} className={selected === 'UPCOMING' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>UPCOMING</button>
+            <button onClick={()=>{setSelected('WATCHED')}} className={selected === 'WATCHED' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>WATCHED</button>
+            <button onClick={()=>{setSelected('CANCELLED')}} className={selected === 'CANCELLED' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>CANCELLED</button>
+            </span>
           <div ref={scrollRef} className='my-6 mx-auto flex flex-wrap gap-6 justify-evenly '>
         {
             ordersList &&  ordersList.length > 0 ?
@@ -123,10 +158,17 @@ function Orders() {
                     </div>
                     {new Date().setUTCHours(0,0,0,0) <= new Date(order.show_date) &&<button onClick={()=>setShowTicket(order)} className='bg-[#f6ae2d] absolute right-0 bottom-0 font-medium px-4 py-1 text-xs rounded-sm tracking-wider'>MORE</button>}
                     <div>
-                      {(Math.abs(getShowDate(order?.show_date,order?.show_time) - new Date()) < 4 * 60 * 60 * 1000) ? 
-                      <h4 className='text-white text-sm flex items-center gap-3'><IoInformationCircle className='w-[1.3rem] h-[1.3rem]' /> Cancellation unavailable.</h4> 
+                      {!order?.refund_id ? (Math.abs(getShowDate(order?.show_date,order?.show_time) - new Date()) < 4 * 60 * 60 * 1000) ? 
+                      <div className='relative mb-10 sm:mb-0'>
+                        <h4 className='text-white text-sm flex items-center gap-3'><IoInformationCircle onMouseEnter={()=>setShowInfo(true)} onMouseLeave={()=>setShowInfo(false)} className='w-[1.3rem] h-[1.3rem]' /> Cancellation unavailable.</h4> 
+                        {showInfo && <div className='z-10 p-3 absolute -top-[8rem] sm:-top-[3.5rem] sm:-left-[10rem] w-[10rem] sm:w-auto bg-black border-2 border-[#f6ae2d] rounded-sm '>
+                          <h2 className='text-white'>Cancellation is only available before 4 hours of show.</h2>
+                        </div>}
+                      </div>
                       :
-                      <button onClick={()=>''} className='text-black border-2 border-[#f6ae2d] bg-[#f6ae2d] px-6 py-2 rounded-sm tracking-widest font-medium hover:bg-black hover:text-white transition-all duration-200 ease-linear'>CANCEL TICKET</button>
+                      <button onClick={()=>handleCancelTicket(order?._id)} className='text-black border-2 mb-10 sm:mb-0 border-[#f6ae2d] bg-[#f6ae2d] px-6 py-2 rounded-sm tracking-widest font-medium hover:bg-black hover:text-white transition-all duration-200 ease-linear'>CANCEL TICKET</button>
+                      :
+                      <h2 className='text-white text-sm' >REFUND STATUS : <span className={order?.refund_status === "PROCESSING"? 'text-[#f62d2d]' : order?.refund_status === "REFUNDED"? "text-[#2bed31]" : "text-white" }> {order?.refund_status}</span></h2>
                       }
                     </div>
                   </div>
@@ -138,6 +180,7 @@ function Orders() {
             : <div className='text-white tracking-widest'> NO ORDERS.</div>
         }
                 <Suspense><TicketModal isOpen={showTicket} set={setShowTicket} /></Suspense>
+                <Suspense><CancelConfirmModal isOpen={showCancelConfirm} set={setShowCancelConfirm} /></Suspense>
       </div>
       </div>
   )
