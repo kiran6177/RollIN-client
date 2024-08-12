@@ -28,9 +28,8 @@ function BookingsList() {
     const [selected,setSelected] = useState('ALL')
     const dispatch = useDispatch();
     const {theatreToken} = useSelector(state=>state.theatre)
-    const {ordersData,loading} = useSelector(state=>state.theatreBooking)
+    const {ordersData} = useSelector(state=>state.theatreBooking)
     const {theatreScreenData} = useSelector(state=>state.theatreFeat)
-    const theatreFeatLoading = useSelector(state=>state.theatreFeat.loading)
     const scrollRef = useRef(null);
     const [page,setPage] = useState(1);
     const [searchParams] = useSearchParams();
@@ -76,10 +75,6 @@ function BookingsList() {
         dispatch(theatreGetCompleteBookings({data,token:theatreToken}))
         setPage(prev=>prev+1)
     }
-
-    if(loading || theatreFeatLoading){
-        return <LoadingSpinner/>
-    }else{
 
         return (
             <div className='py-10 bg-[#15121B] '>
@@ -145,6 +140,7 @@ function BookingsList() {
                             <h2>Tickets</h2>
                         </div>
                         </div>
+                        {order?.refund_id && <div><h2 className='text-red-500'>CANCELLED</h2></div>}
                     </div>
                 </motion.div>
                 )
@@ -156,7 +152,7 @@ function BookingsList() {
         </div>
         </div>
     </div>
-  )}
+  )
 }
 
 export default BookingsList

@@ -35,3 +35,8 @@ export const userGetUpcomingMoviesService = (data,token)=>{
 export const userGetRecommendedMoviesService = (data,token)=>{
     return axios.post('/booking/getrecommendedmovies',data,{headers:{Authorization:`Bearer ${token}`}})
 }
+
+
+export const userCancelTicketService = (data,token)=>{
+    return axios.post('/booking/cancelticket',data,{headers:{Authorization:`Bearer ${token}`}})
+}

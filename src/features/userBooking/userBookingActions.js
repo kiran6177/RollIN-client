@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userGetOrdersService, userGetRecommendedMoviesService, userGetShowDataByMovieService, userGetShowDataService, userGetSingleShowDataService, userGetUpcomingMoviesService, userPayNowService, userPayProcessService, userSeatReservationService } from "./userBookingService";
+import { userCancelTicketService, userGetOrdersService, userGetRecommendedMoviesService, userGetShowDataByMovieService, userGetShowDataService, userGetSingleShowDataService, userGetUpcomingMoviesService, userPayNowService, userPayProcessService, userSeatReservationService } from "./userBookingService";
 import { setUsersData } from "../user/userSlice";
 
 export const userGetShowData = createAsyncThunk('userGetShowData', async (data,thunkAPI) =>{
@@ -109,6 +109,19 @@ export const userGetUpcomingMovies = createAsyncThunk('userGetUpcomingMovies', a
 export const userGetRecommendedMovies = createAsyncThunk('userGetRecommendedMovies', async ({data,token},thunkAPI) =>{
     try {
         const response =  await userGetRecommendedMoviesService(data,token); 
+        console.log(response.data);
+        if(response.data?.newUserToken){
+            thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
+        }
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.error);
+    }
+})
+
+export const userCancelTicket = createAsyncThunk('userCancelTicket', async ({data,token},thunkAPI) =>{
+    try {
+        const response =  await userCancelTicketService(data,token); 
         console.log(response.data);
         if(response.data?.newUserToken){
             thunkAPI.dispatch(setUsersData({data:response.data.newUserData,token:response.data.newUserToken}))
