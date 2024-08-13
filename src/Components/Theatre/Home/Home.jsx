@@ -4,49 +4,43 @@ import { Toaster, toast } from 'sonner';
 import { resetTheatreActions  } from '../../../features/theatre/theatreSlice'
 import { theatreGetRunningMovies, theatreGetTheatreData } from '../../../features/theatreFeat/theatreFeatAction';
 import Chart, { CategoryScale, Legend } from 'chart.js/auto';
+import { ClipLoader } from 'react-spinners'
 import DoughNutMovie from '../Charts/DoughNutMovie';
 import BarStacked from '../Charts/BarStacked';
-import { theatreGetLatestOrders, theatreGetMovieCollections, theatreGetScreenCollections } from '../../../features/theatreBookings/theatreBookingActions';
+import { theatreGetCollectionReport, theatreGetLatestOrders, theatreGetMovieCollections, theatreGetScreenCollections } from '../../../features/theatreBookings/theatreBookingActions';
 import { getBarChartConfig, getDoughNutConfig } from '../Charts/chartConfig';
-import { resetCollections } from '../../../features/theatreBookings/theatreBookingSlice';
+import { resetCollections, resetTheatreBookingActions } from '../../../features/theatreBookings/theatreBookingSlice';
+import { IoChevronDownCircleOutline, IoChevronUpCircleOutline } from "react-icons/io5";
 import RunningMovie from './RunningMovie';
 
-const doughhhhh = {
-  labels: [2000,2001,2002,2003,2004,2005,2006,2007], 
-  datasets: [
-    {
-      label: "Users Gained ",
-      data: [12,30,42,54,70,19,40,90],
-      backgroundColor: [
-        "rgba(75,192,192,1)",
-        "rgba(175,192,192,1)",
-        "rgba(75,192,92,1)",
-        "rgba(75,12,192,1)",
-        "rgba(75,222,192,1)"
-        ],
-      borderWidth:0
-    }
-  ]
-}
 
 function Home() {
 
-    const  { theatreData,theatreToken , success , message } = useSelector(state=>state.theatre);
-    const {screenCollections,movieCollections,latestOrders} = useSelector(state=>state.theatreBooking);
+    const  { theatreData,theatreToken , success } = useSelector(state=>state.theatre);
+    const {screenCollections,movieCollections,latestOrders,message,loading} = useSelector(state=>state.theatreBooking);
     const {runningMovies} = useSelector(state=>state.theatreFeat)
 
     const [selectedFrame,setSelectedFrame] = useState('DAILY');
     const [barData,setBarData] = useState(null);
     const [doughNutData,setDoughNutData] = useState(null);
 
+    const [startDate,setStartDate] = useState('')
+    const [endDate,setEndDate] = useState('')
+    const [showDownload,setShowDownload] = useState(false)
+
     const dispatch = useDispatch();
     useEffect(()=>{
+      if(message){
+        toast.success(message);
+        dispatch(resetTheatreBookingActions())
+        return
+      }
       if(success){
         toast.success("Login successfully.");
         dispatch(resetTheatreActions())
         return
       } 
-    },[success])
+    },[success,message]) 
 
     useEffect(()=>{
       if(theatreData.id && theatreToken){
@@ -88,6 +82,12 @@ function Home() {
       }
     },[movieCollections])
 
+    const handleGeneratePdf = ()=>{
+      console.log(startDate,endDate);
+      const data = {startDate,endDate};
+      dispatch(theatreGetCollectionReport({data,token:theatreToken}))
+    }
+
   return (
     <div className='pt-32 min-h-[80vh] bg-[#15121B]'>
       <Toaster richColors />
@@ -98,6 +98,21 @@ function Home() {
           <div className='bg-black md:w-[60%] p-8 rounded-md flex flex-col justify-evenly'>
             <div>
               <h2 className='text-[#f6ae2d] text-xl tracking-widest font-medium'>Screen Based Collection</h2>
+                <div className='flex flex-col gap-3 items-start my-4'>
+                  <h4 className='text-white flex items-center gap-3' >Download Report {!showDownload ? <IoChevronDownCircleOutline onClick={()=>setShowDownload(true)} className='w-[1.2rem] h-[1.2rem]' /> : <IoChevronUpCircleOutline  onClick={()=>setShowDownload(false)} className='w-[1.2rem] h-[1.2rem]'  /> }</h4>
+                  {
+                  showDownload &&  
+                  <>
+                  <h4 className='text-white'>Select the Date Range</h4>
+                  <input type="date" value={startDate} onChange={(e)=>setStartDate(e.target.value)} className='w-[100%] md:w-[40%] p-3 border-2  text-sm rounded-md  border-[#0951D2] invert text-black' />
+                  <input type="date" value={endDate} onChange={(e)=>setEndDate(e.target.value)} className='w-[100%] md:w-[40%] p-3 border-2  text-sm rounded-md  border-[#0951D2] invert text-black' />
+                  <div className='flex items-center gap-4'><button disabled={loading} onClick={handleGeneratePdf} className='bg-[#f6ae2d] border-2 border-[#f6ae2d] px-5 py-1 rounded-sm '>Generate PDF</button><ClipLoader color='#f6ae2d' loading={loading} /></div>
+                  </>
+                  }
+                <div>
+
+                </div>
+              </div>
               <div className='bg-[#bb8726] flex max-w-fit xl:max-w-[60%] rounded-sm my-4 flex-col md:flex-row'>
                 <p onClick={()=>setSelectedFrame("DAILY")} className={selectedFrame === 'DAILY' ? 'px-4 py-1  text-xs lg:text-base font-medium cursor-pointer bg-[#f6ae2d] rounded-sm' :'px-4 py-1  text-xs lg:text-base font-medium cursor-pointer '}>DAILY</p>
                 <p onClick={()=>setSelectedFrame("WEEKLY")} className={selectedFrame === 'WEEKLY' ? 'px-4 py-1  text-xs lg:text-base font-medium cursor-pointer bg-[#f6ae2d] rounded-sm' :'px-4 py-1  text-xs lg:text-base font-medium cursor-pointer '}>WEEKLY</p>
@@ -107,7 +122,7 @@ function Home() {
             </div>
             {barData && <BarStacked data={barData} />}
           </div>
-          <div className='bg-black md:w-[35%] p-8 rounded-md flex flex-col gap-10 justify-between'>
+          <div className='bg-black md:w-[35%] p-8 rounded-md flex flex-col gap-10 justify-start'>
             <h2 className='text-[#f6ae2d] text-xl tracking-widest font-medium'>Running Movies Collection</h2>
             {doughNutData && <DoughNutMovie data={doughNutData} />}
           </div>

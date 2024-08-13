@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { theatreBookSeat, theatreCancelShowBookings, theatreGetBookingsByScreen, theatreGetCompleteBookings, theatreGetLatestOrders, theatreGetMovieCollections, theatreGetScreenCollections, theatreGetShowBookingStatus, theatreGetSingleShow } from "./theatreBookingActions"
+import { theatreBookSeat, theatreCancelShowBookings, theatreGetBookingsByScreen, theatreGetCollectionReport, theatreGetCompleteBookings, theatreGetLatestOrders, theatreGetMovieCollections, theatreGetScreenCollections, theatreGetShowBookingStatus, theatreGetSingleShow } from "./theatreBookingActions"
 
 const initialState = { 
     reservationStatus:null,
@@ -173,6 +173,21 @@ const theatreBookingSlice = createSlice({
             state.loading = true
         })
         .addCase(theatreGetLatestOrders.rejected,(state,action)=>{
+            console.log(action);
+            state.loading = false
+            state.error = action.payload?.reasons
+        })
+        .addCase(theatreGetCollectionReport.fulfilled,(state,action)=>{
+            console.log(action);
+            state.success = true
+            state.message = 'Report Downloaded Successfully.'
+            state.loading = false
+
+        })
+        .addCase(theatreGetCollectionReport.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(theatreGetCollectionReport.rejected,(state,action)=>{
             console.log(action);
             state.loading = false
             state.error = action.payload?.reasons

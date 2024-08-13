@@ -35,3 +35,7 @@ export const theatreGetMovieCollectionsService = (token)=>{
 export const theatreGetLatestOrdersService = (token)=>{
     return axios.get('/booking/getlatestorders',{headers:{Authorization:`Bearer ${token}`}})
 }
+
+export const theatreGetCollectionReportService = (data,token)=>{
+    return axios.post('/booking/collectionreport',data,{headers:{Authorization:`Bearer ${token}`},responseType:'blob'})
+}
