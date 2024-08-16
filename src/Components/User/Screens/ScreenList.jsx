@@ -1,9 +1,9 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { userGetTheatres } from '../../../features/userTheatres/userTheatreActions'
-import ScreenMapModal from './ScreenMapModal';
 import ScreenBoxSkelton from '../../../Skelton/ScreenBoxSkelton';
 const ScreenBox = lazy(()=>import('./ScreenBox'));
+const ScreenMapModal = lazy(()=>import('./ScreenMapModal'));
 
 function ScreenList() {
     const [isOpen,setIsOpen] = useState(false);
@@ -37,7 +37,7 @@ function ScreenList() {
             }
             </div>
         </div>
-        <ScreenMapModal isOpen={isOpen} theatre={theatreTo} set={setIsOpen} />
+        <Suspense><ScreenMapModal isOpen={isOpen} theatre={theatreTo} set={setIsOpen} /></Suspense>
     </div>
   )
 }

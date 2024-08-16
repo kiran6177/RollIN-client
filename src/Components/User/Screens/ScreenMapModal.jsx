@@ -6,10 +6,11 @@ import { IoIosClose } from 'react-icons/io';
 function ScreenMapModal({isOpen,theatre,set}) {
     const MAPS_API_KEY = process.env.REACT_APP_MAPS_API_KEY;
     useEffect(()=>{
-        if(theatre){
+        if(theatre && isOpen){
             loads()
+            
         }
-    },[theatre])
+    },[theatre,isOpen])
 
     const loads = async ()=>{
         try {
