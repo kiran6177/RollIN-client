@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-const SOCKET_ENDPOINT = 'http://localhost:4001';
+const SOCKET_ENDPOINT = 'https://womensnest.online';
 
 export const connectSocket = ()=>{
     const socket = io(SOCKET_ENDPOINT);
