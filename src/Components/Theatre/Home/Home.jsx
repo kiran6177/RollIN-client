@@ -123,25 +123,25 @@ function Home() {
             {barData && <BarStacked data={barData} />}
           </div>
           <div className='bg-black md:w-[35%] p-8 rounded-md flex flex-col gap-10 justify-start'>
-            <h2 className='text-[#f6ae2d] text-xl tracking-widest font-medium'>Running Movies Collection</h2>
+            <h2 className='text-[#f6ae2d] text-lg md:text-xl tracking-widest font-medium'>Running Movies Collection</h2>
             {doughNutData && <DoughNutMovie data={doughNutData} />}
           </div>
         </div>
 
         <div className='my-10 bg-black p-10 rounded-md'>
-          <h2 className='text-[#f6ae2d] text-2xl tracking-widest font-medium'>Latest Orders</h2>
+          <h2 className='text-[#f6ae2d] text-lg md:text-xl tracking-widest font-medium'>Latest Orders</h2>
           <div className='my-6 overflow-x-scroll w-[100%]'>
 
             <table className='table border-collpase  border border-[#f6ae2d] rounded-md  min-w-[1200px] w-[100%] bg-black text-white text-center my-10 '>
               <thead className='border-collpase border border-[#f6ae2d] '>
                 <tr key="main-head" className='h-[4rem] bg-[#f6ae2d] text-black '>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[5%]' >S. No</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[12%]' >Date</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[18%]' >User</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Movie</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Booking ID</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[10%]' >Screen</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  ' >Amount</th>
+                <th className='border-collpase border text-sm md:text-base border-[#f6ae2d] font-semibold  w-[5%]' >S. No</th>
+                <th className='border-collpase border text-sm md:text-base border-[#f6ae2d] font-semibold  w-[12%]' >Date</th>
+                <th className='border-collpase border text-sm md:text-base border-[#f6ae2d] font-semibold  w-[18%]' >User</th>
+                <th className='border-collpase border text-sm md:text-base border-[#f6ae2d] font-semibold  w-[20%]' >Movie</th>
+                <th className='border-collpase border text-sm md:text-base border-[#f6ae2d] font-semibold  w-[20%]' >Booking ID</th>
+                <th className='border-collpase border text-sm md:text-base border-[#f6ae2d] font-semibold  w-[10%]' >Screen</th>
+                <th className='border-collpase border text-sm md:text-base border-[#f6ae2d] font-semibold  ' >Amount</th>
                 </tr>          
               </thead>
               <tbody>
@@ -149,13 +149,13 @@ function Home() {
                     latestOrders?.length > 0 ? latestOrders.map((order,i)=>{
                       return(
                         <tr key={order?._id} className='h-[8rem] xl:h-[4rem]'>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{i + 1}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{new Date(order?.createdAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{order?.attachment_details?.email}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{order?.movie?.title}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{order?.order_id}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{order?.screendata?.screen_name}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >Rs.{order?.billing_amount}</td>
+                            <td className='border-collpase border text-sm md:text-base border-[#f6ae2d] rounded-md ' >{i + 1}</td>
+                            <td className='border-collpase border text-sm md:text-base border-[#f6ae2d] rounded-md ' >{new Date(order?.createdAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</td>
+                            <td className='border-collpase border text-sm md:text-base border-[#f6ae2d] rounded-md ' >{order?.attachment_details?.email}</td>
+                            <td className='border-collpase border text-sm md:text-base border-[#f6ae2d] rounded-md ' >{order?.movie?.title}</td>
+                            <td className='border-collpase border text-sm md:text-base border-[#f6ae2d] rounded-md ' >{order?.order_id}</td>
+                            <td className='border-collpase border text-sm md:text-base border-[#f6ae2d] rounded-md ' >{order?.screendata?.screen_name}</td>
+                            <td className='border-collpase border text-sm md:text-base border-[#f6ae2d] rounded-md ' >Rs.{order?.billing_amount}</td>
                         </tr>
                       )
                     })
@@ -168,7 +168,7 @@ function Home() {
         </div>
 
         <div className='my-10 bg-black p-10 rounded-md'>
-          <h2 className='text-[#f6ae2d] text-2xl tracking-widest font-medium'>Currently Running Movies</h2>
+          <h2 className='text-[#f6ae2d] text-lg md:text-xl tracking-widest font-medium'>Currently Running Movies</h2>
             <div className='flex gap-8 overflow-x-scroll scrollbar-none my-6'>
               {
                 runningMovies?.length > 0 && runningMovies.map(movie=>{

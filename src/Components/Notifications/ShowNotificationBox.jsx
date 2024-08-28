@@ -29,8 +29,8 @@ function ShowNotificationBox({notification}) {
     initial="hidden"
     whileInView="visible"
     viewport={{once:true}} 
-    className='border-2 border-[#f6ae2d] rounded-md py-5 px-8 bg-black relative flex gap-8 w-[100%]' >
-            <div className='h-[8rem] aspect-[4/5] border-[1px] border-[#f6ae2d] rounded-sm'>
+    className='border-2 border-[#f6ae2d] rounded-md py-5 px-8 bg-black relative flex flex-col sm:flex-row gap-4 sm:gap-8 w-[100%]' >
+            <div className=' sm:h-[8rem] aspect-[4/5] border-[1px] border-[#f6ae2d] rounded-sm'>
                 <img src={notification?.orderdata?.movie?.poster_path} alt="" height={'100%'} className='object-cover aspect-[4/5]' />
             </div>
             <div className='flex flex-col gap-3'>
@@ -40,7 +40,7 @@ function ShowNotificationBox({notification}) {
                 <h2 className='text-white text-sm'>{new Date(notification?.orderdata?.show_date).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}, {notification?.orderdata?.show_time}</h2>
             </div>
             {notification?.read_status === "UNREAD" && <span className='absolute top-[0.5rem] left-[1rem] -rotate-[35deg] text-[10px] bg-red-600 text-white rounded-full w-[2.5rem] h-[2.5rem] flex items-center justify-center font-semibold tracking-widest'>NEW</span>}
-        <p className='absolute text-white text-xs bottom-4 right-7'>{getTime}</p>
+        <p className='sm:absolute text-white text-xs bottom-4 right-7'>{getTime}</p>
     </motion.div>
   )
 }

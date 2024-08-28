@@ -36,7 +36,7 @@ function BookingsScreenShows() {
 <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
-            <h2 className='text-white text-3xl font-semibold tracking-widest'>SELECT SHOWS</h2>
+            <h2 className='text-white text-2xl md:text-3xl font-semibold tracking-widest'>SELECT SHOWS</h2>
             <div ref={scrollRef} className=''>
                 {
                     screenshows &&  screenshows.length > 0 ?

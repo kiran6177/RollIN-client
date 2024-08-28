@@ -50,7 +50,7 @@ function EmailModal({showMail,set}) {
                    <OtpModal set={set} setShow={setShowOTP} />
                </Suspense>    
             :
-            <div className='bg-black text-white w-[65%] lg:w-[35%] border-2 border-[#f6ae2d] rounded-md p-8 flex flex-col items-center justify-between  fixed min-h-[75vh] '>
+            <div className='bg-black text-white w-[85%] md:w-[65%] lg:w-[35%] border-2 border-[#f6ae2d] my-8 rounded-md p-8 flex flex-col items-center justify-between  fixed min-h-[65vh] md:min-h-[75vh] '>
             <IoIosClose onClick={()=>{set(false);setShowOTP(false)}} className="absolute cursor-pointer right-3 top-3 w-[2rem] h-[2rem]"/>
                 <div className='w-[90%] flex flex-col gap-16'>
                   <h3 className='text-center tracking-wider text-xl'>LOGIN WITH EMAIL</h3>

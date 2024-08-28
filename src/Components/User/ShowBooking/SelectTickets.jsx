@@ -60,7 +60,7 @@ function SelectTickets({isOpen,set,setTicketCount}) {
                 variants={confirmVarinat}
                 initial="hidden"
                 animate="visible"
-                className='bg-black text-white w-[80%] sm:w-[65%] lg:w-[40%] border-2 border-[#f6ae2d] rounded-md p-8 flex flex-col gap-16 justify-between items-center fixed min-h-[55vh] '>
+                className='bg-black text-white w-[80%] sm:w-[65%] lg:w-[40%] border-2 border-[#f6ae2d] rounded-md p-4 md:p-8 flex flex-col gap-16 justify-between items-center fixed min-h-[55vh] '>
                       <IoIosClose onClick={()=>set(false)} className="absolute cursor-pointer font-medium right-3 top-3 w-[2rem] h-[2rem]"/>
                         <div className='w-[100%] flex flex-col items-center gap-6'>
                             <h2 className='tracking-wider text-[#f6ae2d] text-sm sm:text-base'>How Many Seats ?</h2>
@@ -88,7 +88,7 @@ function SelectTickets({isOpen,set,setTicketCount}) {
                                 <p onMouseOver={()=>handleMouseEnter(9)}  onMouseOut={handleMouseLeave} onClick={()=>handleClick(9)} className={selectedTicket === 9 ? ' border-2 border-[#f6ae2d] w-[2rem] h-[2rem]  flex items-center justify-center rounded-full transition-all duration-150 ease-in-out cursor-pointer font-medium' :' w-[2rem] h-[2rem]  flex items-center justify-center rounded-full hover:bg-[#f6ae2d] hover:text-black  transition-all duration-150 ease-in-out  cursor-pointer font-medium'}>9</p>
                                 <p onMouseOver={()=>handleMouseEnter(10)} onMouseOut={handleMouseLeave}  onClick={()=>handleClick(10)} className={selectedTicket === 10 ? ' border-2 border-[#f6ae2d] w-[2rem] h-[2rem]  flex items-center justify-center rounded-full transition-all duration-150 ease-in-out cursor-pointer font-medium' :' w-[2rem] h-[2rem]  flex items-center justify-center rounded-full hover:bg-[#f6ae2d] hover:text-black  transition-all duration-150 ease-in-out  cursor-pointer font-medium'}>10</p>
                             </div>
-                            <button onClick={()=>setTicketCount(selectedTicket)} className='bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-4 py-2 rounded-sm w-[70%] font-medium tracking-widest hover:bg-black hover:text-white transition-all duration-150 ease-linear'>SELECT SEATS</button>
+                            <button onClick={()=>setTicketCount(selectedTicket)} className='bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-4 py-1 text-sm md:text-base md:py-2 rounded-sm w-[70%] font-medium tracking-widest hover:bg-black hover:text-white transition-all duration-150 ease-linear'>SELECT SEATS</button>
                         </div>
                 </motion.div>
             </div>,

@@ -120,7 +120,7 @@ function OtpModal({set,setShow}) {
    }
 
   return (
-    <form onSubmit={handleOtpSubmit} className='bg-black text-white w-[80%] sm:w-[65%] lg:w-[45%] xl:w-[35%] border-2 border-[#f6ae2d] rounded-md p-8 flex flex-col items-center justify-between  fixed min-h-[75vh] '>
+    <form onSubmit={handleOtpSubmit} className='bg-black text-white w-[80%] sm:w-[65%] lg:w-[45%] xl:w-[35%] border-2 border-[#f6ae2d] rounded-md py-8 px-5 md:p-8 flex flex-col items-center justify-between  fixed min-h-[65vh] md:min-h-[75vh] '>
         <Toaster richColors />
         <IoIosClose onClick={()=>set(false)} className="absolute cursor-pointer right-3 top-3 w-[2rem] h-[2rem]"/>
             <div className='w-[90%] flex flex-col gap-16'>

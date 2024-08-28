@@ -262,7 +262,7 @@ function Checkout() {
                                 }else{
                                     setEmailError('')
                                 }
-                                }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                }} className='w-[100%] my-2 p-2 border-2 text-xs rounded-md bg-black text-white border-[#f6ae2d]'/>
                             {emailError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{emailError}</p>}
                         </div>
                         <div className="md:w-[80%] ">
@@ -276,7 +276,7 @@ function Checkout() {
                                 }else{
                                     setMobileError('')
                                 }
-                                }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                }} className='w-[100%] my-2 p-2 border-2 text-xs rounded-md bg-black text-white border-[#f6ae2d]'/>
                             {mobileError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{mobileError}</p>}
                         </div>
                         </div>
@@ -289,8 +289,8 @@ function Checkout() {
                             {
                                 seatWithTiers && Object.entries(seatWithTiers).map(([key,values])=>{
                                     return(
-                                        <div key={key} className='text-[#9f9f9f] flex gap-3 text-xs my-2'>
-                                            <h3 className='w-[30%]'>{key}</h3>
+                                        <div key={key} className='text-[#9f9f9f] flex flex-col md:flex-row gap-1 md:gap-3 text-xs my-2'>
+                                            <h3 className='md:w-[30%]'>{key}</h3>
                                             {
                                                 values?.length > 0 && values.map(val=>{
                                                     return (
@@ -309,7 +309,7 @@ function Checkout() {
                     </div>
                 </div>
                 <div className='flex justify-center '>
-                    <button onClick={handlePayNow} disabled={loading} className={loading ? 'bg-[#dd9e2ad0] border-2 border-[#f6ae2d] w-[40%] py-2 rounded-sm font-semibold tracking-widest hover:scale-[1.05] transition-all duration-150 ease-linear hover:bg-black hover:text-white hover:drop-shadow-[0px_0px_15px_rgb(245,175,45,0.6)]' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] w-[40%] py-2 rounded-sm font-semibold tracking-widest hover:scale-[1.05] transition-all duration-150 ease-linear hover:bg-black hover:text-white hover:drop-shadow-[0px_0px_15px_rgb(245,175,45,0.6)]'}>PAY NOW</button>
+                    <button onClick={handlePayNow} disabled={loading} className={loading ? 'bg-[#dd9e2ad0] border-2 border-[#f6ae2d] w-[95%] md:w-[40%] text-sm md:text-base py-1 md:py-2  rounded-sm font-semibold tracking-widest hover:scale-[1.05] transition-all duration-150 ease-linear hover:bg-black hover:text-white hover:drop-shadow-[0px_0px_15px_rgb(245,175,45,0.6)]' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] w-[95%] md:w-[40%] text-sm md:text-base py-1 md:py-2 rounded-sm font-semibold tracking-widest hover:scale-[1.05] transition-all duration-150 ease-linear hover:bg-black hover:text-white hover:drop-shadow-[0px_0px_15px_rgb(245,175,45,0.6)]'}>PAY NOW</button>
                 </div>
         </div>
         <SessionTimedOutModal isOpen={timeout} set={setSessionTimeout} />

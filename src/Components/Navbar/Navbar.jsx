@@ -1,7 +1,8 @@
 import React, { lazy, Suspense,  useEffect, useState } from 'react'
 import logo from '../../assets/logo.png'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { FaSearch , FaUserCircle, FaChevronRight  } from "react-icons/fa";
+import { FaSearch , FaUserCircle  } from "react-icons/fa";
+import { IoLocationSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FiChevronDown } from "react-icons/fi";
 import NavModal from './NavModal';
@@ -81,7 +82,7 @@ function Navbar({hide}) {
 
   return (
     <>
-    <div className={bgChange || hide ? 'flex justify-between h-[6rem] items-center bg-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out' :'flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out'}>
+    <div className={bgChange || hide ? 'flex justify-between h-[6rem] items-center bg-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out ' :'flex justify-between h-[6rem] items-center bg-gradient-to-b from-black fixed z-20 w-[100vw] transition-all duration-300 ease-in-out'}>
 
       <div className='w-[50%] min-[480]:w-[45%] h-[100%] sm:w-[50%] flex items-center gap-14 pl-5 text-white'>
         <div className='h-[100%] w-[100%] sm:w-[40%] md:w-[35%] flex items-center'>
@@ -91,7 +92,7 @@ function Navbar({hide}) {
         <NavLink to={'/screens'} className={'font-normal tracking-widest hidden lg:block'}>Screens</NavLink>
       </div>
       
-      <div className='w-[45%] sm:w-[50%] flex justify-end items-center gap-6 md:gap-14 pr-12'>
+      <div className='w-[45%] sm:w-[50%] flex justify-end items-center gap-6 md:gap-14 pr-5 md:pr-12'>
           <button onClick={()=>setShowSelectCity(true)} className='hidden sm:flex border items-center gap-2 rounded-full text-sm sm:text-md px-2 sm:px-5 py-2 font-medium  bg-white'>
             {localStorage.getItem("city") ? JSON.parse(localStorage.getItem('city'))?.name?.split(',')[0] :'Choose City' }<FiChevronDown/>
           </button>
@@ -102,13 +103,11 @@ function Navbar({hide}) {
           <RxHamburgerMenu onClick={()=>setIsOpen(true)} className='text-white w-[1.7rem] h-[1.7rem] block opacity-100 lg:hidden lg:opacity-0 transition-all duration-500 ease-in-out' />
           </div>
       </div>
-      
-    </div>  
-    <div className='fixed z-30 mt-20 bg-black w-[100%]  text-[#F6AE2D] px-5 py-2 block sm:hidden'>
-        <button onClick={()=>setShowSelectCity(true)} className='flex items-center'>
-        {localStorage.getItem("city") ? JSON.parse(localStorage.getItem('city'))?.name?.split(',')[0] :'Choose City' }<FaChevronRight/>
+      <button onClick={()=>setShowSelectCity(true)} className='flex sm:hidden items-center gap-1 absolute bottom-[6px] tracking-wide left-8 text-white text-xs'>
+        <IoLocationSharp/>{localStorage.getItem("city") ? JSON.parse(localStorage.getItem('city'))?.name?.split(',')[0] :'Choose City' }
         </button>
-    </div>
+    </div>  
+        
     {isLoading && <LoadingProgress setIsLoading={setIsLoading} />}
     <Suspense >
       <SearchModal isOpen={showSearch} set={setShowSearch} />

@@ -81,7 +81,7 @@ function BookingsList() {
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
             <div className='flex flex-col justify-between'>
-                <h2 className='text-white text-3xl font-semibold tracking-widest mb-8'>BOOKINGS LIST</h2>
+                <h2 className='text-white text-2xl md:text-3xl font-semibold tracking-widest mb-8'>BOOKINGS LIST</h2>
                 {!show_id && <span className='bg-[#c0871dd4] flex max-w-fit   font-medium tracking-wider gap-4 flex-wrap'><button onClick={()=>{setSelected("ALL");dispatch(resetOrdersData());setPage(1)}} className={selected === 'ALL' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>ALL</button>{theatreScreenData?.map(screen=>{return(<button key={screen?._id} onClick={()=>setSelected(screen?._id)} className={selected === screen?._id ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>{screen?.name}</button>)})}</span>}
                 <div className='my-4 flex flex-col sm:flex-row  gap-5'>
                     <input type="text" value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search by Order ID" className='text-white border-2 border-[#f6ae2d] bg-black py-2 px-3 rounded-sm w-[100%] sm:w-[45%]' />

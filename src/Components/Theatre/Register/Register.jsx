@@ -77,7 +77,7 @@ function Register() {
                     }else{
                         setNameError('')
                     }
-                    }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    }} className='w-[100%] my-2 p-2 border-2 rounded-md text-xs md:text-base bg-black text-white border-[#f6ae2d]'/>
                 {nameError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{nameError}</p>}
             </div>
             <div className="w-[80%] md:w-[70%]">
@@ -91,7 +91,7 @@ function Register() {
                     }else{
                         setEmailError('')
                     }
-                    }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-xs md:text-base text-white border-[#f6ae2d]'/>
                 {emailError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{emailError}</p>}
             </div>
             <div className="w-[80%] md:w-[70%]">
@@ -105,13 +105,13 @@ function Register() {
                     }else{
                         setPasswordError('')
                     }
-                    }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-xs md:text-base text-white border-[#f6ae2d]'/>
                 {passwordError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{passwordError}</p>}
             </div>
-            <button type='submit' disabled={loading} className={loading? 'bg-[#cd952e] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest' :'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'}>
+            <button type='submit' disabled={loading} className={loading? 'bg-[#cd952e] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-sm md:text-lg tracking-widest' :'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-sm md:text-lg tracking-widest'}>
                 REGISTER 
             </button>
-            <button type='button' onClick={handleGoogleAuth} className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
+            <button type='button' onClick={handleGoogleAuth} className='bg-white border-2 border-black rounded-md px-4 md:px-14 py-2 flex items-center justify-evenly md:gap-5 w-[80%] md:w-[70%] font-medium text-xs md:text-lg'>
                 <FcGoogle className='w-[1.5rem] h-[1.5rem]'/>
                 Continue With Google
             </button>

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Toaster } from 'sonner'
 import { motion } from 'framer-motion'
 import { IoIosClose } from 'react-icons/io'
-import { ScaleLoader } from 'react-spinners'
+import ModalLoader from '../../Loaders/ModalLoader'
 
 const confirmVarinat = {
     hidden:{
@@ -38,13 +38,13 @@ function RemoveModal({isOpen,set,handleConfirm}) {
                         <h3 className='my-2 text-xl font-semibold tracking-widest w-[90%] overflow-hidden text-ellipsis whitespace-nowrap text-center text-[#f6ae2d]'>{isOpen?.title}</h3>
                         </div>
 
-                        <div className='w-[100%] flex items-center justify-center gap-8'>
-                            <button onClick={()=>handleConfirm(isOpen.movie_id)} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CONFIRM</button>
-                            <button onClick={()=>set(false)} disabled={loading} className={loading ? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CANCEL</button>
+                        <div className='w-[100%] flex flex-col md:flex-row md:items-center justify-center gap-8'>
+                            <button onClick={()=>handleConfirm(isOpen.movie_id)} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CONFIRM</button>
+                            <button onClick={()=>set(false)} disabled={loading} className={loading ? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CANCEL</button>
                         </div>
-                        <div className='w-[100%] mx-auto'>
-                        <ScaleLoader loading={loading}  color='#f6ae2d' height={20} />
-                        </div>
+                        {loading &&
+                            <ModalLoader loading={loading} />
+                        }
                 </motion.div>
             </div>,
             document.getElementById("trailer-modal")

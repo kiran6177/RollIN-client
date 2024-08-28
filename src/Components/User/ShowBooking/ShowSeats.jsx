@@ -209,7 +209,7 @@ function ShowSeats() {
                 </div>
                 <div className='sm:border-b-2 border-[#f6ae2d] py-6 px-5 sm:px-10 flex flex-col gap-4'> 
                     {showPay && <div className='flex justify-center my-5'>
-                        <button onClick={handlePayment} className='bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-4 py-2 rounded-sm w-[40%] font-medium tracking-widest hover:bg-black hover:text-white transition-all duration-150 ease-linear'>PAY Rs.{amount}</button>
+                        <button onClick={handlePayment} className='bg-[#f6ae2d] border-2 border-[#f6ae2d] text-sm md:text-base text-black px-4 py-1 md:py-2 rounded-sm w-[80%] md:w-[40%] font-medium tracking-widest hover:bg-black hover:text-white transition-all duration-150 ease-linear'>PAY Rs.{amount}</button>
                     </div>}
                     <div className='relative my-6 sm:my-16 md:mx-12 lg:mx-28 xl:mx-36'> 
                         {

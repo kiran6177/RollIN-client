@@ -80,7 +80,7 @@ function AddReviewModal({isOpen,set}) {
                               <label htmlFor='review'>Add your review</label>
                               <textarea name="review" id="review" value={review} onChange={(e)=>setReview(e.target.value)} className='w-[100%] bg-black border-2 border-[#f6ae2d] rounded-sm'  rows={6}></textarea>
                             </div>
-                            <button onClick={handleReviewAdd} className='bg-[#f6ae2d] rounded-sm w-[40%] mx-auto py-1 text-black mt-4 font-medium tracking-widest'>ADD REVIEW</button>
+                            <button onClick={handleReviewAdd} className='bg-[#f6ae2d] rounded-sm w-[80%] md:w-[40%] mx-auto py-1 text-black mt-4 font-medium tracking-widest'>ADD REVIEW</button>
                         </div>
                 </motion.div>
             </div>,

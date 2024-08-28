@@ -156,20 +156,20 @@ function Profile() {
       <div  className='flex flex-col items-center  gap-6 border-2 border-[#F6AE2D] rounded-md bg-black backdrop-blur-sm w-[80%] md:w-[69%] lg:w-[62%] xl:w-[55%] 2xl:w-[45%] py-12'>
             <div className='w-[90%] flex flex-col sm:flex-row items-center justify-between'>
                 <h3 className='font-semibold text-white tracking-widest'>YOUR PROFILE</h3>
-              <button onClick={handleLogout} className='text-xs sm:text-sm border-2 border-[#f6ae2d] bg-[#F6AE2D] px-4 sm:px-8 py-1 rounded-sm font-semibold tracking-widest my-5 hover:bg-[black] hover:text-white transition-all duration-150 ease-in-out'>LOGOUT</button>            
+              <button onClick={handleLogout} className='text-xs sm:text-sm border-2 w-[100%] sm:w-auto border-[#f6ae2d] bg-[#F6AE2D] px-4 sm:px-8 py-1 rounded-sm font-semibold tracking-widest my-5 hover:bg-[black] hover:text-white transition-all duration-150 ease-in-out'>LOGOUT</button>            
             </div>
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>Theatre Name</label>
-                <input type="text" value={name} onChange={(e)=>{setName(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                <input type="text" value={name} onChange={(e)=>{setName(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
             </div>
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>Email</label>
-                <input type="text" value={email} onChange={(e)=>{setEmail(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                <input type="text" value={email} onChange={(e)=>{setEmail(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
             </div>
             <div className="w-[90%] flex flex-col sm:flex-row items-center justify-between md:w-[85%]">
                 <div className='w-[100%] sm:w-[70%]'>
                     <label className='text-white text-xs tracking-widest'>Location</label>
-                    <input type="text" value={location} onChange={(e)=>{setLocation(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    <input type="text" value={location} onChange={(e)=>{setLocation(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
                 </div>
                 <button onClick={()=>setIsOpen(true)} className='bg-[#f6ae2d] w-[100%] font-medium tracking-wider sm:tracking-normal sm:font-normal sm:w-[25%] mt-5 text-xs py-2 rounded-md px-3'>CHANGE LOCATION</button>
             </div>
@@ -194,23 +194,23 @@ function Profile() {
             <h5 className='text-start w-[90%] font-semibold text-[#f6ae2d] tracking-widest'>ADDRESS</h5>
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>Street</label>
-                <input type="text" value={street} onChange={(e)=>{setStreet(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                <input type="text" value={street} onChange={(e)=>{setStreet(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
             </div>
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>Landmark</label>
-                <input type="text" value={landmark} onChange={(e)=>{setLandmark(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                <input type="text" value={landmark} onChange={(e)=>{setLandmark(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
             </div>
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>City</label>
-                <input type="text" value={city} onChange={(e)=>{setCity(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                <input type="text" value={city} onChange={(e)=>{setCity(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
             </div>
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>State</label>
-                <input type="text" value={state} onChange={(e)=>{setState(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                <input type="text" value={state} onChange={(e)=>{setState(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
             </div>
             <div className="w-[90%] md:w-[85%]">
                 <label className='text-white text-xs tracking-widest'>Pincode</label>
-                <input type="number" value={pincode} onChange={(e)=>{setPincode(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                <input type="number" value={pincode} onChange={(e)=>{setPincode(e.target.value); setHide(false)}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d] text-xs md:text-base'/>
             </div>
             {hide || <button type='submit' onClick={handleProfile} className='bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[90%] md:w-[85%] font-semibold text-lg tracking-widest'>
                 UPDATE 

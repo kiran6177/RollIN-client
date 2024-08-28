@@ -37,7 +37,8 @@ function SaveModal({isOpen,set,setUpdate,tierData,layout}) {
     const [layouts,setLayouts] = useState([])
 
     const dispatch = useDispatch()
-    const {theatreToken,theatreScreenData} = useSelector(state=>state.theatreFeat)
+    const {theatreToken} = useSelector(state=>state.theatre);
+    const {theatreScreenData} = useSelector(state=>state.theatreFeat)
     const navigate = useNavigate()
 
     useEffect(()=>{

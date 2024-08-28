@@ -48,7 +48,7 @@ function NotificationsHome() {
     <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
-            <h5 className='text-white text-4xl font-semibold tracking-widest'>NOTIFICATIONS</h5>
+            <h5 className='text-white text-2xl md:text-4xl font-semibold tracking-widest'>NOTIFICATIONS</h5>
             <div ref={scrollRef} className='flex flex-col gap-8'>
             {
                 notifications &&  notifications.length > 0 ?

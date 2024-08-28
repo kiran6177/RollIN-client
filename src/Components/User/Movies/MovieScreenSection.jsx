@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userGetOneMovie } from '../../../features/userMovies/userMovieActions';
 import { useSearchParams } from 'react-router-dom';
 import { userGetShowDataByMovie } from '../../../features/userBooking/userBookingActions';
+import LoadingSpinner from '../../Loaders/LoadingSpinner';
 
 function MovieScreenSection() {
     const [month,setMonth] = useState('');
@@ -13,7 +14,7 @@ function MovieScreenSection() {
     const [selectedDate,setSelectedDate] = useState('');
 
     const {singleMovieDetail} = useSelector(state=>state.userMovie)
-    const {singleMovieShows} = useSelector(state=>state.userBooking)
+    const {singleMovieShows,loading} = useSelector(state=>state.userBooking)
     const [searchParams] = useSearchParams();
     const movie_id = searchParams.get('movie_id');
 
@@ -92,7 +93,9 @@ function MovieScreenSection() {
     }
 
   return (
-    <div className='py-10 bg-[#15121B] '>
+    loading ?
+    <LoadingSpinner/>
+    :<div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem] '>
             <div className='border-2 border-[#f6ae2d] rounded-sm bg-black '>

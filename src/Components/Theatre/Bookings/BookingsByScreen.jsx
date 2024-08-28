@@ -24,9 +24,9 @@ function BookingsByScreen() {
 <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
-            <div className='flex justify-between'>
-            <h2 className='text-white text-3xl font-semibold tracking-widest'>SELECT SCREEN</h2>
-            <button onClick={()=>navigate('/theatre/bookings/list')} className='text-black bg-[#f6ae2d] border-2 border-[#f6ae2d] rounded-sm text-lg px-8 py-2 font-medium tracking-widest'>BOOKINGS</button>
+            <div className='flex flex-col md:flex-row gap-3 md:gap-0 justify-between'>
+            <h2 className='text-white text-2xl md:text-3xl font-semibold tracking-widest'>SELECT SCREEN</h2>
+            <button onClick={()=>navigate('/theatre/bookings/list')} className='text-black bg-[#f6ae2d] border-2 border-[#f6ae2d] rounded-sm md:text-lg px-8 py-1 md:py-2 font-medium tracking-widest'>BOOKINGS</button>
             </div>
             <div className='flex flex-wrap justify-evenly gap-8 my-8'>
                 {theatreScreenData?.length > 0 && theatreScreenData.map(screen=>{

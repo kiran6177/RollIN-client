@@ -4,11 +4,11 @@ import { toast, Toaster } from 'sonner';
 import { motion } from 'framer-motion';
 import { IoIosClose } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
-import { ScaleLoader } from 'react-spinners';
 import { useSearchParams } from 'react-router-dom';
 import { theatreChangeShowMovie } from '../../../features/theatreFeat/theatreFeatAction';
 import { theatreCancelShowBookings, theatreGetShowBookingStatus } from '../../../features/theatreBookings/theatreBookingActions';
 import { resetReservationStatus, resetTheatreBookingActions } from '../../../features/theatreBookings/theatreBookingSlice';
+import ModalLoader from '../../Loaders/ModalLoader';
 
 const confirmVarinat = {
     hidden:{
@@ -161,15 +161,15 @@ function ChangeShowModal({isOpen,set,enrolledMovies}) {
                             }
                         </div>
 
-                        <div className='w-[100%] flex items-center justify-center gap-8'>
-                            {hasData && <button onClick={handleNoBookingCancel} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>YES</button>}
-                            {hasBookings && <button onClick={handleBookingCancel} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>YES</button>}
-                            {show && <button onClick={handleConfirm} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CONFIRM</button>}
-                            <button onClick={()=>set(false)} disabled={loading} className={loading ? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>{hasFilledBookings ? 'EXIT' :'CANCEL'}</button>
+                        <div className='w-[100%] flex md:items-center flex-col md:flex-row justify-center gap-2 md:gap-8'>
+                            {hasData && <button onClick={handleNoBookingCancel} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out'}>YES</button>}
+                            {hasBookings && <button onClick={handleBookingCancel} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out'}>YES</button>}
+                            {show && <button onClick={handleConfirm} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out'}>CONFIRM</button>}
+                            <button onClick={()=>set(false)} disabled={loading} className={loading ? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all text-sm md:text-base duration-200 ease-in-out'}>{hasFilledBookings ? 'EXIT' :'CANCEL'}</button>
                         </div>
-                        <div className='w-[100%] mx-auto'>
-                        <ScaleLoader loading={loading}  color='#f6ae2d' height={20} />
-                        </div>
+                        {loading &&
+                            <ModalLoader loading={loading} />
+                        }
                 </motion.div>
             </div>,
             document.getElementById("trailer-modal")

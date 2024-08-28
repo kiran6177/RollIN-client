@@ -4,11 +4,11 @@ import { createPortal } from 'react-dom'
 import { IoIosClose } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
-import { ScaleLoader } from 'react-spinners'
 import { Toaster, toast } from 'sonner';
 import { insertionSortForTiers } from '../../../utils/sorting'
 import { theatreChangeTierOrder } from '../../../features/theatreFeat/theatreFeatAction'
 import { resetTheatreFeatActions } from '../../../features/theatreFeat/theatreFeatSlice'
+import ModalLoader from '../../Loaders/ModalLoader'
 
 const confirmVarinat = {
     hidden:{
@@ -107,21 +107,21 @@ function ChangeOrderModal({isOpen,set}) {
                             {tiers?.length > 0 && tiers.map(tier=>{
                                 return(
                                 <div key={tier?._id} className='flex justify-evenly my-3'> 
-                                    <h2 className='text-[#f6ae2d] w-[50%]'>{tier?.name}</h2>
-                                    <input type="number" value={tier?.order} onChange={(e)=>handleOrderChange(e.target.value,tier?._id)} className='w-[20%] px-2 border-2 border-[#f6ae2d] rounded-sm bg-black'  />
+                                    <h2 className='text-[#f6ae2d] text-xs md:text-base w-[50%]'>{tier?.name}</h2>
+                                    <input type="number" value={tier?.order} onChange={(e)=>handleOrderChange(e.target.value,tier?._id)} className='w-[40%] md:w-[20%] text-xs md:text-base px-2 border-2 border-[#f6ae2d] rounded-sm bg-black'  />
                                 </div>
                                 )
                             })
                             }
                         </div>
 
-                        <div className='w-[100%] flex items-center justify-center gap-8'>
-                            <button onClick={()=>{handleConfirm()}} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CONFIRM</button>
-                            <button onClick={()=>set(false)} disabled={loading} className={loading ? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CANCEL</button>
+                        <div className='w-[100%] flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-8'>
+                            <button onClick={()=>{handleConfirm()}} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CONFIRM</button>
+                            <button onClick={()=>set(false)} disabled={loading} className={loading ? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md text-sm md:text-base hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CANCEL</button>
                         </div>
-                        <div className='w-[100%] mx-auto'>
-                        <ScaleLoader loading={loading}  color='#f6ae2d' height={20} />
-                        </div>
+                        {loading &&
+                            <ModalLoader loading={loading} />
+                        }
                 </motion.div>
             </div>,
             document.getElementById("trailer-modal")

@@ -29,11 +29,11 @@ function UsersView() {
       <table className='hidden lg:table border-collpase  border border-[#f6ae2d] rounded-md  w-[100%] bg-black text-white text-center my-10'>
         <thead className='border-collpase border border-[#f6ae2d] '>
           <tr key="main-head" className='h-[4rem] bg-[#f6ae2d] text-black '>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[10%]' >S. No</th>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Name</th>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[25%]' >Email</th>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Mobile</th>
-          <th className='border-collpase border border-[#f6ae2d] font-semibold  ' >Action</th>
+          <th className='border-collpase border border-[#f6ae2d] text-xs md:text-base font-semibold  w-[10%]' >S. No</th>
+          <th className='border-collpase border border-[#f6ae2d] text-xs md:text-base font-semibold  w-[20%]' >Name</th>
+          <th className='border-collpase border border-[#f6ae2d] text-xs md:text-base font-semibold  w-[25%]' >Email</th>
+          <th className='border-collpase border border-[#f6ae2d] text-xs md:text-base font-semibold  w-[20%]' >Mobile</th>
+          <th className='border-collpase border border-[#f6ae2d] text-xs md:text-base font-semibold  ' >Action</th>
           </tr>          
         </thead>
         <tbody>
@@ -42,11 +42,11 @@ function UsersView() {
             usersData.map((user,i)=>{
               return (
                 <tr key={user.id} className='h-[8rem] xl:h-[4rem]'>
-                    <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{i+1}</td>
-                    <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{user.firstname + " " + user.lastname}</td>
-                    <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{user.email}</td>
-                    <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{user.mobile}</td>
-                    <td className='border-collpase border border-[#f6ae2d] rounded-md ' >
+                    <td className='border-collpase border border-[#f6ae2d] text-xs md:text-base rounded-md ' >{i+1}</td>
+                    <td className='border-collpase border border-[#f6ae2d] text-xs md:text-base rounded-md ' >{user.firstname + " " + user.lastname}</td>
+                    <td className='border-collpase border border-[#f6ae2d] text-xs md:text-base rounded-md ' >{user.email}</td>
+                    <td className='border-collpase border border-[#f6ae2d] text-xs md:text-base rounded-md ' >{user.mobile}</td>
+                    <td className='border-collpase border border-[#f6ae2d] text-xs md:text-base rounded-md ' >
                       <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly '>
                         {
                           user.isVerified ?
@@ -72,11 +72,11 @@ function UsersView() {
             usersData.map((user,i)=>{
               return (
                 <React.Fragment key={user.id}>
-                  <tr className='h-[4rem]' key={user.id+"sno"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-black font-semibold'>S.No</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md '>{i+1}</td></tr>
-                  <tr className='h-[4rem]' key={user.id+"name"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-black font-semibold'>Name</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md '>{user.firstname + " " + user.lastname}</td></tr>
-                  <tr className='h-[4rem]' key={user.id+"email"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-black font-semibold '>Email</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md '>{user.email}</td></tr>
-                  <tr className='h-[4rem]' key={user.id+"mobile"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-black font-semibold  '>Mobile</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md '>{user.mobile}</td></tr>
-                  <tr className='h-[6rem]' key={user.id+"action"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-black font-semibold  '>Action</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md '>
+                  <tr className='h-[4rem]' key={user.id+"sno"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-xs md:text-base text-black font-semibold'>S.No</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md text-xs md:text-base '>{i+1}</td></tr>
+                  <tr className='h-[4rem]' key={user.id+"name"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-xs md:text-base text-black font-semibold'>Name</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md text-xs md:text-base '>{user.firstname + " " + user.lastname}</td></tr>
+                  <tr className='h-[4rem]' key={user.id+"email"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-xs md:text-base text-black font-semibold '>Email</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md text-xs md:text-base '>{user.email}</td></tr>
+                  <tr className='h-[4rem]' key={user.id+"mobile"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-xs md:text-base text-black font-semibold  '>Mobile</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md text-xs md:text-base '>{user.mobile}</td></tr>
+                  <tr className='h-[6rem]' key={user.id+"action"}><td className='w-[50%] border-collpase border border-[#f6ae2d] bg-[#f6ae2d] text-xs md:text-base text-black font-semibold  '>Action</td><td className='w-[50%] border-collpase border border-[#f6ae2d] rounded-md text-xs md:text-base '>
                     <div className='flex flex-col gap-4 items-center xl:flex-row xl:justify-evenly '>
                         {
                           user.isVerified ?

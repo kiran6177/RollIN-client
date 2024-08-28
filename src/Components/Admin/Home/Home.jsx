@@ -70,12 +70,12 @@ function Home() {
             <table className='table border-collpase  border border-[#f6ae2d] rounded-md  min-w-[998px] w-[100%] bg-black text-white text-center my-10 '>
               <thead className='border-collpase border border-[#f6ae2d] '>
                 <tr key="main-head" className='h-[4rem] bg-[#f6ae2d] text-black '>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[8%]' >S. No</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Image</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[18%]' >Title</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Description</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Genre</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  ' >Release Date</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[8%]' >S. No</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[20%]' >Image</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[18%]' >Title</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[20%]' >Description</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[20%]' >Genre</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  ' >Release Date</th>
                 </tr>          
               </thead>
               <tbody>
@@ -83,16 +83,16 @@ function Home() {
                       recentMovies?.length > 0 ? recentMovies.map((movie,i)=>{
                         return(
                           <tr key={movie?._id} className='h-[8rem] xl:h-[4rem]'>
-                              <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{i + 1}</td>
-                              <td className='border-collpase border border-[#f6ae2d] rounded-md ' >
+                              <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{i + 1}</td>
+                              <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >
                                 <div className='w-[50%] mx-auto m-8'>
                                   <img src={movie?.poster_path} className='object-cover aspect-[4/5]' height={'100%'} alt="" />
                                 </div>
                               </td>
-                              <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{movie?.title}</td>
-                              <td className='border-collpase border border-[#f6ae2d] rounded-md w-[20%] overflow-hidden text-xs' >{movie?.overview}</td>
-                              <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{movie?.genres[0] ? movie?.genres[0]?.name ? movie?.genres[0]?.name : movie?.genres[0]  : '' }{movie?.genres[1] ? movie?.genres[1]?.name ? " / "+ movie?.genres[1]?.name : " / "+ movie?.genres[1] : '' }</td>
-                              <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{movie?.release_date?.split('-')[0]}</td>
+                              <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{movie?.title}</td>
+                              <td className='border-collpase border border-[#f6ae2d]  rounded-md w-[20%] overflow-hidden text-xs' >{movie?.overview}</td>
+                              <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{movie?.genres[0] ? movie?.genres[0]?.name ? movie?.genres[0]?.name : movie?.genres[0]  : '' }{movie?.genres[1] ? movie?.genres[1]?.name ? " / "+ movie?.genres[1]?.name : " / "+ movie?.genres[1] : '' }</td>
+                              <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{movie?.release_date?.split('-')[0]}</td>
                           </tr>
                         )
                       })
@@ -111,12 +111,12 @@ function Home() {
             <table className='table border-collpase  border border-[#f6ae2d] rounded-md  min-w-[998px] w-[100%] bg-black text-white text-center my-10 '>
               <thead className='border-collpase border border-[#f6ae2d] '>
                 <tr key="main-head" className='h-[4rem] bg-[#f6ae2d] text-black '>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[8%]' >S. No</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Image</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[18%]' >Title</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Genre</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  w-[20%]' >Tickets Sold</th>
-                <th className='border-collpase border border-[#f6ae2d] font-semibold  ' >Revenue</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[8%]' >S. No</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[20%]' >Image</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[18%]' >Title</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[20%]' >Genre</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  w-[20%]' >Tickets Sold</th>
+                <th className='border-collpase border border-[#f6ae2d] text-sm md:text-base font-semibold  ' >Revenue</th>
                 </tr>          
               </thead>
               <tbody>
@@ -124,16 +124,16 @@ function Home() {
                     grossMovies?.length > 0 ? grossMovies.map((order,i)=>{
                       return(
                         <tr key={order?._id} className='h-[8rem] xl:h-[4rem]'>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{i + 1}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >
+                            <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{i + 1}</td>
+                            <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >
                               <div className='w-[50%] mx-auto m-8'>
                                 <img src={order?.movie?.poster_path} className='object-cover aspect-[4/5]' height={'100%'} alt="" />
                               </div>
                             </td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{order?.movie?.title}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{order?.movie?.genres[0] ? order?.movie?.genres[0]?.name ? order?.movie?.genres[0]?.name : order?.movie?.genres[0]  : '' }{order?.movie?.genres[1] ? order?.movie?.genres[1]?.name ? " / "+ order?.movie?.genres[1]?.name : " / "+ order?.movie?.genres[1] : '' }</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >{order?.totalTickets}</td>
-                            <td className='border-collpase border border-[#f6ae2d] rounded-md ' >Rs.{order?.amount}</td>
+                            <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{order?.movie?.title}</td>
+                            <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{order?.movie?.genres[0] ? order?.movie?.genres[0]?.name ? order?.movie?.genres[0]?.name : order?.movie?.genres[0]  : '' }{order?.movie?.genres[1] ? order?.movie?.genres[1]?.name ? " / "+ order?.movie?.genres[1]?.name : " / "+ order?.movie?.genres[1] : '' }</td>
+                            <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >{order?.totalTickets}</td>
+                            <td className='border-collpase border border-[#f6ae2d] text-sm md:text-base rounded-md ' >Rs.{order?.amount}</td>
                         </tr>
                       )
                     })

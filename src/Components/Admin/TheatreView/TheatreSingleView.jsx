@@ -87,8 +87,8 @@ function TheatreSingleView() {
       <div className='p-12'>
         {   theatre &&
             <div className='flex flex-col gap-10 '>
-            <h2 className='text-[#f6ae2d] font-semibold text-4xl'>{theatre.name}</h2>
-            <h4 className='text-white font-medium text-xl'>Email : &nbsp;  {theatre.email}</h4>
+            <h2 className='text-[#f6ae2d] font-semibold text-2xl md:text-4xl'>{theatre.name}</h2>
+            <h4 className='text-white font-medium text-sm md:text-xl'>Email : &nbsp;  {theatre.email}</h4>
             
             <div className='w-[90%]  mx-auto flex flex-wrap gap-12 '>
             {
@@ -101,7 +101,7 @@ function TheatreSingleView() {
             }
             </div>
 
-            <h4 className='text-white font-medium text-xl'>Location :  &nbsp; {theatre.address?.completeLocation}</h4>
+            <h4 className='text-white font-medium text-sm md:text-xl'>Location :  &nbsp; {theatre.address?.completeLocation}</h4>
             {
                 theatre.location ?
                 <div className='w-[90%] h-[20rem] mx-auto' id='mapShow'>

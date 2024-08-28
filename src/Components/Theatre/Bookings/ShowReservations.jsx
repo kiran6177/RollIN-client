@@ -108,9 +108,9 @@ function ShowReservations() {
             <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
-            <div className='flex justify-between items-center'>
-            <h2 className='text-white text-3xl font-semibold tracking-widest'>SHOW BOOKINGS</h2>
-            <button onClick={()=>navigate(`/theatre/bookings/list?show_id=${show_id}&date=${date}`)} className='bg-[#f6ae2d] px-8 rounded-sm py-2 font-medium tracking-widest border-2 border-[#f6ae2d] hover:bg-black hover:text-white transition-all duration-150 ease-linear'>BOOKINGS</button>
+            <div className='flex flex-col md:flex-row justify-between gap-3 md:gap-0 md:items-center'>
+            <h2 className='text-white text-2xl md:text-3xl font-semibold tracking-widest'>SHOW BOOKINGS</h2>
+            <button onClick={()=>navigate(`/theatre/bookings/list?show_id=${show_id}&date=${date}`)} className='bg-[#f6ae2d] w-[100%] px-8 rounded-sm py-1 md:py-2 font-medium tracking-widest border-2 border-[#f6ae2d] hover:bg-black hover:text-white transition-all duration-150 ease-linear'>BOOKINGS</button>
             </div>
             <div className='border-2 border-[#f6ae2d] sm:max-h-[15rem]  bg-black rounded-sm flex flex-col-reverse sm:flex-row justify-between my-8'>
                 <div className='flex flex-col sm:w-[40%] justify-evenly gap-2 p-6'>
@@ -123,7 +123,7 @@ function ShowReservations() {
                     <img src={show?.movie_data?.backdrop_path} alt=""  className='h-[100%] object-cover' />
                 </div>
             </div>
-            <div className='bg-black py-12 px-4 border-2 rounded-md border-[#f6ae2d]'>
+            <div className='bg-black py-2 px-0 md:px-3 border-2 rounded-md border-[#f6ae2d]'>
                 <div className='relative my-6 sm:my-16 md:mx-12 lg:mx-28 xl:mx-36 '> 
                     {
                         singleShow && [...singleShow?.tiers].reverse().map((tierData,i)=>{ 
@@ -171,77 +171,10 @@ function ShowReservations() {
                             )
                         })
                     }
-                    <div className='w-[100%] flex justify-center mt-24'>
+                    <div className='w-[100%] flex justify-center mt-10'>
                         <div className='w-[50%] border-black border-b-[#f6ae2d] border-b-[1rem] md:border-b-[2rem] border-r-[1rem] sm:border-r-[2rem] md:border-r-[3rem] lg:border-r-[4rem] xl:border-r-[5rem] border-l-[1rem] sm:border-l-[2rem] md:border-l-[3rem] lg:border-l-[4rem] xl:border-l-[5rem]'></div>
                     </div>
-                    {/* front speakers */}
-                    <div className='text-[#f6ae2d] absolute bottom-10 flex justify-evenly w-[100%] '>
-                        {
-                            singleShow?.sound?.front >  0 && Array.from({length:singleShow.sound.front}).map((_,index)=>{
-                                return(
-                                    <div key={'front'+index} className='flex items-center justify-evenly '>
-                                    <BiSolidSpeaker  className='md:h-[2rem] md:w-[2rem]'/>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                    {/* sub speakers */}
-                    <div className='text-[#f6ae2d] absolute bottom-10 flex justify-center w-[100%] '>
-                    {
-                        singleShow?.sound?.subwoofers > 0 && Array.from({length:singleShow.sound.subwoofers}).map((_,ind)=>{
-                                            return (
-                                                <div key={'sub'+ind} className='flex items-center justify-evenly '>
-                                                    <RiSpeaker3Fill   className='md:h-[1.5rem] md:w-[1.5rem]' />
-                                                </div>
-                                            )
-                                        })
-                                    }
-                    </div>
-                    {/* center speakers */}
-                    <div className='text-[#f6ae2d] absolute bottom-16 md:bottom-20 flex justify-center w-[100%] '>
-                    {
-                        singleShow?.sound?.center > 0 && Array.from({length:singleShow.sound.center}).map((_,ind)=>{
-                                            return (
-                                                <div key={'center'+ind} className='flex items-center justify-evenly bg-[#f6ae2d] text-black'>
-                                                    <RiSpeaker2Fill  className='md:h-[1.5rem] md:w-[1.5rem]' />
-                                                    <RiSpeaker2Fill  className='md:h-[1.5rem] md:w-[1.5rem]' />
-                                                    
-                                                </div>
-                                            )
-                                        })
-                                    }
-                    </div>
-                    {/* rear speakers */}
-                    <div className='text-[#f6ae2d] absolute -top-8 sm:-top-14 flex justify-evenly w-[100%] '>
-                        {
-                            singleShow?.sound?.rear >  0 && Array.from({length:singleShow.sound.rear}).map((_,index)=>{
-                                return(
-                                    <BiSolidSpeaker key={'rear'+index}  className='md:h-[2rem] md:w-[2rem]'/>
-                                )
-                            })
-                        }
-                    </div>
-                    {/* left speakers */}
-                    <div className='text-[#f6ae2d] absolute -left-3 md:-left-0 top-0 flex flex-col justify-evenly h-[100%] '>
-                        {
-                            singleShow?.sound?.left >  0 && Array.from({length:singleShow.sound.left}).map((_,index)=>{
-                                return(
-                                    <BiSolidSpeaker key={'left'+index}  className='md:h-[2rem] md:w-[2rem]'/>
-                                )
-                            })
-                        }
-                    </div>
-                    {/* right speakers */}
-                    <div className='text-[#f6ae2d] absolute -right-3 md:-right-0 top-0 flex flex-col justify-evenly h-[100%] '>
-                        {
-                            singleShow?.sound?.right >  0 && Array.from({length:singleShow.sound.right}).map((_,index)=>{
-                                return(
-                                    <BiSolidSpeaker key={'right'+index}  className='md:h-[2rem] md:w-[2rem]'/>
-                                )
-                            })
-                        }
-                    </div>
+                    
                 </div>    
             </div>
             <Suspense>

@@ -46,13 +46,13 @@ function SoldConfirmModal({isOpen,set}) {
                             <h2 className='font-medium text-md tracking-wider text-center'>Are You Sure ?</h2>
                         </div>
 
-                        <div className='w-[100%] flex items-center justify-center gap-8'>
+                        <div className='w-[100%] flex flex-col md:flex-row md:items-center justify-center gap-3 md:gap-8'>
                             <button onClick={()=>{handleSold()}} disabled={loading} className={loading? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CONFIRM</button>
                             <button onClick={()=>set(false)} disabled={loading} className={loading ? 'bg-[#cb9635d6] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out' :'bg-[#f6ae2d] border-2 border-[#f6ae2d] text-black px-8 py-2 rounded-md hover:bg-black hover:text-white transition-all duration-200 ease-in-out'}>CANCEL</button>
                         </div>
-                        <div className='w-[100%] mx-auto'>
+                        {loading && <div className='w-[100%] mx-auto'>
                         <ScaleLoader loading={loading}  color='#f6ae2d' height={20} />
-                        </div>
+                        </div>}
                 </motion.div>
             </div>,
             document.getElementById("trailer-modal")

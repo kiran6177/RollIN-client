@@ -54,7 +54,6 @@ function SeatLayout() {
     },[screen])
 
     useEffect(()=>{
-        console.log(tierData);
         if(tierData?.horizontal_partition < 0 || tierData?.columns < 0){
             toast.error('Invalid value')
         }
@@ -76,7 +75,6 @@ function SeatLayout() {
         if(colCount > 0){
             setGridCol(`repeat(${colCount},1fr)`)
             const rows = Math.ceil(tierData?.seats/colCount) 
-            console.log(rows);
             const arr = Array.from({length:colCount*rows},(_,index)=>{
                 return {
                     id:index+1,
@@ -89,7 +87,6 @@ function SeatLayout() {
 
 
     useEffect(()=>{
-        console.log(updatedLayouts); 
         if(updatedLayouts){
             setShowSave(true)
             return
@@ -139,7 +136,6 @@ function SeatLayout() {
         const undoCopy = [...undoArr];
         const popped = undoCopy.pop();
         setUndoArr(undoCopy)
-        console.log(popped);
         if(popped){
             setLayouts(layouts.map(obj=>{
                 if(obj.id === popped.id){
@@ -179,10 +175,8 @@ function SeatLayout() {
     }
 
     const handleSaveLayout = ()=>{
-        console.log(layouts);
-        console.log(tierData);
+
         const rows = Math.ceil(tierData?.seats / tierData?.columns)
-        console.log(rows);
         let newLayouts = {}
         for(let i = 1; i <= rows ; i++){
             newLayouts[i] = new Array(tierData?.columns + tierData?.horizontal_partition).fill(0)
@@ -195,7 +189,6 @@ function SeatLayout() {
                 newLayouts[key][index] = item?.status ? 1 : 0
             }
         })
-        console.log(newLayouts); 
         setUpdatedLayouts(newLayouts)
     }
 

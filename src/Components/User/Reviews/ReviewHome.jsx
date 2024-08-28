@@ -114,12 +114,12 @@ function ReviewHome() {
     <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
         <div className='pt-28 px-12  min-h-[10rem]'>
-            <h5 className='text-white text-4xl font-semibold tracking-widest'>REVIEWS</h5>
+            <h5 className='text-white text-2xl md:text-4xl font-semibold tracking-widest'>REVIEWS</h5>
                 <div className=' bg-black border-2 border-[#f6ae2d] rounded-md my-5 flex flex-col-reverse md:flex-row gap-4 justify-between  md:max-h-[14rem] overflow-hidden'>
                     <div className='flex flex-col gap-4 py-6 px-10'>
                         <h5 className='text-[#f6ae2d] text-2xl  lg:text-4xl font-semibold tracking-widest cursor-pointer'>{movie?.title}</h5>
                         <h5 className='text-white text-sm  lg:text-md  tracking-widest cursor-pointer'>{movie?.genres[0] ? movie?.genres[0]?.name ? movie?.genres[0]?.name : movie?.genres[0]  : '' }{movie?.genres[1] ? movie?.genres[1]?.name ? " / "+ movie?.genres[1]?.name : " / "+ movie?.genres[1] : '' }</h5>
-                        <h5 className='text-white text-md  lg:text-xl  tracking-widest cursor-pointer flex items-center gap-3'>Rating :
+                        <h5 className='text-white text-xs md:text-base  lg:text-xl  tracking-widest cursor-pointer flex items-center gap-3'>Rating :
                              {
                                 stars?.map((el,i)=>{
                                     return(
@@ -130,7 +130,7 @@ function ReviewHome() {
                                 })
                              }
                         </h5>
-                        {userToken && new Date(movie?.release_date) < today && <button onClick={()=>setShowAdd(true)} className='bg-[#f6ae2d] px-7 py-2 rounded-md tracking-wider font-medium'>ADD YOUR REVIEW</button>}
+                        {userToken && new Date(movie?.release_date) < today && <button onClick={()=>setShowAdd(true)} className='bg-[#f6ae2d] px-7 py-2 rounded-md tracking-wider text-xs md:text-base font-medium'>ADD YOUR REVIEW</button>}
                     </div>
                     <div className='w-[100%] md:w-[45%] h-[10rem] md:h-auto overflow-hidden relative'>
                         <div className='w-[100%] h-[100%] bg-gradient-to-t md:bg-gradient-to-r from-black to-transparent absolute'></div>
@@ -174,7 +174,7 @@ function ReviewHome() {
                                 <p className='text-xs sm:text-sm text-white'>{review.content}</p>
                             </div>
                             <div className='flex items-center justify-between'>
-                                <div className='flex items-center gap-6 text-white'>
+                                <div className='flex items-center gap-3 md:gap-6 text-white'>
                                 {review?.likedUsers?.length > 0 && review.likedUsers.includes(userData?.id) ? <><BiSolidLike className='w-[1.5rem] h-[1.5rem] text-[#f6ae2d] ' /> <p className='text-xs'>{review.likes}</p></> :<><BiLike onClick={()=>handleLikeDisLike(review,"LIKE")} className='w-[1.5rem] h-[1.5rem] text-[#f6ae2d] hover:scale-[1.07]' />
                                 <p className='text-xs'>{review.likes}</p></>} 
                                 {review?.dislikedUsers?.length > 0 && review.dislikedUsers.includes(userData?.id) ? <><BiSolidDislike  className='w-[1.5rem] h-[1.5rem] text-[#f6ae2d] ' />

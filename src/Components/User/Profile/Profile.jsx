@@ -22,9 +22,9 @@ function Profile() {
 
 
   return (
-    <div className='pt-36 sm:pt-24 bg-[#15121B]'>
+    <div className='pt-24 sm:pt-24 bg-[#15121B]'>
       <ProfileNavbar selected={selected} setSelected={setSelected} />
-      <div className='p-12'>
+      <div className='p-8 md:p-12'>
         {selected === 'PROFILE' && <Suspense fallback={<LoadingSpinner/>}><ProfileData/></Suspense>}
         {selected === 'ORDERS' && <Suspense fallback={<LoadingSpinner/>}><Orders/></Suspense>}
         {selected === 'NOTIFICATIONS' && <Suspense fallback={<LoadingSpinner/>}><Notifications/></Suspense>}

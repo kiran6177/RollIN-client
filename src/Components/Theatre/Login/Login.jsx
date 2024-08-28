@@ -83,7 +83,7 @@ function Login() {
       <form onSubmit={handleLogin} className='flex flex-col items-center  gap-6 border-2 border-[#F6AE2D] rounded-md bg-black backdrop-blur-sm w-[80%] md:w-[69%] lg:w-[55%] xl:w-[45%] 2xl:w-[35%] py-12'>
             <h3 className='font-semibold text-white tracking-widest'>THEATRE LOGIN</h3>
             
-            <button type='button' onClick={handleGoogleAuth} className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
+            <button type='button' onClick={handleGoogleAuth} className='bg-white border-2 border-black rounded-md px-4 md:px-14 py-2 flex items-center justify-evenly gap-0 md:gap-5 w-[80%] md:w-[70%] font-medium text-xs md:text-lg'>
                 <FcGoogle className='w-[1.5rem] h-[1.5rem]'/>
                 Continue With Google
             </button>
@@ -99,7 +99,7 @@ function Login() {
                     }else{
                         setEmailError('')
                     }
-                    }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    }} className='w-[100%] my-2 p-2 border-2 rounded-md text-xs md:text-base bg-black text-white border-[#f6ae2d]'/>
                 {emailError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{emailError}</p>}
             </div>
             <div className="w-[80%] md:w-[70%]">
@@ -113,10 +113,10 @@ function Login() {
                     }else{
                         setPasswordError('')
                     }
-                    }} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    }} className='w-[100%] my-2 p-2 border-2 rounded-md text-xs md:text-base bg-black text-white border-[#f6ae2d]'/>
                 {passwordError && <p className='text-[#ef4b4b] text-xs font-extralight tracking-wider'>{passwordError}</p>}
             </div>
-            <button type='submit' disabled={loading} className={loading?' bg-[#be903b] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'  : 'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-lg tracking-widest'}>
+            <button type='submit' disabled={loading} className={loading?' bg-[#be903b] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-sm md:text-lg tracking-widest'  : 'bg-[#F6AE2D] text-black border-2 border-black rounded-md px-6 md:px-14 py-2 flex justify-center gap-5 w-[80%] md:w-[70%] font-semibold text-sm md:text-lg tracking-widest'}>
                 LOGIN 
             </button>
             <ScaleLoader loading={loading} height={20} color='#f6ae2d' />

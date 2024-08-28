@@ -99,7 +99,7 @@ function Orders() {
     <div className='my-8'>
       <Toaster richColors/>
           <h2 className='text-white text-3xl font-semibold tracking-widest mb-5'>ORDERS</h2>
-          <span className='bg-[#c0871dd4] flex max-w-fit   font-medium tracking-wider gap-4 flex-wrap'>
+          <span className='bg-[#c0871dd4] flex max-w-fit   font-medium tracking-wider gap-4 flex-col sm:flex-row'>
             <button onClick={()=>{setSelected('UPCOMING')}} className={selected === 'UPCOMING' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>UPCOMING</button>
             <button onClick={()=>{setSelected('WATCHED')}} className={selected === 'WATCHED' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>WATCHED</button>
             <button onClick={()=>{setSelected('CANCELLED')}} className={selected === 'CANCELLED' ? 'min-w-[6rem] bg-[#f6ae2d] py-2 px-4' :'min-w-[6rem] py-2 px-4'}>CANCELLED</button>

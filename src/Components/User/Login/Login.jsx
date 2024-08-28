@@ -1,5 +1,4 @@
 import React, {  lazy, Suspense, useEffect, useState } from 'react'
-import './Login.css'
 import { FcGoogle } from "react-icons/fc";
 import { TfiEmail } from "react-icons/tfi";
 import { useDispatch, useSelector } from 'react-redux';
@@ -60,11 +59,11 @@ function Login() {
         <Toaster richColors />
       <div className='flex flex-col items-center  gap-5 border-2 border-[#F6AE2D] rounded-md bg-black backdrop-blur-sm w-[80%] md:w-[69%] lg:w-[55%] xl:w-[45%] 2xl:w-[35%] py-12'>
             <h3 className='font-semibold text-white tracking-widest'>Get Started</h3>
-            <button onClick={handleGoogleAuth} type='button' className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
+            <button onClick={handleGoogleAuth} type='button' className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center justify-between md:justify-normal md:gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
                 <FcGoogle className='w-[1.5rem] h-[1.5rem]'/>
                 Continue With Google
             </button>
-            <button type='button' onClick={handleEmailAuth} className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
+            <button type='button' onClick={handleEmailAuth} className='bg-white border-2 border-black rounded-md px-6 md:px-14 py-2 flex items-center justify-between md:justify-normal md:gap-5 w-[80%] md:w-[70%] font-medium text-sm md:text-lg'>
                 <TfiEmail className='w-[1.5rem] h-[1.5rem]'/>
                 Continue With Email
             </button>

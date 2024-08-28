@@ -62,7 +62,7 @@ function Home() {
 
   return (
     <div className='pt-2 bg-[#15121B] '>
-        <div className='relative text-white h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] xl:h-[80vh] overflow-hidden'>
+        <div className='relative text-white min-h-[25vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] xl:h-[80vh] overflow-hidden'>
           {
             bannerMovies &&
           <AnimatePresence mode='wait'>
@@ -96,7 +96,9 @@ function Home() {
                 }
             </motion.div>
             <IoMdPlayCircle onClick={()=>setShowTrailer(true)} className='absolute text-[#9d9d9d8a] h-[2rem] md:h-[3rem] w-[2rem] md:w-[3rem] left-[49%] top-[48%] hover:text-white hover:scale-[1.1] transition-all duration-150 ease-in-out '/>
-            <img src={bannerMovies[index]?.backdrop_path} alt="" className='mt-28 md:mt-0  mx-auto object-fill w-[100%]' />
+            <div className='mt-24 md:mt-0  mx-auto aspect-video w-[100%]'>
+            <img src={bannerMovies[index]?.backdrop_path}  alt="" className=' object-cover w-[100%]' />
+            </div>
           <Suspense fallback={<MovieCard2Skelton/>} >
             <TrailerModal isOpen={showTrailer} set={setShowTrailer} videoKey={bannerMovies[index]?.video_link} />
           </Suspense>
@@ -115,11 +117,11 @@ function Home() {
           transition={{ duration: 0.10 ,ease : 'easeInOut'}} 
            className='mx-6 flex flex-col gap-4 text-white'>
           <h2 className='text-xl  tracking-wider drop-shadow-2xl lg:text-4xl font-semibold '>{bannerMovies[index]?.title}</h2>
-          <div className=' flex gap-1 flex-wrap md:gap-8 '>
+          {/* <div className=' flex gap-1 flex-wrap md:gap-8 '>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><img src={pinlogo} alt="" className='object-cover h-[100%]'  />{bannerMovies[index]?.genres[0] ? bannerMovies[index]?.genres[0] : '' }{bannerMovies[index]?.genres[1] ?" / "+ bannerMovies[index]?.genres[1] : '' }{bannerMovies[index]?.genres[2] ?" / "+ bannerMovies[index]?.genres[2] : '' }</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><FaRegCalendar className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.release_date.split('-')[0]}</h5>
               <h5 className='text-[12px] sm:text-xs lg:text-sm h-[2rem] gap-3 flex items-center'><MdOutlineTimer className='text-[#f6ae2d] w-[2rem] h-[1.2rem]' />{bannerMovies[index]?.runtime + " min"}</h5>
-          </div>
+          </div> */}
           { 
           (!bannerMovies[index]?.isDislocated && !bannerMovies[index]?.isDisabled) && 
           <div className='flex flex-col sm:flex-row w-[65%] sm:w-[50%]'>

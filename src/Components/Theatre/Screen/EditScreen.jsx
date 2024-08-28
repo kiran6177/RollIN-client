@@ -392,12 +392,12 @@ function EditScreen() {
             </div>
 
             {enrolledMovies && enrolledMovies.length > 0 && 
-            <div className='border-2 border-[#f6ae2d] rounded-md bg-black px-8 py-6 my-6'>
-                <h4 className='text-[#f6ae2d] tracking-wider m'>ENROLLED MOVIES</h4>
+            <div className='border-2 border-[#f6ae2d] rounded-md bg-black px-5 md:px-8 py-6 my-6'>
+                <h4 className='text-[#f6ae2d] tracking-wider '>ENROLLED MOVIES</h4>
                 {
                 enrolledMovies.map((movie,i)=>{
                     return(
-                    <div key={movie._id+i} className='flex flex-col md:flex-row gap-10 w-[95%] mx-auto border-2 overflow-hidden rounded-md border-[#4040407b] my-8 shadow-[0px_0px_55px_rgb(246,174,45,0.3)] p-6'>
+                    <div key={movie._id+i} className='flex flex-col items-center md:flex-row gap-10 w-[95%] mx-auto border-2 overflow-hidden rounded-md border-[#4040407b] my-8 shadow-[0px_0px_55px_rgb(246,174,45,0.3)] p-6'>
                         <div className='w-[8rem] sm:w-[10rem] overflow-hidden  '>
                             <img src={movie?.poster_path} alt="" className='aspect-[3/4] object-cover' width={'100%'} />
                         </div>
@@ -475,7 +475,7 @@ function EditScreen() {
                             ...prev,
                             front:parseInt(e.target.value)
                         }
-                    })}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    })}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                     </div>
                     <div className="w-[90%] md:w-[45%]">
                     <label className='text-white text-xs tracking-widest'>Left Speakers</label>
@@ -484,7 +484,7 @@ function EditScreen() {
                             ...prev,
                             left:parseInt(e.target.value)
                         }
-                    })}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    })}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row justify-between'>
@@ -495,7 +495,7 @@ function EditScreen() {
                             ...prev,
                             rear:parseInt(e.target.value)
                         }
-                    })}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    })}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                     </div>
                     <div className="w-[90%] md:w-[45%]">
                     <label className='text-white text-xs tracking-widest'>Right Speakers</label>
@@ -504,7 +504,7 @@ function EditScreen() {
                             ...prev,
                             right:parseInt(e.target.value)
                         }
-                    })} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    })} className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row justify-between'>
@@ -515,7 +515,7 @@ function EditScreen() {
                             ...prev,
                             center:parseInt(e.target.value)
                         }
-                    })}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    })}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                     </div>
                     <div className="w-[90%] md:w-[45%]">
                     <label className='text-white text-xs tracking-widest'>Subwoofers</label>
@@ -524,7 +524,7 @@ function EditScreen() {
                             ...prev,
                             subwoofers:parseInt(e.target.value)
                         }
-                    })} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    })} className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                     </div>
                 </div>
             </div>
@@ -549,7 +549,7 @@ function EditScreen() {
                                                     }
                                                 }
                                                 return tier
-                                            }))}} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                            }))}} className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                                             </div>
                                             <div className="w-[100%] md:w-[45%]">
                                             <label className='text-white text-xs tracking-widest'>Seats</label>
@@ -562,7 +562,7 @@ function EditScreen() {
                                                     }
                                                 }
                                                 return tier
-                                            }))}}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                            }))}}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                                             </div>
                                         </div>
                                         <div className='flex flex-col md:flex-row justify-between'>
@@ -576,7 +576,7 @@ function EditScreen() {
                                                     }
                                                 }
                                                 return tier
-                                            }))}}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                            }))}}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                                             </div>
                                             <div className="w-[100%] md:w-[45%] flex flex-col items-start py-2">
                                                 <button disabled={tier?.seatsChanged} onClick={()=>navigate(`/theatre/editscreen/config?tier_id=${tier._id}&screen_id=${screen_id}`)} className={tier?.seatsChanged? 'bg-[#f6b02da2] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base' :'bg-[#f6ae2d] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base'}>CONFIG SEAT</button> 
@@ -592,7 +592,7 @@ function EditScreen() {
 
                 <div className='w-[100%] md:w-[50%]'>
                     <label className='text-white text-xs tracking-widest'>Number of tiers</label>
-                    <input type="number" min={0} max={10} value={tier} onChange={(e)=>setTier(e.target.value)}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                    <input type="number" min={0} max={10} value={tier} onChange={(e)=>setTier(e.target.value)}  className='w-[100%] my-2 p-2 border-2 rounded-md text-xs md:text-base bg-black text-white border-[#f6ae2d]'/>
                 </div>
                         
                             
@@ -604,21 +604,18 @@ function EditScreen() {
                                 <div className='flex flex-col md:flex-row justify-between'>
                                     <div className="w-[100%] md:w-[45%]">
                                     <label className='text-white text-xs tracking-widest'>Name</label>
-                                    <input type="text" value={tierName['name'+(index+1)] ? tierName['name'+(index+1)] : ''} onChange={(e)=>handleTierName(e,index+1)} className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                    <input type="text" value={tierName['name'+(index+1)] ? tierName['name'+(index+1)] : ''} onChange={(e)=>handleTierName(e,index+1)} className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                                     </div>
                                     <div className="w-[100%] md:w-[45%]">
                                     <label className='text-white text-xs tracking-widest'>Seats</label>
-                                    <input type="number" value={tierSeats['seats'+(index+1)] ? tierSeats['seats'+(index+1)] : ''} onChange={(e)=>handleTierSeats(e,index+1)}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                    <input type="number" value={tierSeats['seats'+(index+1)] ? tierSeats['seats'+(index+1)] : ''} onChange={(e)=>handleTierSeats(e,index+1)}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                                     </div>
                                 </div>
                                 <div className='flex flex-col md:flex-row justify-between'>
                                     <div className="w-[100%] md:w-[45%]">
                                     <label className='text-white text-xs tracking-widest'>Rate</label>
-                                    <input type="number" value={tierRate['rate'+(index+1)] ? tierRate['rate'+(index+1)] : ''} onChange={(e)=>handleTierRate(e,index+1)}  className='w-[100%] my-2 p-2 border-2 rounded-md bg-black text-white border-[#f6ae2d]'/>
+                                    <input type="number" value={tierRate['rate'+(index+1)] ? tierRate['rate'+(index+1)] : ''} onChange={(e)=>handleTierRate(e,index+1)}  className='w-[100%] my-2 p-2 border-2 text-xs md:text-base rounded-md bg-black text-white border-[#f6ae2d]'/>
                                     </div>
-                                    {/* <div className="w-[100%] md:w-[45%] flex items-end py-2">
-                                        <button className='bg-[#f6ae2d] rounded-sm w-[100%] py-3 font-medium tracking-wider text-sm sm:text-base'>CONFIG SEAT</button> 
-                                    </div> */}
                                 </div>
                             </div>
                     )

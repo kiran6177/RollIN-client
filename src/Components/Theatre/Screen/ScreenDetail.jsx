@@ -76,7 +76,7 @@ function ScreenDetail() {
   return (
     <div className='py-10 bg-[#15121B] '>
         <Toaster richColors />
-        <div className='pt-28 px-12  min-h-[10rem]'>
+        <div className='pt-28 px-8  min-h-[10rem]'>
             <div className='flex flex-col sm:flex-row justify-between mb-6 sm:items-center'>
             <div className='w-[60%]'>
                 <h5 className='text-white text-2xl sm:text-4xl font-semibold tracking-widest'>{screenName}</h5> 
@@ -103,13 +103,13 @@ function ScreenDetail() {
             </div>
 
             {enrolledMovies && enrolledMovies.length > 0 && 
-            <div className='border-2 border-[#f6ae2d] rounded-md bg-black px-8 py-6 my-6'>
+            <div className='border-2 border-[#f6ae2d] rounded-md bg-black px-6 md:px-8 py-6 my-6'>
                 <h4 className='text-[#f6ae2d] tracking-wider mb-8'>ENROLLED MOVIES</h4>
                 
                 {
                 enrolledMovies.map((movie,i)=>{
                     return(
-                    <div key={movie._id+i} className='flex flex-col md:flex-row gap-10 w-[95%] mx-auto border-2 overflow-hidden rounded-md border-[#4040407b] my-8 shadow-[0px_0px_55px_rgb(246,174,45,0.3)] p-6'>
+                    <div key={movie._id+i} className='flex flex-col md:flex-row gap-10 w-[100%] mx-auto border-2 overflow-hidden rounded-md border-[#4040407b] my-8 shadow-[0px_0px_55px_rgb(246,174,45,0.3)] p-6'>
                         <div className='w-[8rem] sm:w-[10rem] overflow-hidden  '>
                             <img src={movie?.poster_path} alt="" className='aspect-[3/4] object-cover' width={'100%'} />
                         </div>
