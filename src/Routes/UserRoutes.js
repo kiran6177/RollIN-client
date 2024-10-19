@@ -13,6 +13,7 @@ import UserShowBooking from '../Pages/User/Showbooking/UserShowBooking'
 import UserMovieScreenSection from '../Pages/User/Screens/UserMovieScreenSection'
 import UserCheckout from '../Pages/User/Showbooking/UserCheckout'
 import UserReviewMain from '../Pages/User/Review/UserReviewMain'
+import UserNotFoundPage from '../Pages/User/Home/UserNotFoundPage'
 
 function UserRoutes() {
   return (
@@ -38,6 +39,7 @@ function UserRoutes() {
         <UserProtected>
           <UserCheckout/>
         </UserProtected>} />
+        <Route path='*' element={<UserNotFoundPage/>} />
       </Routes>
   )
 }

@@ -12,6 +12,7 @@ import AdminAddMovie from '../Pages/Admin/Movies/AdminAddMovie'
 import AdminMovieDetail from '../Pages/Admin/Movies/AdminMovieDetail'
 import AdminPersonHome from '../Pages/Admin/Persons/AdminPersonHome'
 import AdminPersonDetail from '../Pages/Admin/Persons/AdminPersonDetail'
+import UserNotFoundPage from '../Pages/User/Home/UserNotFoundPage'
 
 function AdminRoutes() {
   return (
@@ -66,6 +67,7 @@ function AdminRoutes() {
                 <AdminPersonDetail/>
             </AdminProtected>
         } />
+        <Route path='*' element={<UserNotFoundPage type="ADMIN" />} />
     </Routes>
   )
 }

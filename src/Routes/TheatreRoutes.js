@@ -19,6 +19,7 @@ import TheatreBookingsScreen from '../Pages/Theatre/Bookings/TheatreBookingsScre
 import TheatreShowReservations from '../Pages/Theatre/Bookings/TheatreShowReservations'
 import TheatreBookingsList from '../Pages/Theatre/Bookings/TheatreBookingsList'
 import TheatreNotificationsHome from '../Pages/Theatre/Notifications/TheatreNotificationsHome'
+import UserNotFoundPage from '../Pages/User/Home/UserNotFoundPage'
 
 function TheatreRoutes() {
   return (
@@ -105,6 +106,7 @@ function TheatreRoutes() {
             <TheatreNotificationsHome/> 
         </TheatreProtected>
         } />
+        <Route path='*' element={<UserNotFoundPage type="THEATRE" />} />
     </Routes>
   )
 }

@@ -75,7 +75,7 @@ function Orders() {
     useEffect(()=>{
       if(orders?.length > 0 && selected){
           let today = new Date()
-          today.setHours(0,0,0,0)
+          // today.setHours(0,0,0,0)
           console.log(today,"day");
           if(selected === 'UPCOMING'){
             let upcomingOrders = orders.filter(order=>(getShowDate(order.show_date,order.show_time) >= today) && order.refund_id === null);
@@ -156,13 +156,13 @@ function Orders() {
                         <h2>Tickets</h2>
                       </div>
                     </div>
-                    {new Date().setUTCHours(0,0,0,0) <= new Date(order.show_date) &&<button onClick={()=>setShowTicket(order)} className='bg-[#f6ae2d] absolute right-0 bottom-0 font-medium px-4 py-1 text-xs rounded-sm tracking-wider'>MORE</button>}
-                    <div>
-                      {!order?.refund_id ? new Date(order?.show_date) === new Date().setHours(0,0,0,0) && (Math.abs(getShowDate(order?.show_date,order?.show_time) - new Date()) > 4 * 60 * 60 * 1000) ? 
+                    {getShowDate(order?.show_date,order?.show_time) >= new Date() &&<button onClick={()=>setShowTicket(order)} className='bg-[#f6ae2d] absolute right-0 bottom-0 font-medium px-4 py-1 text-xs rounded-sm tracking-wider'>MORE</button>}
+                    <div className='max-w-fit'>
+                      {!order?.refund_id ? new Date(order?.show_date).setHours(0,0,0,0) >= new Date().setHours(0,0,0,0) && (Math.abs(getShowDate(order?.show_date,order?.show_time) - new Date()) > 4 * 60 * 60 * 1000) ? 
                       <button onClick={()=>handleCancelTicket(order?._id)} className='text-black border-2 mb-10 sm:mb-0 border-[#f6ae2d] bg-[#f6ae2d] px-6 py-2 rounded-sm tracking-widest font-medium hover:bg-black hover:text-white transition-all duration-200 ease-linear'>CANCEL TICKET</button>
                       :
-                      <div className='relative mb-10 sm:mb-0'>
-                        <h4 className='text-white text-sm flex items-center gap-3'><IoInformationCircle onMouseEnter={()=>setShowInfo(true)} onMouseLeave={()=>setShowInfo(false)} className='w-[1.3rem] h-[1.3rem]' /> Cancellation unavailable.</h4> 
+                      <div className='relative mb-10 sm:mb-0 '>
+                        <h4 className='text-white text-sm flex items-center gap-3 max-w-fit'><IoInformationCircle onMouseEnter={()=>setShowInfo(true)} onMouseLeave={()=>setShowInfo(false)} className='w-[1.3rem] h-[1.3rem]' /> Cancellation unavailable.</h4> 
                         {showInfo && <div className='z-10 p-3 absolute -top-[8rem] sm:-top-[3.5rem] sm:-left-[10rem] w-[10rem] sm:w-auto bg-black border-2 border-[#f6ae2d] rounded-sm '>
                           <h2 className='text-white'>Cancellation is only available before 4 hours of show.</h2>
                         </div>}
